@@ -8,10 +8,16 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import type { Metadata } from "next";
 
 type loginFormDataType = {
   identifier: string;
   password: string;
+};
+
+export const metadata: Metadata = {
+  title: "Login",
+  description: "Login Page",
 };
 
 const LoginForm = () => {

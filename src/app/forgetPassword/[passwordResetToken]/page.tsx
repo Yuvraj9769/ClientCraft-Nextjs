@@ -8,11 +8,17 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import PageLoader from "@/components/PageLoader";
+import type { Metadata } from "next";
 
 type ResetPasswordFormDataType = {
   password: string;
   email: string;
   confPassword: string;
+};
+
+export const metadata: Metadata = {
+  title: "Forget-password",
+  description: "Forget-password Page",
 };
 
 const ResetPasswordForm = () => {

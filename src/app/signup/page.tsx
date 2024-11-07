@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useRouter } from "next/navigation";
+import type { Metadata } from "next";
 
 export type FormDataType = {
   username: string;
@@ -19,6 +20,11 @@ export type FormDataType = {
   phoneNumber: string;
   department: string;
   password: string;
+};
+
+export const metadata: Metadata = {
+  title: "SignUp",
+  description: "SignUp Page",
 };
 
 const RegistrationForm = () => {

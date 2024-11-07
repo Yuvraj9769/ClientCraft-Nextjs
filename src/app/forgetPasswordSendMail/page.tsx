@@ -6,9 +6,16 @@ import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import toast from "react-hot-toast";
 import axios from "axios";
+import type { Metadata } from "next";
 
 type verifyMailFormDataType = {
   email: string;
+};
+
+export const metadata: Metadata = {
+  title: "Email Verify",
+  description:
+    "Email Verify Page for get user email to send password reset token",
 };
 
 const VerifyEmailForm = () => {
