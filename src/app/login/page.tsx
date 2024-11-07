@@ -1,4 +1,4 @@
-import CompanyUserLogin from "@/components/CompanyUserLogin";
+import CompanyUserLogin from "@/components/companyUser/CompanyUserLogin";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

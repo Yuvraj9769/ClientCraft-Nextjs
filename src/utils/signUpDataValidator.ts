@@ -1,4 +1,4 @@
-import { FormDataType } from "@/components/CompanyUserSignUp";
+import { FormDataType } from "@/components/companyUser/CompanyUserSignUp";
 
 type getValidationMessage = { isValid: boolean; message: string };
 

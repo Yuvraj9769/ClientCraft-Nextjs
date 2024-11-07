@@ -1,4 +1,4 @@
-import CompanyUserSignUp from "@/components/CompanyUserSignUp";
+import CompanyUserSignUp from "@/components/companyUser/CompanyUserSignUp";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
