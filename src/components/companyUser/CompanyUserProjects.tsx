@@ -34,33 +34,46 @@ const CompanyUserProjects = () => {
             </h2>
             <div className="flex flex-wrap gap-10 justify-center">
               {/* Project Card 1 */}
-              <div className="bg-white shadow-lg p-6 rounded-lg dark:bg-gray-700 dark:text-white sm:w-[350px] sm:h-[240px] flex flex-col items-center gap-2">
-                <h3 className="text-xl font-semibold ">Project A</h3>
+              <div className="bg-white shadow-lg p-6 rounded-lg dark:bg-gray-700 dark:text-white sm:w-[350px] sm:h-[244px] flex flex-col items-center gap-2">
+                <h3 className="text-xl font-semibold mb-1">Project A</h3>
                 <p className="inline-flex w-full items-center gap-x-2">
                   <span>Client Name:</span>
-                  <span className="font-bold w-[65%] bg-teal-600">
+                  <span className="font-bold w-[65%] text-start overflow-hidden text-ellipsis text-nowrap">
                     John Doe
                   </span>
                 </p>
-                <p className="text-gray-700 dark:text-gray-300 bg-red-600 h-[120px]">
+                <p className="text-gray-700 dark:text-gray-300 h-[124px] overflow-y-scroll scroll-smooth scrollbar-display-none text-start">
                   A brief description of the project. Track deadlines, tasks,
-                  and progress.
+                  and progress. Lorem ipsum dolor sit amet consectetur
+                  adipisicing elit. Dolores consequuntur aspernatur omnis eum
+                  minima dolore provident. Aliquid quidem aut consectetur quis
+                  corrupti numquam eos optio beatae soluta? Rem, esse sapiente.
                 </p>
               </div>
 
-              {/* Project Card 2 */}
-              <div className="bg-white shadow-lg p-6 rounded-lg dark:bg-gray-700 dark:text-white sm:w-[350px] sm:h-[220px]">
+              <div className="bg-white shadow-lg p-6 rounded-lg dark:bg-gray-700 dark:text-white sm:w-[350px] sm:h-[244px] flex flex-col items-center gap-2">
                 <h3 className="text-xl font-semibold ">Project B</h3>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="inline-flex w-full items-center gap-x-2">
+                  <span>Client Name:</span>
+                  <span className="font-bold w-[65%] text-start overflow-hidden text-ellipsis text-nowrap">
+                    John Doe
+                  </span>
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 h-[124px] overflow-y-scroll scroll-smooth scrollbar-display-none text-start">
                   Another project description here. Collaborate with your team
                   and keep things on track.
                 </p>
               </div>
 
-              {/* Project Card 3 */}
-              <div className="bg-white shadow-lg p-6 rounded-lg dark:bg-gray-700 dark:text-white sm:w-[350px] sm:h-[220px]">
+              <div className="bg-white shadow-lg p-6 rounded-lg dark:bg-gray-700 dark:text-white sm:w-[350px] sm:h-[244px] flex flex-col items-center gap-2">
                 <h3 className="text-xl font-semibold ">Project C</h3>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="inline-flex w-full items-center gap-x-2">
+                  <span>Client Name:</span>
+                  <span className="font-bold w-[65%] text-start overflow-hidden text-ellipsis text-nowrap">
+                    John Doe
+                  </span>
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 h-[124px] overflow-y-scroll scroll-smooth scrollbar-display-none text-start">
                   Track all important details of this project and monitor your
                   team&apos;s progress.
                 </p>

@@ -1,4 +1,5 @@
 IMP = Add create new project -> use server action dont use states.
 0) Add logout
+1) In compnayUSerProject add also condition where hasnt one project show error msg.
 1) Add GSAP in navbar and where required.
 2) Make responsiveness
