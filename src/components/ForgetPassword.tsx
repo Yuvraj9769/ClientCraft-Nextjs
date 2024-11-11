@@ -101,7 +101,7 @@ const ForgetPassword = () => {
       {pageLoader ? (
         <PageLoader />
       ) : (
-        <div className="max-w-md sm:w-[380px] mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
+        <div className="max-w-md w-[95%] sm:w-[380px] mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
           <h2 className="text-2xl font-semibold mb-6 text-center text-black">
             Password Reset Form
           </h2>

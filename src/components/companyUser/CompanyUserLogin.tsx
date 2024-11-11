@@ -88,7 +88,7 @@ const CompanyUserLogin = () => {
 
   return (
     <div className="w-full min-h-screen inline-flex items-center justify-center">
-      <div className="max-w-md sm:w-[380px] mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
+      <div className="max-w-md w-[95%] sm:w-[380px] mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
         <h2 className="text-2xl font-semibold mb-6 text-center text-black">
           Login Form
         </h2>

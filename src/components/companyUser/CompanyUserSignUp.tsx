@@ -99,7 +99,7 @@ const CompanyUserSignUp = () => {
   }, []);
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
+    <div className="max-w-md w-[95%] mx-auto my-10 p-6 bg-white shadow-md rounded-md">
       <h2 className="text-2xl font-semibold mb-6 text-center text-black">
         Company Registration Form
       </h2>

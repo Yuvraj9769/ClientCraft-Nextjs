@@ -20,7 +20,7 @@ const ForgetPasswordSendMail = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value.trim() });
   };
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
@@ -52,7 +52,7 @@ const ForgetPasswordSendMail = () => {
 
   return (
     <div className="w-full min-h-screen inline-flex items-center justify-center">
-      <div className="max-w-md sm:w-[380px] mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
+      <div className="max-w-md w-[95%] sm:w-[380px] mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
         <h2 className="text-2xl font-semibold mb-6 text-center text-black">
           Email Verify Form
         </h2>
