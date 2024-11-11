@@ -56,7 +56,7 @@ export default function Home() {
                 Track your projects and communicate with your company.
               </p>
               <Link
-                href="/client-dashboard"
+                href="/company-dashboard"
                 className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
               >
                 Go to Dashboard
@@ -127,7 +127,7 @@ export default function Home() {
                 representatives directly.
               </p>
               <Link
-                href="/client-dashboard"
+                href="/company-dashboard"
                 className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
               >
                 Go to Dashboard
@@ -148,7 +148,7 @@ export default function Home() {
                   Manage your clients and projects seamlessly.
                 </p>
                 <Link
-                  href="/admin-dashboard"
+                  href="/company-dashboard"
                   className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
                 >
                   Go to Dashboard
@@ -224,7 +224,7 @@ export default function Home() {
                   progress all in one place.
                 </p>
                 <Link
-                  href="/dashboard"
+                  href="/company-dashboard"
                   className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
                 >
                   Go to Dashboard

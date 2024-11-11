@@ -35,7 +35,7 @@ const CompanyUserLogin = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value.trim() });
   };
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
