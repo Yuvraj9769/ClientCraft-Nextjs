@@ -80,9 +80,25 @@ export async function POST(request: NextRequest) {
     expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
   };
 
+  companyUser.isActive = true;
+  await companyUser.save();
+
   const response = NextResponse.json(
     {
       status: 200,
+      data: {
+        _id: companyUser._id,
+        username: companyUser.username,
+        role: companyUser.role,
+        email: companyUser.email,
+        Clients: companyUser.Clients,
+        firstName: companyUser.firstName,
+        lastName: companyUser.lastName,
+        companyName: companyUser.companyName,
+        department: companyUser.department,
+        phoneNumber: companyUser.phoneNumber,
+        isActive: companyUser.isActive,
+      },
       message: "Login successful",
       success: true,
     },

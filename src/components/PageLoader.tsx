@@ -1,4 +1,4 @@
-import style from "./PageLoader.module.css";
+import style from "@/css/PageLoader.module.css";
 
 const PageLoader = () => {
   return (

@@ -1,34 +1,53 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { jwtVerify } from "jose";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const token = request.cookies.get("login-user-005")?.value || "";
-
   const path = request.nextUrl.pathname;
 
+  const publicPaths = ["/signup", "/login", "/forgetPasswordSendMail"];
+  const companyUserPaths = [
+    "/company-dashboard",
+    "/company-projects",
+    "/create-new-project",
+  ];
   const isPublicPath =
-    path === "/signup" ||
-    path === "/login" ||
-    path === "/forgetPasswordSendMail" ||
-    path.startsWith("/forgetPassword/");
+    publicPaths.includes(path) || path.startsWith("/forgetPassword/");
+  const isCompanyUserPath = companyUserPaths.includes(path);
+  const isProtectedPath = path === "/";
 
-  const protectedPath = path === "/";
+  if (token) {
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
+    try {
+      const { payload } = await jwtVerify(token, secret);
+      const role = payload.role;
 
-  if (isPublicPath && token && !protectedPath) {
-    return NextResponse.redirect(new URL("/", request.nextUrl));
+      // Redirect non-company users trying to access the admin dashboard
+      if (isCompanyUserPath && role !== "companyUser") {
+        return NextResponse.redirect(new URL("/", request.url));
+      }
+
+      // Redirect authenticated users away from public paths
+      if (isPublicPath && !isProtectedPath) {
+        return NextResponse.redirect(new URL("/", request.url));
+      }
+    } catch {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+  } else {
+    if (isCompanyUserPath || (isProtectedPath && !isPublicPath)) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
 
-  if (!isPublicPath && !token && protectedPath) {
-    return NextResponse.redirect(new URL("/login", request.nextUrl));
-  }
+  // Continue processing for allowed paths
+  // return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    "/",
-    "/login",
-    "/signup",
-    "/forgetPasswordSendMail",
-    "/forgetPassword/:passwordResetToken*",
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };

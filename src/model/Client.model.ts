@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import jwt from "jsonwebtoken";
 
 export interface ClientInterface extends Document {
   username: string;
@@ -7,6 +8,7 @@ export interface ClientInterface extends Document {
   email: string;
   companyName: string;
   phoneNumber: string;
+  role: string;
   isActive: boolean;
   password: string;
 }
@@ -52,6 +54,10 @@ export const ClientSchema: Schema<ClientInterface> =
         type: Boolean,
         default: false,
       },
+      role: {
+        type: String,
+        default: "client",
+      },
       password: {
         type: String,
         required: [true, "Password is required"],
@@ -59,6 +65,18 @@ export const ClientSchema: Schema<ClientInterface> =
     },
     { timestamps: true }
   );
+
+ClientSchema.methods.generateJWTTOken = async function (): Promise<string> {
+  return jwt.sign(
+    {
+      id: this._id,
+      username: this.username,
+      role: "companyUser",
+    },
+    process.env.JWT_SECRET_KEY!,
+    { expiresIn: "5d" }
+  );
+};
 
 const clientModel =
   (mongoose.models.Client as mongoose.Model<ClientInterface>) ||

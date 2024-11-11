@@ -4,11 +4,13 @@
 import signUpDataValidator from "@/utils/signUpDataValidator";
 import axios from "axios";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/store/hooks";
+import { setDarkMode } from "@/store/features/CRM/CRMSlice";
 
 export type FormDataType = {
   username: string;
@@ -37,6 +39,8 @@ const CompanyUserSignUp = () => {
   const [dataProcessing, setDataProcessing] = useState(false);
 
   const router = useRouter();
+
+  const dispatch = useAppDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -71,11 +75,28 @@ const CompanyUserSignUp = () => {
         router.push("/login");
       }
     } catch (error: any) {
-      toast.error(error.response.data.message || "Something went wrong");
+      toast.error(error?.response?.data?.message || "Something went wrong");
     } finally {
       setDataProcessing(false);
     }
   };
+
+  useEffect(() => {
+    function setClassByOSMode() {
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        document.documentElement.className = "dark";
+        dispatch(setDarkMode(true));
+      } else {
+        document.documentElement.className = "light";
+        dispatch(setDarkMode(false));
+      }
+    }
+
+    setClassByOSMode();
+  }, []);
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-md">

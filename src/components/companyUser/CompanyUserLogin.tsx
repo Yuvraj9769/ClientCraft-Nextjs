@@ -2,12 +2,18 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/store/hooks";
+import {
+  setDarkMode,
+  setLoggedIn,
+  setUser,
+} from "@/store/features/CRM/CRMSlice";
 
 type loginFormDataType = {
   identifier: string;
@@ -22,6 +28,8 @@ const CompanyUserLogin = () => {
 
   const [showPass, setShowPass] = useState(false);
   const [dataProcessing, setDataProcessing] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const router = useRouter();
 
@@ -46,10 +54,12 @@ const CompanyUserLogin = () => {
       const res = await axios.post("/api/companyUser/login", formData);
       if (res.data.status === 200 && res.data.success) {
         toast.success(res.data.message);
+        dispatch(setUser(res.data.data));
+        dispatch(setLoggedIn(true));
         router.push("/");
       }
     } catch (error: any) {
-      toast.error(error.response.data.message || "Something went wrong");
+      toast.error(error?.response?.data?.message || "Something went wrong");
     } finally {
       setDataProcessing(false);
       setFormData({
@@ -58,6 +68,23 @@ const CompanyUserLogin = () => {
       });
     }
   };
+
+  useEffect(() => {
+    function setClassByOSMode() {
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        document.documentElement.className = "dark";
+        dispatch(setDarkMode(true));
+      } else {
+        document.documentElement.className = "light";
+        dispatch(setDarkMode(false));
+      }
+    }
+
+    setClassByOSMode();
+  }, []);
 
   return (
     <div className="w-full min-h-screen inline-flex items-center justify-center">

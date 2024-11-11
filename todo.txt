@@ -1,0 +1,3 @@
+IMP = Add create new project -> use server action dont use states.
+0) Add logout
+1) Make responsiveness

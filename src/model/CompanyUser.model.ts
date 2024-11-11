@@ -13,6 +13,7 @@ export interface CompanyUserInterface extends Document {
   Clients?: ClientInterface[];
   isActive?: boolean;
   password: string;
+  role: string;
   passwordResetToken: string | undefined;
   passwordResetTokenExpiry: Date | undefined;
   generateJWTTOken(): Promise<string>;
@@ -77,6 +78,10 @@ export const CompanyUserSchema: Schema<CompanyUserInterface> =
         type: Boolean,
         default: false,
       },
+      role: {
+        type: String,
+        default: "companyUser",
+      },
       password: {
         type: String,
         required: [true, "Password is required"],
@@ -98,6 +103,7 @@ CompanyUserSchema.methods.generateJWTTOken =
       {
         id: this._id,
         username: this.username,
+        role: "companyUser",
       },
       process.env.JWT_SECRET_KEY!,
       { expiresIn: "5d" }
