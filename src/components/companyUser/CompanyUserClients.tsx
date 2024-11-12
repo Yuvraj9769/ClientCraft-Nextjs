@@ -1,9 +1,9 @@
-import { IoMdAdd } from "react-icons/io";
 import Link from "next/link";
-import CompanyUserLayout from "./CompanyUserLayout";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { IoMdAdd } from "react-icons/io";
+import CompanyUserLayout from "./CompanyUserLayout";
 
-const CompanyUserProjects = () => {
+const CompanyUserClients = () => {
   const sampleClients = [
     { id: 1, name: "John Doe", project: "Website Redesign", status: "Active" },
     { id: 2, name: "Jane Smith", project: "Mobile App", status: "In Progress" },
@@ -17,12 +17,11 @@ const CompanyUserProjects = () => {
 
   return (
     <CompanyUserLayout>
-      <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-        {/* Hero Section */}
+      <div className="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
         <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-10 text-center flex flex-col items-center gap-2">
-          <h1 className="text-4xl font-extrabold">Manage Your Projects</h1>
+          <h1 className="text-4xl font-extrabold">Manage Clients</h1>
           <p className="text-lg">
-            Stay organized and track all your projects efficiently.
+            Track client details, projects, and status updates.
           </p>
           <Link
             href="/"
@@ -31,14 +30,14 @@ const CompanyUserProjects = () => {
             Go to Home
           </Link>
           <Link
-            href="/create-new-project"
+            href="/add-new-client"
             className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 inline-flex items-center gap-2"
           >
-            <IoMdAdd /> Create New Project
+            <IoMdAdd /> Add New Client
           </Link>
         </section>
 
-        {/* Projects List Section */}
+        {/* Client Table */}
         <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
           <div className="w-full my-8 inline-flex items-center justify-center overflow-hidden">
             <table className="w-full max-w-7xl flex flex-col items-center bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
@@ -104,19 +103,19 @@ const CompanyUserProjects = () => {
           </div>
         </main>
 
-        {/* CTA Section */}
         <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-20 text-center">
           <h2 className="text-3xl font-semibold mb-4">
-            Get Started on New Projects
+            Expand Your Client Network
           </h2>
           <p className="text-lg mb-6">
-            Create new projects, assign tasks, and track progress with ease.
+            Easily add new clients, assign them to projects, and manage their
+            details effortlessly.
           </p>
           <Link
-            href="/create-new-project"
+            href="/add-new-client"
             className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 inline-flex items-center gap-2"
           >
-            <IoMdAdd /> Create New Project
+            <IoMdAdd /> Add New Client
           </Link>
         </section>
       </div>
@@ -124,4 +123,4 @@ const CompanyUserProjects = () => {
   );
 };
 
-export default CompanyUserProjects;
+export default CompanyUserClients;

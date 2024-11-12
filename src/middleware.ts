@@ -12,6 +12,9 @@ export async function middleware(request: NextRequest) {
     "/company-dashboard",
     "/company-projects",
     "/create-new-project",
+    "/company-clients",
+    "/add-new-client",
+    "/add-note",
   ];
   const isPublicPath =
     publicPaths.includes(path) || path.startsWith("/forgetPassword/");

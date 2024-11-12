@@ -53,17 +53,17 @@ const CompanyUserNavbar = () => {
         </Link>
 
         <Link
-          href="/clients"
+          href="/company-clients"
           className={`block lg:inline-block text-white hover:text-gray-300 mr-4 ${
-            pathname === "/" && "font-semibold"
+            pathname === "/company-clients" && "font-semibold"
           }`}
         >
           Clients
         </Link>
         <Link
-          href="/note"
+          href="/add-note"
           className={`block lg:inline-block text-white hover:text-gray-300 mr-4 ${
-            pathname === "/" && "font-semibold"
+            pathname === "/add-note" && "font-semibold"
           }`}
         >
           Add Note

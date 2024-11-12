@@ -20,6 +20,7 @@ export interface CRMDataState {
   user: User;
   darkMode: boolean;
   profile: boolean;
+  todos: object[];
 }
 
 const initialState: CRMDataState = {
@@ -39,6 +40,7 @@ const initialState: CRMDataState = {
   },
   darkMode: false,
   profile: false,
+  todos: [],
 };
 
 export const CRMSlice = createSlice({
@@ -56,6 +58,9 @@ export const CRMSlice = createSlice({
     },
     setProfile: (state, action: PayloadAction<boolean>) => {
       state.profile = action.payload;
+    },
+    setTodos: (state, action: PayloadAction<object[]>) => {
+      state.todos = action.payload;
     },
   },
 });

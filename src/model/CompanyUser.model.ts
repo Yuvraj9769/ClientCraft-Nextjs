@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { ClientInterface } from "@/model/Client.model";
 import jwt from "jsonwebtoken";
+import { todoInterface } from "./Todo.model";
 
 export interface CompanyUserInterface extends Document {
   username: string;
@@ -14,6 +15,7 @@ export interface CompanyUserInterface extends Document {
   isActive?: boolean;
   password: string;
   role: string;
+  todos: todoInterface[];
   passwordResetToken: string | undefined;
   passwordResetTokenExpiry: Date | undefined;
   generateJWTTOken(): Promise<string>;
@@ -73,7 +75,12 @@ export const CompanyUserSchema: Schema<CompanyUserInterface> =
           ref: "Client",
         },
       ],
-
+      todos: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Todo",
+        },
+      ],
       isActive: {
         type: Boolean,
         default: false,

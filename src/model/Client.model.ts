@@ -1,6 +1,8 @@
 import mongoose, { Schema, Document } from "mongoose";
 import jwt from "jsonwebtoken";
 
+//For CLient User
+
 export interface ClientInterface extends Document {
   username: string;
   firstName: string;

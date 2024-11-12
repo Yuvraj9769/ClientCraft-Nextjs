@@ -83,30 +83,39 @@ const CompanyUserDashbaord = () => {
             <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
               Client Management
             </h2>
-            <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-lg">
-              <table className="min-w-full table-auto text-center">
-                <thead>
-                  <tr>
-                    <th className="py-3 px-5 border-b font-semibold text-gray-700 dark:text-gray-300">
+            <div className="w-full inline-flex items-center justify-center overflow-hidden">
+              <table className="min-w-full flex flex-col items-center bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                <thead className="w-full">
+                  <tr className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 w-full inline-flex items-center justify-between">
+                    <th className="py-3 w-[25%] lg:w-[40%] text-start max-w-[220px] px-5 font-semibold text-gray-700 dark:text-gray-300">
                       Client
                     </th>
-                    <th className="py-3 px-5 border-b font-semibold text-gray-700 dark:text-gray-300">
+                    <th className="py-3 w-[25%] lg:w-[40%] text-start max-w-[220px] px-5 font-semibold text-gray-700 dark:text-gray-300">
                       Project
                     </th>
-                    <th className="py-3 px-5 border-b font-semibold text-gray-700 dark:text-gray-300">
+                    <th className="py-3 w-[25%] lg:w-[40%] text-center max-w-[290px] px-5 font-semibold text-gray-700 dark:text-gray-300">
                       Status
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="flex flex-col items-center gap-2 w-full">
                   {clients.map((client) => (
-                    <tr key={client.id}>
-                      <td className="py-3 px-5 border-b">{client.name}</td>
-                      <td className="py-3 px-5 border-b">{client.project}</td>
+                    <tr
+                      key={client.id}
+                      className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 w-full inline-flex items-center justify-between"
+                    >
+                      <td className=" py-1 px-1 sm:p-3 text-start overflow-hidden text-ellipsis text-nowrap w-[25%] lg:w-[40%] max-w-[290px]">
+                        {client.name}
+                      </td>
+                      <td className=" py-1 px-1 sm:p-3 text-start overflow-hidden text-ellipsis text-nowrap  w-[25%] lg:w-[40%] max-w-[290px]">
+                        {client.project}
+                      </td>
                       <td
-                        className={`py-3 px-5 border-b font-semibold ${
+                        className={`py-1 px-1 sm:p-3 text-center overflow-hidden text-ellipsis text-nowrap font-semibold  w-[25%] lg:w-[40%] max-w-[290px] ${
                           client.status === "Completed"
                             ? "text-green-500"
+                            : client.status === "Active"
+                            ? "text-teal-500"
                             : client.status === "Pending"
                             ? "text-yellow-500"
                             : "text-blue-500"
