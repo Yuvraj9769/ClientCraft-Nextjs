@@ -5,13 +5,60 @@ import CompanyUserLayout from "./CompanyUserLayout";
 
 const CompanyUserClients = () => {
   const sampleClients = [
-    { id: 1, name: "John Doe", project: "Website Redesign", status: "Active" },
-    { id: 2, name: "Jane Smith", project: "Mobile App", status: "In Progress" },
+    {
+      id: 1,
+      name: "John Doe",
+      email: "123@usergmail.com",
+      status: "Active",
+      dateJoined: "2024-05-10",
+      country: "India",
+      phone: "123456789",
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      email: "sample@usergmail.com",
+      status: "In Progress",
+      dateJoined: "2024-05-10",
+      country: "India",
+      phone: "123456789",
+    },
     {
       id: 3,
       name: "Alex Johnson",
-      project: "SEO Campaign",
+      email: "sale@usergmail.com",
       status: "Completed",
+
+      dateJoined: "2024-05-10",
+      country: "India",
+      phone: "123456789",
+    },
+    {
+      id: 4,
+      name: "John Doe",
+      email: "123@usergmail.com",
+      status: "Active",
+      dateJoined: "2024-05-10",
+      country: "India",
+      phone: "123456789",
+    },
+    {
+      id: 5,
+      name: "Jane Smith",
+      email: "sample@usergmail.com",
+      status: "In Progress",
+      dateJoined: "2024-05-10",
+      country: "India",
+      phone: "123456789",
+    },
+    {
+      id: 6,
+      name: "Alex Johnson",
+      email: "sale@usergmail.com",
+      status: "Completed",
+      dateJoined: "2024-05-10",
+      country: "India",
+      phone: "123456789",
     },
   ];
 
@@ -37,71 +84,77 @@ const CompanyUserClients = () => {
           </Link>
         </section>
 
-        {/* Client Table */}
-        <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-          <div className="w-full my-8 inline-flex items-center justify-center overflow-hidden">
-            <table className="w-full max-w-7xl flex flex-col items-center bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-              <thead className="w-full">
-                <tr className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 w-full inline-flex items-center justify-between">
-                  <th className="py-3 w-[25%] lg:w-[40%] text-start max-w-[220px] px-5 font-semibold text-gray-700 dark:text-gray-300">
-                    Client Name
-                  </th>
-                  <th className="py-3 w-[25%] lg:w-[40%] text-start max-w-[220px] px-5 font-semibold text-gray-700 dark:text-gray-300">
-                    Project Name
-                  </th>
-                  <th className="py-3 w-[25%] lg:w-[40%] text-start max-w-[220px] px-5 font-semibold text-gray-700 dark:text-gray-300">
-                    Status
-                  </th>
-                  <th className="py-3 w-[25%] lg:w-[40%] text-center max-w-[220px] px-5 font-semibold text-gray-700 dark:text-gray-300">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="flex flex-col items-center gap-2 w-full">
-                {sampleClients.map((client) => (
-                  <tr
-                    key={client.id}
-                    className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 w-full inline-flex items-center justify-between"
+        <div className="max-w-7xl p-4 flex flex-wrap gap-3 items-center mx-auto">
+          {sampleClients.map((client, ind) => (
+            <div
+              className="max-w-sm w-full sm:w-[350px] mx-auto my-4 bg-white shadow-lg rounded-lg overflow-hidden"
+              key={ind}
+            >
+              <div className="p-4">
+                <h3 className="text-xl font-semibold text-gray-900 overflow-hidden inline-flex gap-1 w-full">
+                  <span className="text-nowrap">Client Name:</span>
+                  <span className="overflow-hidden text-ellipsis text-nowrap">
+                    {client.name}
+                  </span>
+                </h3>
+                <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
+                  <span className="font-semibold text-nowrap">Email:</span>{" "}
+                  <span className=" overflow-hidden text-ellipsis text-nowrap">
+                    john.doe@example.com
+                  </span>
+                </p>
+                <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
+                  <span className="font-semibold text-nowrap">
+                    Joined Date:
+                  </span>{" "}
+                  <span className=" overflow-hidden text-ellipsis text-nowrap">
+                    {client.dateJoined}
+                  </span>
+                </p>
+                <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
+                  <span className="font-semibold text-nowrap">Country:</span>{" "}
+                  <span className=" overflow-hidden text-ellipsis text-nowrap">
+                    {client.country}
+                  </span>
+                </p>
+                <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
+                  <span className="font-semibold text-nowrap">
+                    Phone Number:
+                  </span>{" "}
+                  <span className=" overflow-hidden text-ellipsis text-nowrap">
+                    {client.phone}
+                  </span>
+                </p>
+                <p className="mt-2">
+                  <span
+                    className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                      "Active" === "Active"
+                        ? "bg-green-200 text-green-800"
+                        : "bg-yellow-200 text-yellow-800"
+                    }`}
                   >
-                    <td className="py-1 px-1 sm:p-3 text-start overflow-hidden text-ellipsis text-nowrap w-[25%] lg:w-[40%] max-w-[290px]">
-                      {client.name}
-                    </td>
-                    <td className="py-1 px-1 sm:p-3 text-start overflow-hidden text-ellipsis text-nowrap w-[25%] lg:w-[40%] max-w-[290px]">
-                      {client.project}
-                    </td>
-                    <td
-                      className={`py-1 px-1 sm:p-3 text-start overflow-hidden text-ellipsis text-nowrap w-[25%] lg:w-[40%] max-w-[290px] font-semibold ${
-                        client.status === "Completed"
-                          ? "text-green-500"
-                          : client.status === "Active"
-                          ? "text-teal-500"
-                          : client.status === "Pending"
-                          ? "text-yellow-500"
-                          : "text-blue-500"
-                      }`}
-                    >
-                      {client.status}
-                    </td>
-                    <td className="py-1 px-1 sm:p-3 text-center overflow-hidden text-ellipsis text-nowrap font-semibold  w-[25%] lg:w-[40%] max-w-[220px]">
-                      <button
-                        className="text-blue-600 text-base sm:text-lg md:text-xl hover:text-blue-400 mx-2"
-                        aria-label="Edit Client"
-                      >
-                        <FiEdit />
-                      </button>
-                      <button
-                        className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2"
-                        aria-label="Delete Client"
-                      >
-                        <FiTrash2 />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </main>
+                    {client.status ? "Active" : "Inactive"}
+                  </span>
+                </p>
+              </div>
+
+              <div className="flex gap-2 p-4 border-t border-gray-300 justify-end">
+                <button
+                  className="text-blue-600 text-base sm:text-lg md:text-xl hover:text-blue-400 mx-2"
+                  aria-label="Edit Client"
+                >
+                  <FiEdit />
+                </button>
+                <button
+                  className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2"
+                  aria-label="Delete Client"
+                >
+                  <FiTrash2 />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
 
         <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-20 text-center">
           <h2 className="text-3xl font-semibold mb-4">

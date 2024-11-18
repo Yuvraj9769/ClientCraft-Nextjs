@@ -76,9 +76,7 @@ const CompanyUserProjects = () => {
                           ? "text-green-500"
                           : client.status === "Active"
                           ? "text-teal-500"
-                          : client.status === "Pending"
-                          ? "text-yellow-500"
-                          : "text-blue-500"
+                          : client.status === "Pending" && "text-yellow-500"
                       }`}
                     >
                       {client.status}

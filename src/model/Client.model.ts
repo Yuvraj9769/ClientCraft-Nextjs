@@ -1,7 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 import jwt from "jsonwebtoken";
 
-//For CLient User
+//For CLient User -> which can check project status,etc on its UI.
 
 export interface ClientInterface extends Document {
   username: string;
@@ -13,6 +13,7 @@ export interface ClientInterface extends Document {
   role: string;
   isActive: boolean;
   password: string;
+  Projects: Types.ObjectId[];
 }
 
 export const ClientSchema: Schema<ClientInterface> =
@@ -60,6 +61,12 @@ export const ClientSchema: Schema<ClientInterface> =
         type: String,
         default: "client",
       },
+      Projects: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Project",
+        },
+      ],
       password: {
         type: String,
         required: [true, "Password is required"],

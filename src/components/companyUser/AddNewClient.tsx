@@ -1,6 +1,65 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import axios from "axios";
 import CompanyUserLayout from "./CompanyUserLayout";
+import { useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const AddNewClient = () => {
+  const clientName = useRef<HTMLInputElement>(null);
+  const clientEmail = useRef<HTMLInputElement>(null);
+  const clientJoinDate = useRef<HTMLInputElement>(null);
+  const clientCountry = useRef<HTMLInputElement>(null);
+  const clientPhone = useRef<HTMLInputElement>(null);
+
+  const [dataProcessing, setDataProcessing] = useState(false);
+
+  const submitClientData = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (clientName.current?.value.trim() === "") {
+      toast.error("Client name is requred!");
+      return;
+    }
+    if (clientEmail.current?.value.trim() === "") {
+      toast.error("Project name is requred!");
+      return;
+    }
+
+    if (clientJoinDate.current?.value.trim() === "") {
+      toast.error("Client join date is requred!");
+      return;
+    }
+    if (clientCountry.current?.value.trim() === "") {
+      toast.error("Client country is requred!");
+      return;
+    }
+    if (clientPhone.current?.value.trim() === "") {
+      toast.error("Client Phone number is requred!");
+      return;
+    }
+
+    setDataProcessing(true);
+
+    const clientData = {
+      clientName: clientName.current?.value.trim(),
+      clientEmail: clientEmail.current?.value.trim(),
+    };
+
+    try {
+      const res = await axios.post("/api/companyUser/add-client", clientData);
+      if (res.data.success && res.data.status === 201) {
+        toast.success(res.data.message || "Client added successfully");
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.message || "Something went wrong");
+    } finally {
+      setDataProcessing(false);
+    }
+  };
+
   return (
     <CompanyUserLayout>
       <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -14,7 +73,7 @@ const AddNewClient = () => {
         <section className="py-20 px-4 bg-gray-100 dark:bg-gray-800 border-b">
           <div className="max-w-3xl mx-auto">
             <form
-              action="/api/projects"
+              onSubmit={submitClientData}
               className="bg-white shadow-lg rounded-lg p-8 text-black"
             >
               <h2 className="text-2xl font-semibold mb-6">
@@ -32,6 +91,7 @@ const AddNewClient = () => {
                   type="text"
                   id="projectClientName"
                   name="projectClientName"
+                  ref={clientName}
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter client name"
                   required
@@ -40,34 +100,72 @@ const AddNewClient = () => {
 
               <div className="mb-6">
                 <label
-                  htmlFor="projectName"
+                  htmlFor="projectClient"
                   className="block text-lg font-semibold mb-2"
                 >
-                  Project Name
+                  Client Email
                 </label>
                 <input
-                  type="text"
-                  id="projectName"
-                  name="projectName"
+                  type="email"
+                  id="clientEmail"
+                  name="clientEmail"
+                  ref={clientEmail}
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter project name"
+                  placeholder="Enter client email"
                   required
                 />
               </div>
 
               <div className="mb-6">
                 <label
-                  htmlFor="projectStatus"
+                  htmlFor="projectClient"
                   className="block text-lg font-semibold mb-2"
                 >
-                  Project Status
+                  Client Join Date
+                </label>
+                <input
+                  type="date"
+                  id="clientJoinDate"
+                  name="clientJoinDate"
+                  ref={clientJoinDate}
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Client Join Date"
+                  required
+                />
+              </div>
+
+              <div className="mb-6">
+                <label
+                  htmlFor="projectClient"
+                  className="block text-lg font-semibold mb-2"
+                >
+                  Client Phone Number
                 </label>
                 <input
                   type="text"
-                  id="projectStatus"
-                  name="projectStatus"
+                  id="clientPhone"
+                  name="clientPhone"
+                  ref={clientPhone}
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter project status"
+                  placeholder="Client phone number"
+                  required
+                />
+              </div>
+
+              <div className="mb-6">
+                <label
+                  htmlFor="projectClient"
+                  className="block text-lg font-semibold mb-2"
+                >
+                  Client Country Name
+                </label>
+                <input
+                  type="text"
+                  id="clientCountry"
+                  name="clientCountry"
+                  ref={clientCountry}
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Client country"
                   required
                 />
               </div>
@@ -76,7 +174,14 @@ const AddNewClient = () => {
                 type="submit"
                 className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition duration-200"
               >
-                Add Client
+                {dataProcessing ? (
+                  <span className="inline-flex items-center justify-center gap-3">
+                    <AiOutlineLoading3Quarters className="animate-spin text-lg font-semibold text-slate-50" />
+                    Processing
+                  </span>
+                ) : (
+                  "Add Client"
+                )}
               </button>
             </form>
           </div>

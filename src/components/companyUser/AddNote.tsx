@@ -93,11 +93,10 @@ const AddNote = () => {
                 className="p-2 rounded-md border-none outline-none w-[85%] lg:w-[65%] dark:bg-slate-800 duration-500  bg-slate-200 focus-within:ring-1 dark:focus-within:ring-blue-500 focus-within:ring-black group dark:text-slate-50 text-black"
               />
             </div>
-            <select
-              defaultValue="Sort Notes"
-              className="outline-none border text-black border-[#dadada] rounded-md p-3 w-full max-w-[275px] lg:w-auto"
-            >
-              <option disabled>Sort Notes</option>
+            <select className="outline-none border text-black border-[#dadada] rounded-md p-3 w-full max-w-[275px] lg:w-auto">
+              <option value="" disabled>
+                Sort Notes
+              </option>
               <option value="latest">Sort by Date (Newest to Oldest)</option>
               <option value="oldest">Sort by Date (Oldest to Newest)</option>
             </select>
