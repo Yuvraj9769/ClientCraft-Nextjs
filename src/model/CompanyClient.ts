@@ -16,11 +16,13 @@ const companyClientSchema: Schema<companyClientInterface> =
     {
       name: {
         type: String,
+        unique: true,
         required: true,
       },
       email: {
         type: String,
         unique: true,
+        required: true,
       },
       dateJoined: {
         type: Date,

@@ -6,6 +6,7 @@ import CompanyUserLayout from "./CompanyUserLayout";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useRouter } from "next/navigation";
 
 const AddNewClient = () => {
   const clientName = useRef<HTMLInputElement>(null);
@@ -15,6 +16,8 @@ const AddNewClient = () => {
   const clientPhone = useRef<HTMLInputElement>(null);
 
   const [dataProcessing, setDataProcessing] = useState(false);
+
+  const router = useRouter();
 
   const submitClientData = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +32,7 @@ const AddNewClient = () => {
     }
 
     if (clientJoinDate.current?.value.trim() === "") {
-      toast.error("Client join date is requred!");
+      toast.error("Client joinDate is requred!");
       return;
     }
     if (clientCountry.current?.value.trim() === "") {
@@ -46,12 +49,16 @@ const AddNewClient = () => {
     const clientData = {
       clientName: clientName.current?.value.trim(),
       clientEmail: clientEmail.current?.value.trim(),
+      clientJoinDate: clientJoinDate.current?.value.trim(),
+      clientCountry: clientCountry.current?.value.trim(),
+      clientPhone: clientPhone.current?.value.trim(),
     };
 
     try {
       const res = await axios.post("/api/companyUser/add-client", clientData);
       if (res.data.success && res.data.status === 201) {
         toast.success(res.data.message || "Client added successfully");
+        router.push("/company-clients");
       }
     } catch (error: any) {
       toast.error(error.response.data.message || "Something went wrong");

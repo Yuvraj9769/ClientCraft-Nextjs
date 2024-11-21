@@ -15,12 +15,36 @@ export interface User {
   isActive?: boolean;
 }
 
+export interface projectInterface {
+  _id: string;
+  clientName: string;
+  projectName: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  budget: string;
+}
+
+export interface clientsSearchedDataInterface {
+  _id: string;
+  name: string;
+  email: string;
+  dateJoined: Date;
+  status: boolean;
+  country: string;
+  phone: string;
+}
+
 export interface CRMDataState {
   isLoggedIn: boolean;
   user: User;
   darkMode: boolean;
   profile: boolean;
   todos: object[];
+  projects: projectInterface[];
+  searchedData: projectInterface[];
+  clientsData: clientsSearchedDataInterface[];
+  searchedClientsData: clientsSearchedDataInterface[];
 }
 
 const initialState: CRMDataState = {
@@ -41,6 +65,10 @@ const initialState: CRMDataState = {
   darkMode: false,
   profile: false,
   todos: [],
+  projects: [],
+  searchedData: [],
+  clientsData: [],
+  searchedClientsData: [],
 };
 
 export const CRMSlice = createSlice({
@@ -62,10 +90,36 @@ export const CRMSlice = createSlice({
     setTodos: (state, action: PayloadAction<object[]>) => {
       state.todos = action.payload;
     },
+    setProjects: (state, action: PayloadAction<projectInterface[]>) => {
+      state.projects = action.payload;
+    },
+    setSearchedData: (state, action: PayloadAction<projectInterface[]>) => {
+      state.searchedData = action.payload;
+    },
+    setClientsData: (
+      state,
+      action: PayloadAction<clientsSearchedDataInterface[]>
+    ) => {
+      state.clientsData = action.payload;
+    },
+    setSearchedClientsData: (
+      state,
+      action: PayloadAction<clientsSearchedDataInterface[]>
+    ) => {
+      state.searchedClientsData = action.payload;
+    },
   },
 });
 
-export const { setLoggedIn, setUser, setDarkMode, setProfile } =
-  CRMSlice.actions;
+export const {
+  setLoggedIn,
+  setUser,
+  setDarkMode,
+  setProfile,
+  setProjects,
+  setSearchedData,
+  setClientsData,
+  setSearchedClientsData,
+} = CRMSlice.actions;
 
 export default CRMSlice.reducer;

@@ -2,19 +2,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/dbConnet";
 import companyClientModel from "@/model/CompanyClient";
-import projectModel from "@/model/Project";
-import { Types } from "mongoose";
 
 export async function POST(request: NextRequest) {
   try {
-    const { clientName, projectName, projectStatus } = await request.json();
-
-    console.log(clientName, projectName, projectStatus);
+    const {
+      clientName,
+      clientEmail,
+      clientJoinDate,
+      clientCountry,
+      clientPhone,
+    } = await request.json();
 
     if (
-      [clientName, projectName, projectStatus].some(
-        (field) => field.trim() === ""
-      )
+      [
+        clientName,
+        clientEmail,
+        clientJoinDate,
+        clientCountry,
+        clientPhone,
+      ].some((field) => field.trim() === "")
     ) {
       return NextResponse.json(
         {
@@ -28,107 +34,94 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    const existingProject = await projectModel.findOne({
-      $and: [
+    const existingUser = await companyClientModel.findOne({
+      $or: [
         {
-          clientName: {
+          name: {
             $regex: `^${clientName}$`,
             $options: "i",
           },
         },
         {
-          projectName: {
-            $regex: `^${projectName}$`,
+          email: {
+            $regex: `^${clientEmail}$`,
             $options: "i",
           },
         },
       ],
     });
 
-    if (existingProject) {
-      return NextResponse.json(
-        {
-          status: 400,
-          message: "Project already exist",
-          success: false,
-        },
-        {
-          status: 400,
-        }
-      );
-    }
-
-    const newProject = await projectModel.create({
-      clientName: clientName,
-      projectName: projectName,
-      status: projectStatus,
-    });
-
-    if (!newProject) {
-      return NextResponse.json(
-        {
-          status: 500,
-          message: "Failed to create project",
-          success: false,
-        },
-        {
-          status: 500,
-        }
-      );
-    }
-
-    const isUserExist = await companyClientModel.findOne({
-      name: { $regex: `^${clientName}$`, $options: "i" },
-    });
-
-    if (isUserExist) {
-      isUserExist.Projects.push(newProject._id as Types.ObjectId);
-      await isUserExist.save();
-
-      return NextResponse.json(
-        {
-          status: 201,
-          message: "Project created successfully",
-          success: true,
-        },
-        {
-          status: 201,
-        }
-      );
-    }
-
-    if (!isUserExist) {
-      const newClient = await companyClientModel.create({
-        name: clientName,
-      });
-
-      if (!newClient) {
+    if (existingUser) {
+      if (
+        existingUser.name === clientName &&
+        existingUser.email === clientEmail
+      ) {
         return NextResponse.json(
           {
-            status: 500,
-            message: "Failed to add client",
+            status: 400,
+            message: "Client already exist",
             success: false,
           },
           {
-            status: 500,
+            status: 400,
+          }
+        );
+      } else if (existingUser.name === clientName) {
+        return NextResponse.json(
+          {
+            status: 409,
+            message: "Client already exist with same name",
+            success: false,
+          },
+          {
+            status: 409,
+          }
+        );
+      } else if (existingUser.email === clientEmail) {
+        return NextResponse.json(
+          {
+            status: 409,
+            message: "Client already exist with same email",
+            success: false,
+          },
+          {
+            status: 409,
           }
         );
       }
+    }
 
-      newClient.Projects.push(newProject._id as Types.ObjectId);
-      await newClient.save();
+    const newClient = await companyClientModel.create({
+      name: clientName,
+      email: clientEmail,
+      dateJoined: clientJoinDate,
+      country: clientCountry,
+      phone: clientPhone,
+    });
 
+    if (!newClient) {
       return NextResponse.json(
         {
-          status: 201,
-          message: "Project created successfully",
-          success: true,
+          status: 500,
+          message: "Failed to create client",
+          success: false,
         },
         {
-          status: 201,
+          status: 500,
         }
       );
     }
+
+    return NextResponse.json(
+      {
+        status: 201,
+        message: "Client added successfully",
+        success: true,
+      },
+      {
+        status: 201,
+      }
+    );
   } catch (error: any) {
     return NextResponse.json(
       {

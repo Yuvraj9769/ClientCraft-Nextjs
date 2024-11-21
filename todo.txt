@@ -1,9 +1,5 @@
-IMP = Add create new project -> use server action dont use states.
 0) Add logout
-1) In compnayUSerProject add also condition where hasnt one project show error msg.
 1) Add GSAP in navbar and where required.
-2) Create project model which works for both clients as well as projects models with ,email fields (email to send credentials to client with route and after can update password.).
-2) For companyClient the username setting default null and for all but unique true trigger and giving error.
 
 1st Model => companyClient => username: "",password: "",name: "abcd",passwordResetToke,passwordResetTokeExpiry,email,Projects: [Project],
 

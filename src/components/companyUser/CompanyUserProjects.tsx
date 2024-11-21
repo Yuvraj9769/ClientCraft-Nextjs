@@ -1,19 +1,85 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
 import { IoMdAdd } from "react-icons/io";
+import { ImSpinner6 } from "react-icons/im";
 import Link from "next/link";
 import CompanyUserLayout from "./CompanyUserLayout";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setProjects, setSearchedData } from "@/store/features/CRM/CRMSlice";
+import PageLoader from "@/components/PageLoader";
 
 const CompanyUserProjects = () => {
-  const sampleClients = [
-    { id: 1, name: "John Doe", project: "Website Redesign", status: "Active" },
-    { id: 2, name: "Jane Smith", project: "Mobile App", status: "In Progress" },
-    {
-      id: 3,
-      name: "Alex Johnson",
-      project: "SEO Campaign",
-      status: "Completed",
-    },
-  ];
+  const [loading, setLoading] = useState(true);
+  const [projectLoader, setProjectLoader] = useState(false);
+
+  const dispatch = useAppDispatch();
+
+  const projects = useAppSelector((state) => state.projects);
+  const searchedData = useAppSelector((state) => state.searchedData);
+
+  const [searchData, setSearchData] = useState({
+    searchQuery: "",
+  });
+
+  const handleOnChange = (e: any) => {
+    const { value } = e.target;
+
+    if (searchedData.length !== 0 && value === "") {
+      dispatch(setSearchedData([]));
+    }
+    setSearchData((preData) => ({ ...preData, searchQuery: value }));
+  };
+
+  const checkKey = async (e: any) => {
+    if (e.key === "Enter" && searchData.searchQuery.trim() !== "") {
+      try {
+        setProjectLoader(true);
+        const res = await axios.post(
+          "/api/companyUser/search-project",
+          searchData
+        );
+        dispatch(setSearchedData(res.data.data));
+      } catch (error: any) {
+        setSearchData({
+          searchQuery: "",
+        });
+        toast.error(
+          error.response.data.message || "Sorry something went wrong"
+        );
+      } finally {
+        setProjectLoader(false);
+      }
+    }
+  };
+
+  const getAllProjects = useCallback(async () => {
+    try {
+      const res = await axios.get("/api/companyUser/get-projects");
+      dispatch(setProjects(res.data.data));
+    } catch (error: any) {
+      toast.error(error.response.data.message || "Sorry something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    getAllProjects();
+
+    return () => {
+      // Cleanup
+      setSearchData({
+        searchQuery: "",
+      });
+
+      dispatch(setSearchedData([]));
+    };
+  }, []);
 
   return (
     <CompanyUserLayout>
@@ -39,49 +105,155 @@ const CompanyUserProjects = () => {
         </section>
 
         {/* Projects List Section */}
+
         <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-          <div className="w-full my-8 inline-flex items-center justify-center overflow-hidden">
-            <table className="w-full max-w-7xl flex flex-col items-center bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-              <thead className="w-full">
-                <tr className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 w-full inline-flex items-center justify-between">
-                  <th className="py-3 w-[25%] lg:w-[40%] text-start max-w-[220px] px-5 font-semibold text-gray-700 dark:text-gray-300">
-                    Client Name
-                  </th>
-                  <th className="py-3 w-[25%] lg:w-[40%] text-start max-w-[220px] px-5 font-semibold text-gray-700 dark:text-gray-300">
-                    Project Name
-                  </th>
-                  <th className="py-3 w-[25%] lg:w-[40%] text-start max-w-[220px] px-5 font-semibold text-gray-700 dark:text-gray-300">
-                    Status
-                  </th>
-                  <th className="py-3 w-[25%] lg:w-[40%] text-center max-w-[220px] px-5 font-semibold text-gray-700 dark:text-gray-300">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="flex flex-col items-center gap-2 w-full">
-                {sampleClients.map((client) => (
-                  <tr
-                    key={client.id}
-                    className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 w-full inline-flex items-center justify-between"
-                  >
-                    <td className="py-1 px-1 sm:p-3 text-start overflow-hidden text-ellipsis text-nowrap w-[25%] lg:w-[40%] max-w-[290px]">
-                      {client.name}
-                    </td>
-                    <td className="py-1 px-1 sm:p-3 text-start overflow-hidden text-ellipsis text-nowrap w-[25%] lg:w-[40%] max-w-[290px]">
-                      {client.project}
-                    </td>
-                    <td
-                      className={`py-1 px-1 sm:p-3 text-start overflow-hidden text-ellipsis text-nowrap w-[25%] lg:w-[40%] max-w-[290px] font-semibold ${
-                        client.status === "Completed"
-                          ? "text-green-500"
-                          : client.status === "Active"
-                          ? "text-teal-500"
-                          : client.status === "Pending" && "text-yellow-500"
-                      }`}
+          {loading ? (
+            <div className="relative left-0 top-0 w-full py-4">
+              <PageLoader />
+            </div>
+          ) : searchedData.length !== 0 ? (
+            <div className="max-w-7xl mx-auto flex flex-col items-center gap-2">
+              <div className="w-full flex items-center justify-center p-4 lg:py-6 gap-4 flex-wrap lg:flex-nowrap">
+                <div className="gap-3 w-full inline-flex mt-2 items-center justify-center text-black rounded-md pr-2">
+                  <input
+                    type="text"
+                    value={searchData.searchQuery}
+                    onChange={handleOnChange}
+                    onKeyDown={checkKey}
+                    placeholder="Search food by type/name"
+                    className="p-2 rounded-md border-none outline-none w-[85%] lg:w-[45%] dark:bg-slate-800 duration-500  bg-slate-200 focus-within:ring-1 dark:focus-within:ring-blue-500 focus-within:ring-black group dark:text-slate-50 text-black"
+                  />
+                </div>
+              </div>
+
+              <div className="max-w-7xl p-4 flex flex-wrap gap-3 items-center mx-auto">
+                {projectLoader ? (
+                  <ImSpinner6 className="text-3xl md:text-6xl animate-spin" />
+                ) : (
+                  searchedData.map((proj, ind) => (
+                    <div
+                      className="max-w-sm w-full sm:w-[350px] mx-auto my-4 bg-white shadow-lg rounded-lg overflow-hidden"
+                      key={ind}
                     >
-                      {client.status}
-                    </td>
-                    <td className="py-1 px-1 sm:p-3 text-center overflow-hidden text-ellipsis text-nowrap font-semibold  w-[25%] lg:w-[40%] max-w-[220px]">
+                      <div className="p-4">
+                        <h3 className="text-xl font-semibold text-gray-900 overflow-hidden inline-flex gap-1 w-full">
+                          <span className="text-nowrap">Name:</span>
+                          <span className="overflow-hidden text-ellipsis text-nowrap">
+                            {proj.clientName}
+                          </span>
+                        </h3>
+                        <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
+                          <span className="font-semibold text-nowrap">
+                            Project:
+                          </span>{" "}
+                          <span className=" overflow-hidden text-ellipsis text-nowrap">
+                            {proj.projectName}
+                          </span>
+                        </p>
+                        <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
+                          <span className="font-semibold text-nowrap">
+                            Budget:
+                          </span>{" "}
+                          <span className=" overflow-hidden text-ellipsis text-nowrap">
+                            {proj.budget}
+                          </span>
+                        </p>
+
+                        <p className="mt-2">
+                          <span
+                            className={`px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 shadow-md ${
+                              proj.status === "Active"
+                                ? "text-green-600"
+                                : proj.status === "Completed"
+                                ? "text-blue-600"
+                                : "text-yellow-600"
+                            }`}
+                          >
+                            {proj.status}
+                          </span>
+                        </p>
+                      </div>
+
+                      <div className="flex gap-2 p-4 border-t border-gray-300 justify-end">
+                        <button
+                          className="text-blue-600 text-base sm:text-lg md:text-xl hover:text-blue-400 mx-2"
+                          aria-label="Edit Client"
+                        >
+                          <FiEdit />
+                        </button>
+                        <button
+                          className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2"
+                          aria-label="Delete Client"
+                        >
+                          <FiTrash2 />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          ) : projects.length !== 0 ? (
+            <div className="max-w-7xl mx-auto flex flex-col items-center gap-2">
+              <div className="w-full flex items-center justify-center p-4 lg:py-6 gap-4 flex-wrap lg:flex-nowrap">
+                <div className="gap-3 w-full inline-flex mt-2 items-center justify-center text-black rounded-md pr-2">
+                  <input
+                    type="text"
+                    value={searchData.searchQuery}
+                    onChange={handleOnChange}
+                    onKeyDown={checkKey}
+                    placeholder="Search project by client/project name"
+                    className="p-2 rounded-md border-none outline-none w-[85%] lg:w-[45%] dark:bg-slate-800 duration-500  bg-slate-200 focus-within:ring-1 dark:focus-within:ring-blue-500 focus-within:ring-black group dark:text-slate-50 text-black"
+                  />
+                </div>
+              </div>
+
+              <div className="max-w-7xl p-4 flex flex-wrap gap-3 items-center mx-auto">
+                {projects.map((proj, ind) => (
+                  <div
+                    className="max-w-sm w-full sm:w-[350px] mx-auto my-4 bg-white shadow-lg rounded-lg overflow-hidden"
+                    key={ind}
+                  >
+                    <div className="p-4">
+                      <h3 className="text-xl font-semibold text-gray-900 overflow-hidden inline-flex gap-1 w-full">
+                        <span className="text-nowrap">Name:</span>
+                        <span className="overflow-hidden text-ellipsis text-nowrap">
+                          {proj.clientName}
+                        </span>
+                      </h3>
+                      <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
+                        <span className="font-semibold text-nowrap">
+                          Project:
+                        </span>{" "}
+                        <span className=" overflow-hidden text-ellipsis text-nowrap">
+                          {proj.projectName}
+                        </span>
+                      </p>
+                      <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
+                        <span className="font-semibold text-nowrap">
+                          Budget:
+                        </span>{" "}
+                        <span className=" overflow-hidden text-ellipsis text-nowrap">
+                          {proj.budget}
+                        </span>
+                      </p>
+
+                      <p className="mt-2">
+                        <span
+                          className={`px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 shadow-md ${
+                            proj.status === "Active"
+                              ? "text-green-600"
+                              : proj.status === "Completed"
+                              ? "text-blue-600"
+                              : "text-yellow-600"
+                          }`}
+                        >
+                          {proj.status}
+                        </span>
+                      </p>
+                    </div>
+
+                    <div className="flex gap-2 p-4 border-t border-gray-300 justify-end">
                       <button
                         className="text-blue-600 text-base sm:text-lg md:text-xl hover:text-blue-400 mx-2"
                         aria-label="Edit Client"
@@ -94,12 +266,22 @@ const CompanyUserProjects = () => {
                       >
                         <FiTrash2 />
                       </button>
-                    </td>
-                  </tr>
+                    </div>
+                  </div>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full py-10">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-50 mb-4">
+                Sorry, no projects found.
+              </h2>
+              <p className="text-gray-300 text-center max-w-md text-xl md:text-2xl mb-6">
+                It looks like there are no projects available at the moment.
+                Start by adding a new project or check back later for updates.
+              </p>
+            </div>
+          )}
         </main>
 
         {/* CTA Section */}
