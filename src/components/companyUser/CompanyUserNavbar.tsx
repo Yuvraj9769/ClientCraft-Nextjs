@@ -6,7 +6,6 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
 import { useEffect } from "react";
 import Profile from "@/components/Profile";
-import axios from "axios";
 import { usePathname } from "next/navigation";
 
 const CompanyUserNavbar = () => {
@@ -18,13 +17,9 @@ const CompanyUserNavbar = () => {
 
   const pathname = usePathname();
 
-  const logout = async () => {
-    try {
-      const res = await axios.get("/api/companyUser/logout");
-      console.log(res);
-    } catch (error) {
-      console.error(error);
-    }
+  const toggleDarkMode = () => {
+    dispatch(setDarkMode(!darkMode));
+    localStorage.setItem("theme_pref", !darkMode ? "dark" : "light");
   };
 
   useEffect(() => {
@@ -70,7 +65,7 @@ const CompanyUserNavbar = () => {
         </Link>
         <p
           className="inline-flex items-center justify-center cursor-pointer mr-2"
-          onClick={() => dispatch(setDarkMode(!darkMode))}
+          onClick={toggleDarkMode}
         >
           {darkMode ? (
             <Icon
@@ -89,8 +84,7 @@ const CompanyUserNavbar = () => {
             <p className="bg-transparent border border-gray-300 w-full h-full inline-flex items-center justify-center cursor-pointer rounded-full text-slate-50 font-semibold">
               {user.email.slice(0, 1).toUpperCase()}
             </p>
-
-            {profile && <Profile logout={logout} />}
+            {profile && <Profile />}
           </div>
         </div>
       </ul>

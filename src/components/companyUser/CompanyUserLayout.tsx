@@ -40,20 +40,27 @@ const CompanyUserLayout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     function setClassByOSMode() {
-      if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
-        document.documentElement.className = "dark";
-        dispatch(setDarkMode(true));
+      const storedTheme = localStorage.getItem("theme_pref");
+
+      if (storedTheme) {
+        document.documentElement.className = storedTheme;
+        dispatch(setDarkMode(storedTheme === "dark"));
       } else {
-        document.documentElement.className = "light";
-        dispatch(setDarkMode(false));
+        if (
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+          document.documentElement.className = "dark";
+          dispatch(setDarkMode(true));
+        } else {
+          document.documentElement.className = "light";
+          dispatch(setDarkMode(false));
+        }
       }
     }
 
     setClassByOSMode();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

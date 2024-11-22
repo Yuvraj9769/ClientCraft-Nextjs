@@ -273,7 +273,7 @@ const CompanyUserProjects = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-full py-10">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-50 mb-4">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black dark:text-slate-50 mb-4">
                 Sorry, no projects found.
               </h2>
               <p className="text-gray-300 text-center max-w-md text-xl md:text-2xl mb-6">

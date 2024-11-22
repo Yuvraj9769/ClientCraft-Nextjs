@@ -114,6 +114,7 @@ export const CRMSlice = createSlice({
 export const {
   setLoggedIn,
   setUser,
+  setTodos,
   setDarkMode,
   setProfile,
   setProjects,

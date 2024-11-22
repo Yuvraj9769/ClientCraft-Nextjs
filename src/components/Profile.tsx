@@ -1,9 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useRef, useState } from "react";
-import PropTypes from "prop-types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setProfile } from "@/store/features/CRM/CRMSlice";
+import {
+  setClientsData,
+  setLoggedIn,
+  setProfile,
+  setProjects,
+  setTodos,
+  setUser,
+} from "@/store/features/CRM/CRMSlice";
 import Link from "next/link";
 // import Image from "next/image";
 import { IoMdCamera } from "react-icons/io";
@@ -14,8 +21,11 @@ import {
   MdLogout,
   MdManageAccounts,
 } from "react-icons/md";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-const Profile = ({ logout }: { logout: () => void }) => {
+const Profile = () => {
   const user = useAppSelector((state) => state.user);
   const profile = useAppSelector((state) => state.profile);
 
@@ -23,6 +33,8 @@ const Profile = ({ logout }: { logout: () => void }) => {
   const profilePicChange = useRef<HTMLInputElement>(null);
 
   const [loader, setLoader] = useState(false);
+
+  const router = useRouter();
 
   const changeProfilePic = () => {
     profilePicChange.current?.click();
@@ -36,9 +48,44 @@ const Profile = ({ logout }: { logout: () => void }) => {
       const profilePic = event.target.files?.[0];
       console.log(profilePic);
       console.log(loader);
-    } catch (error) {
+    } catch (error: any) {
       setLoader(false);
-      console.log(error);
+      toast.error(error.response.data.message || "Sorry something went wrong");
+    }
+  };
+
+  const logout = async () => {
+    try {
+      setLoader(true);
+
+      const res = await axios.get("/api/companyUser/logout");
+      if (res.data.status === 200 && res.data.success) {
+        toast.success(res.data.message);
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.message || "Sorry something went wrong");
+    } finally {
+      setLoader(false);
+      router.push("/login");
+      dispatch(setLoggedIn(false));
+      dispatch(
+        setUser({
+          _id: "",
+          username: "",
+          firstName: "",
+          lastName: "",
+          email: "",
+          companyName: "",
+          phoneNumber: "",
+          department: "",
+          Clients: [],
+          role: "",
+          isActive: false,
+        })
+      );
+      dispatch(setTodos([]));
+      dispatch(setProjects([]));
+      dispatch(setClientsData([]));
     }
   };
 
@@ -118,10 +165,6 @@ const Profile = ({ logout }: { logout: () => void }) => {
       </p>
     </div>
   );
-};
-
-Profile.propTypes = {
-  logout: PropTypes.func.isRequired,
 };
 
 export default Profile;

@@ -1,4 +1,3 @@
-0) Add logout
 1) Add GSAP in navbar and where required.
 
 1st Model => companyClient => username: "",password: "",name: "abcd",passwordResetToke,passwordResetTokeExpiry,email,Projects: [Project],
