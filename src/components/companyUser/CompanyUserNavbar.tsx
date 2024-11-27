@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import Profile from "@/components/Profile";
 import { usePathname } from "next/navigation";
+import { gsap } from "gsap";
 
 const CompanyUserNavbar = () => {
   const darkMode = useAppSelector((state) => state.darkMode);
@@ -23,12 +24,28 @@ const CompanyUserNavbar = () => {
   };
 
   useEffect(() => {
+    gsap.set([".client-cra-txt", "ul > a", "ul > p", "ul > div"], {
+      y: -45,
+      opacity: 0,
+    });
+
+    gsap.to([".client-cra-txt", "ul > a", "ul > p", "ul > div"], {
+      duration: 0.5,
+      stagger: 0.2,
+      opacity: 1,
+      y: 0,
+    });
+  }, []);
+
+  useEffect(() => {
     document.documentElement.className = darkMode ? "dark" : "light";
   }, [darkMode]);
 
   return (
     <div className="bg-gradient-to-r from-blue-600 via-teal-600 to-purple-700 dark:from-blue-900 dark:via-teal-900 dark:to-purple-900 p-2 sticky top-0 z-20 flex items-center justify-between w-full">
-      <h3 className="text-2xl font-semibold text-slate-50">ClientCraft</h3>
+      <h3 className="text-2xl font-semibold text-slate-50 client-cra-txt">
+        ClientCraft
+      </h3>
       <ul className="px-3 flex items-center gap-2">
         <Link
           href="/company-dashboard"

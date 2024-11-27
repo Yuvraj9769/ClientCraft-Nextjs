@@ -75,15 +75,15 @@ const CompanyUserClients = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    getAllClients();
+    if (clientsData.length === 0) {
+      getAllClients();
+    }
 
     return () => {
       // Cleanup
       setSearchData({
         searchQuery: "",
       });
-
-      dispatch(setSearchedClientsData([]));
     };
   }, []);
 

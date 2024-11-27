@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       })
       .select("-__v");
 
-    if (searchedProject.length === 0 || !searchedProject) {
+    if (searchedProject.length === 0) {
       return NextResponse.json(
         {
           status: 404,

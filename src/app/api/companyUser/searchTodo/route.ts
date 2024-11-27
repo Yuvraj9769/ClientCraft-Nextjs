@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import connectDB from "@/lib/dbConnet";
-import companyClientModel from "@/model/CompanyClient";
+import todoModel from "@/model/Todo.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     if (!searchQuery || searchQuery.trim() === "") {
       return NextResponse.json(
         {
-          status: 400,
+          status: false,
           message: "Please enter a search query",
           success: false,
         },
@@ -22,30 +22,18 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    const searchedClients = await companyClientModel
-      .find({
-        $or: [
-          {
-            name: {
-              $regex: searchQuery,
-              $options: "i",
-            },
-          },
-          {
-            email: {
-              $regex: searchQuery,
-              $options: "i",
-            },
-          },
-        ],
-      })
-      .select("-__v");
+    const searchTodos = await todoModel.find({
+      title: {
+        $regex: searchQuery,
+        $options: "i",
+      },
+    });
 
-    if (searchedClients.length === 0) {
+    if (searchTodos.length === 0) {
       return NextResponse.json(
         {
-          status: 404,
-          message: "No clients found",
+          status: false,
+          message: "No todos found",
           success: false,
         },
         {
@@ -57,8 +45,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         status: 200,
-        message: "Clinets found",
-        data: searchedClients,
+        data: searchTodos,
+        message: "Todos found",
         success: true,
       },
       {
@@ -69,12 +57,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         status: 500,
-        message: error.message || "Internal Server Error",
+        message: error.message || "Sorry internal error",
         success: false,
       },
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 }

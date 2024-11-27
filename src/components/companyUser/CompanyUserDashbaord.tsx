@@ -55,13 +55,31 @@ const CompanyUserDashbaord = () => {
                 </h3>
                 <p className="text-3xl font-bold">{metrics.avgClientRating}</p>
               </div>
+              <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-lg text-center">
+                <h3 className="text-xl font-semibold text-blue-500 dark:text-teal-400 mb-2">
+                  Inactive Projects
+                </h3>
+                <p className="text-3xl font-bold">{15}</p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-lg text-center">
+                <h3 className="text-xl font-semibold text-blue-500 dark:text-teal-400 mb-2">
+                  Active Clients
+                </h3>
+                <p className="text-3xl font-bold">{5}</p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-lg text-center">
+                <h3 className="text-xl font-semibold text-blue-500 dark:text-teal-400 mb-2">
+                  Organization Users
+                </h3>
+                <p className="text-3xl font-bold">{5}</p>
+              </div>
             </div>
           </section>
 
           <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
             Project
           </h2>
-          <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-10 text-center flex flex-col items-center gap-2 w-full my-6 rounded-2xl">
+          <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-10 text-center flex flex-col items-center gap-2 my-6 rounded-2xl">
             <h1 className="text-4xl font-extrabold">Manage Your Projects</h1>
             <p className="text-lg">
               Stay organized and track all your projects efficiently.
@@ -80,10 +98,10 @@ const CompanyUserDashbaord = () => {
             </Link>
           </section>
 
-          <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
+          <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 my-6">
             Client
           </h2>
-          <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-10 text-center flex flex-col items-center gap-2">
+          <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-10 text-center flex flex-col items-center gap-2 my-6 rounded-2xl">
             <h1 className="text-4xl font-extrabold">Manage Clients</h1>
             <p className="text-lg">
               Track client details, projects, and status updates.
@@ -102,16 +120,30 @@ const CompanyUserDashbaord = () => {
             </Link>
           </section>
 
-          {/* Notifications Section */}
-          <section className="mb-12">
-            <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
-              Notifications
+          <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 my-6">
+            Note
+          </h2>
+          <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-10 text-center flex flex-col items-center gap-2 my-6 rounded-2xl">
+            <h2 className="text-3xl font-semibold mb-4">
+              Get Started on Your Notes
             </h2>
-            <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-lg">
-              <p className="text-gray-700 dark:text-gray-300">
-                You have 3 upcoming meetings and 2 deadlines this week.
-              </p>
-            </div>
+            <p className="text-lg mb-6">
+              Create, edit, and organize your notes effortlessly to stay on top
+              of everything.
+            </p>
+            <Link
+              href="/"
+              className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 my-2 dark:text-white dark:hover:bg-gray-700"
+            >
+              Go to Home
+            </Link>
+
+            <Link
+              href="/add-note"
+              className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 my-2 dark:text-white dark:hover:bg-gray-700 inline-flex items-center gap-2"
+            >
+              <IoMdAdd /> Add New Note
+            </Link>
           </section>
 
           {/* Messages Section */}

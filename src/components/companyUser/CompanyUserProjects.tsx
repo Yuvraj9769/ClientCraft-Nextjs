@@ -69,15 +69,15 @@ const CompanyUserProjects = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    getAllProjects();
+    if (projects.length === 0) {
+      getAllProjects();
+    }
 
     return () => {
       // Cleanup
       setSearchData({
         searchQuery: "",
       });
-
-      dispatch(setSearchedData([]));
     };
   }, []);
 

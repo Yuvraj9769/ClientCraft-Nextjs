@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface todoInterface extends Document {
   title: string;
   description: string;
+  isDone: boolean;
 }
 
 const todoSchema: Schema<todoInterface> = new Schema<todoInterface>(
@@ -14,6 +15,10 @@ const todoSchema: Schema<todoInterface> = new Schema<todoInterface>(
     description: {
       type: String,
       required: true,
+    },
+    isDone: {
+      type: Boolean,
+      default: false,
     },
   },
   {

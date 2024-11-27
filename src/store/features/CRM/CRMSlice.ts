@@ -35,16 +35,25 @@ export interface clientsSearchedDataInterface {
   phone: string;
 }
 
+export interface todosInterface {
+  _id: string;
+  title: string;
+  description: string;
+  isDone: boolean;
+  createdAt: string;
+}
+
 export interface CRMDataState {
   isLoggedIn: boolean;
   user: User;
   darkMode: boolean;
   profile: boolean;
-  todos: object[];
+  todos: todosInterface[];
   projects: projectInterface[];
   searchedData: projectInterface[];
   clientsData: clientsSearchedDataInterface[];
   searchedClientsData: clientsSearchedDataInterface[];
+  searchedTodos: todosInterface[];
 }
 
 const initialState: CRMDataState = {
@@ -69,6 +78,7 @@ const initialState: CRMDataState = {
   searchedData: [],
   clientsData: [],
   searchedClientsData: [],
+  searchedTodos: [],
 };
 
 export const CRMSlice = createSlice({
@@ -87,7 +97,7 @@ export const CRMSlice = createSlice({
     setProfile: (state, action: PayloadAction<boolean>) => {
       state.profile = action.payload;
     },
-    setTodos: (state, action: PayloadAction<object[]>) => {
+    setTodos: (state, action: PayloadAction<todosInterface[]>) => {
       state.todos = action.payload;
     },
     setProjects: (state, action: PayloadAction<projectInterface[]>) => {
@@ -108,6 +118,9 @@ export const CRMSlice = createSlice({
     ) => {
       state.searchedClientsData = action.payload;
     },
+    setSearchedTodos: (state, action: PayloadAction<todosInterface[]>) => {
+      state.searchedTodos = action.payload;
+    },
   },
 });
 
@@ -121,6 +134,7 @@ export const {
   setSearchedData,
   setClientsData,
   setSearchedClientsData,
+  setSearchedTodos,
 } = CRMSlice.actions;
 
 export default CRMSlice.reducer;
