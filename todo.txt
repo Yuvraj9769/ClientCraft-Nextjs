@@ -1,5 +1,4 @@
 1) Add GSAP in small device navbar, big navbar done and where required.
-2) Add check boxes for filter todos.
 
 1st Model => companyClient => username: "",password: "",name: "abcd",passwordResetToke,passwordResetTokeExpiry,email,Projects: [Project],
 
