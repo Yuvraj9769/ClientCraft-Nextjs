@@ -16,6 +16,8 @@ import PageLoader from "@/components/PageLoader";
 const CompanyUserProjects = () => {
   const [loading, setLoading] = useState(true);
   const [projectLoader, setProjectLoader] = useState(false);
+  const [delProjectId, setDelProjectId] = useState("");
+  const [popupBox, setPopupBox] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -184,10 +186,42 @@ const CompanyUserProjects = () => {
                         <button
                           className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2"
                           aria-label="Delete Client"
+                          onClick={() => {
+                            setPopupBox(true);
+                            setDelProjectId(proj._id);
+                          }}
                         >
                           <FiTrash2 />
                         </button>
                       </div>
+
+                      {popupBox && proj._id === delProjectId && (
+                        <div className="w-screen min-h-screen bg-black bg-opacity-85 fixed top-0 left-0 z-20 flex items-center justify-center">
+                          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full z-30">
+                            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                              Are you sure?
+                            </h3>
+                            <p className="text-sm text-gray-600 mb-6">
+                              This action will permanently delete the project
+                              and cannot be undone.
+                            </p>
+                            <div className="flex justify-end space-x-4">
+                              <button
+                                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                                onClick={() => setPopupBox(false)} // Close modal without action
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                                // onClick={() => deleteProject(proj._id)} // Trigger delete function
+                              >
+                                Delete Permanently
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))
                 )}
@@ -263,10 +297,46 @@ const CompanyUserProjects = () => {
                       <button
                         className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2"
                         aria-label="Delete Client"
+                        onClick={() => {
+                          setPopupBox(true);
+                          setDelProjectId(proj._id);
+                        }}
                       >
                         <FiTrash2 />
                       </button>
                     </div>
+
+                    {/* Popup box for delete. */}
+
+                    {popupBox && proj._id === delProjectId && (
+                      <div className="w-screen min-h-screen bg-black bg-opacity-85 fixed top-0 left-0 z-20 flex items-center justify-center">
+                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full z-30">
+                          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                            Are you sure?
+                          </h3>
+                          <p className="text-sm text-gray-600 mb-6">
+                            This action will permanently delete the project and
+                            cannot be undone.
+                          </p>
+                          <div className="flex justify-end space-x-4">
+                            <button
+                              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                              onClick={() => setPopupBox(false)} // Close modal without action
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                              // onClick={() => deleteProject(proj._id)} // Trigger delete function
+                            >
+                              Delete Permanently
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Popup box ends here */}
                   </div>
                 ))}
               </div>

@@ -1,4 +1,7 @@
+0) Delete popu added just api remaning and add edit use frontend dynamic UI and get user on differnt page.
+
 1) Add GSAP in small device navbar, big navbar done and where required.
+2) Add image in user profile.
 
 1st Model => companyClient => username: "",password: "",name: "abcd",passwordResetToke,passwordResetTokeExpiry,email,Projects: [Project],
 
