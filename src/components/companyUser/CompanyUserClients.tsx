@@ -75,8 +75,10 @@ const CompanyUserClients = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (clientsData.length === 0) {
-      getAllClients();
+    getAllClients();
+
+    if (clientsData.length !== 0) {
+      setLoading(false);
     }
 
     return () => {

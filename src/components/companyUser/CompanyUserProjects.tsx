@@ -70,9 +70,32 @@ const CompanyUserProjects = () => {
     }
   }, [dispatch]);
 
+  const deleteProject = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await axios.delete(
+        `/api/companyUser/delete-project/${delProjectId}`
+      );
+      dispatch(setProjects(response.data.data));
+      toast.success(response.data.message);
+      setSearchData({
+        searchQuery: "",
+      });
+      dispatch(setSearchedData([]));
+    } catch (error: any) {
+      toast.error(error.response.data.message || "Sorry something went wrong");
+    } finally {
+      setLoading(false);
+      setDelProjectId("");
+      setPopupBox(false);
+    }
+  }, [delProjectId]);
+
   useEffect(() => {
-    if (projects.length === 0) {
-      getAllProjects();
+    getAllProjects();
+
+    if (projects.length !== 0) {
+      setLoading(false);
     }
 
     return () => {
@@ -177,12 +200,12 @@ const CompanyUserProjects = () => {
                       </div>
 
                       <div className="flex gap-2 p-4 border-t border-gray-300 justify-end">
-                        <button
+                        <Link
                           className="text-blue-600 text-base sm:text-lg md:text-xl hover:text-blue-400 mx-2"
-                          aria-label="Edit Client"
+                          href={`/update-project/${proj._id}`}
                         >
                           <FiEdit />
-                        </button>
+                        </Link>
                         <button
                           className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2"
                           aria-label="Delete Client"
@@ -214,7 +237,7 @@ const CompanyUserProjects = () => {
                               </button>
                               <button
                                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                                // onClick={() => deleteProject(proj._id)} // Trigger delete function
+                                onClick={deleteProject}
                               >
                                 Delete Permanently
                               </button>
@@ -288,12 +311,12 @@ const CompanyUserProjects = () => {
                     </div>
 
                     <div className="flex gap-2 p-4 border-t border-gray-300 justify-end">
-                      <button
+                      <Link
                         className="text-blue-600 text-base sm:text-lg md:text-xl hover:text-blue-400 mx-2"
-                        aria-label="Edit Client"
+                        href={`/update-project/${proj._id}`}
                       >
                         <FiEdit />
-                      </button>
+                      </Link>
                       <button
                         className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2"
                         aria-label="Delete Client"
@@ -327,7 +350,7 @@ const CompanyUserProjects = () => {
                             </button>
                             <button
                               className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                              // onClick={() => deleteProject(proj._id)} // Trigger delete function
+                              onClick={deleteProject}
                             >
                               Delete Permanently
                             </button>

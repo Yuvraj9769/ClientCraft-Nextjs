@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
-//Client for company data.
+//Client for company data and client user also.
 
 export interface companyClientInterface extends Document {
   name: string;
@@ -9,6 +9,9 @@ export interface companyClientInterface extends Document {
   country: string;
   phone: string;
   Projects: Types.ObjectId[];
+  password: string;
+  passordResetToken: string;
+  passordResetTokenExpiry: Date;
 }
 
 const companyClientSchema: Schema<companyClientInterface> =
@@ -26,7 +29,7 @@ const companyClientSchema: Schema<companyClientInterface> =
       },
       dateJoined: {
         type: Date,
-        default: Date.now,
+        default: () => Date.now(),
       },
       country: {
         type: String,
@@ -36,13 +39,24 @@ const companyClientSchema: Schema<companyClientInterface> =
         type: String,
         required: true,
       },
+      password: {
+        type: String,
+      },
       Projects: [
         {
           type: Schema.Types.ObjectId,
           ref: "Project",
         },
       ],
+      passordResetToken: {
+        type: String,
+      },
+      passordResetTokenExpiry: {
+        type: Date,
+        default: () => Date.now(),
+      },
     },
+
     {
       timestamps: true,
     }

@@ -18,7 +18,8 @@ export async function middleware(request: NextRequest) {
   ];
   const isPublicPath =
     publicPaths.includes(path) || path.startsWith("/forgetPassword/");
-  const isCompanyUserPath = companyUserPaths.includes(path);
+  const isCompanyUserPath =
+    companyUserPaths.includes(path) || path.startsWith("/update-project/");
   const isProtectedPath = path === "/";
 
   if (token) {

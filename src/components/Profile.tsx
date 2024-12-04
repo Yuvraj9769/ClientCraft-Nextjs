@@ -85,6 +85,7 @@ const Profile = () => {
       );
       dispatch(setTodos([]));
       dispatch(setProjects([]));
+      dispatch(setProfile(false));
       dispatch(setClientsData([]));
     }
   };

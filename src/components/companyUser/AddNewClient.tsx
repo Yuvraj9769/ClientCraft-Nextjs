@@ -64,6 +64,11 @@ const AddNewClient = () => {
       toast.error(error.response.data.message || "Something went wrong");
     } finally {
       setDataProcessing(false);
+      clientName.current!.value = "";
+      clientEmail.current!.value = "";
+      clientJoinDate.current!.value = "";
+      clientCountry.current!.value = "";
+      clientPhone.current!.value = "";
     }
   };
 
