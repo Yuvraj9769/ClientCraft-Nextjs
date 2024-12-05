@@ -151,7 +151,7 @@ const CompanyUserProjects = () => {
                 </div>
               </div>
 
-              <div className="max-w-7xl p-4 flex flex-wrap gap-3 items-center mx-auto">
+              <div className="max-w-7xl p-4 flex flex-wrap gap-3 items-center mx-auto w-full">
                 {projectLoader ? (
                   <ImSpinner6 className="text-3xl md:text-6xl animate-spin" />
                 ) : (
@@ -265,7 +265,7 @@ const CompanyUserProjects = () => {
                 </div>
               </div>
 
-              <div className="max-w-7xl p-4 flex flex-wrap gap-3 items-center mx-auto">
+              <div className="max-w-7xl p-4 flex flex-wrap gap-3 items-center mx-auto w-full">
                 {projects.map((proj, ind) => (
                   <div
                     className="max-w-sm w-full sm:w-[350px] mx-auto my-4 bg-white shadow-lg rounded-lg overflow-hidden"

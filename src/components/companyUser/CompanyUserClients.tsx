@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import toast from "react-hot-toast";
 import PageLoader from "@/components/PageLoader";
 import { ImSpinner6 } from "react-icons/im";
+import { RiUserSharedLine } from "react-icons/ri";
 
 const CompanyUserClients = () => {
   const [loading, setLoading] = useState(true);
@@ -199,6 +200,12 @@ const CompanyUserClients = () => {
                         >
                           <FiEdit />
                         </button>
+                        <Link
+                          href={`/sendUserCredentials/${client._id}`}
+                          className="text-base sm:text-lg md:text-xl mx-2 text-teal-600 hover:text-teal-500"
+                        >
+                          <RiUserSharedLine />
+                        </Link>
                         <button
                           className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2"
                           aria-label="Delete Client"
@@ -294,6 +301,12 @@ const CompanyUserClients = () => {
                         >
                           <FiEdit />
                         </button>
+                        <Link
+                          href={`/sendUserCredentials/${client._id}`}
+                          className="text-base sm:text-lg md:text-xl mx-2 text-teal-600 hover:text-teal-500"
+                        >
+                          <RiUserSharedLine />
+                        </Link>
                         <button
                           className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2"
                           aria-label="Delete Client"

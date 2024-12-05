@@ -16,10 +16,15 @@ export async function middleware(request: NextRequest) {
     "/add-new-client",
     "/add-note",
   ];
+
   const isPublicPath =
     publicPaths.includes(path) || path.startsWith("/forgetPassword/");
+
   const isCompanyUserPath =
-    companyUserPaths.includes(path) || path.startsWith("/update-project/");
+    companyUserPaths.includes(path) ||
+    path.startsWith("/update-project/") ||
+    path.startsWith("/sendUserCredentials/");
+
   const isProtectedPath = path === "/";
 
   if (token) {

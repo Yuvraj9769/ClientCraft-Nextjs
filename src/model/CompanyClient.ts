@@ -10,6 +10,7 @@ export interface companyClientInterface extends Document {
   phone: string;
   Projects: Types.ObjectId[];
   password: string;
+  isCredentialsSend: boolean;
   passordResetToken: string;
   passordResetTokenExpiry: Date;
 }
@@ -41,6 +42,7 @@ const companyClientSchema: Schema<companyClientInterface> =
       },
       password: {
         type: String,
+        default: "",
       },
       Projects: [
         {
@@ -48,6 +50,10 @@ const companyClientSchema: Schema<companyClientInterface> =
           ref: "Project",
         },
       ],
+      isCredentialsSend: {
+        type: Boolean,
+        default: false,
+      },
       passordResetToken: {
         type: String,
       },
