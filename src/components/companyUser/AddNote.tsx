@@ -23,6 +23,8 @@ const AddNote = () => {
 
   const [dataProcessing, setDataProcessing] = useState(false);
   const [getTodoLoader, setGetTodoLoader] = useState(false);
+  const [popupBox, setPopupBox] = useState(false);
+  const [delNote, setDelNote] = useState("");
   const [applyFilter, setApplyFilter] = useState({
     latest: false,
     oldest: true,
@@ -104,6 +106,27 @@ const AddNote = () => {
     }
   };
 
+  const deleteNote = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.delete(
+        `/api/companyUser/deleteNote/${delNote}`
+      );
+      dispatch(setTodos(response.data.data));
+      toast.success(response.data.message);
+    } catch (error: any) {
+      toast.error(error.response.data.message || "Sorry something went wrong");
+    } finally {
+      if (searchedTodos.length !== 0) {
+        dispatch(setSearchedTodos([]));
+        setSearchData({
+          searchQuery: "",
+        });
+      }
+      setLoading(false);
+    }
+  };
+
   const fetchNotes = useCallback(async () => {
     try {
       const res = await axios.get("api/companyUser/getNotes");
@@ -120,7 +143,7 @@ const AddNote = () => {
 
     const sortedTodos = [...todos].sort(
       (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
     );
     dispatch(setTodos(sortedTodos));
   };
@@ -129,16 +152,14 @@ const AddNote = () => {
     if (applyFilter.oldest) return;
 
     const sortedTodos = [...todos].sort((a, b) => {
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
     });
 
     dispatch(setTodos(sortedTodos));
   };
 
   useEffect(() => {
-    if (todos.length === 0) {
-      fetchNotes();
-    }
+    fetchNotes();
 
     if (todos.length !== 0 && loading) {
       setLoading(false);
@@ -275,23 +296,55 @@ const AddNote = () => {
                       <p>{todo.description}</p>
                       <p className="inline-flex items-center gap-2">
                         {" "}
-                        {new Date(todo.createdAt).toLocaleDateString()}{" "}
+                        {new Date(todo.updatedAt).toLocaleDateString()}{" "}
                         <FaClock />
                       </p>
                       <span className="py-1 px-1 sm:p-3 sm:pb-0 sm:pl-0 text-center overflow-hidden text-ellipsis text-nowrap font-semibold inline-flex w-full items-center justify-start gap-3">
-                        <button
+                        <Link
                           className="text-blue-600 text-base sm:text-lg md:text-xl hover:text-blue-400"
-                          aria-label="Edit Client"
+                          href={`/updateNote/${todo._id}`}
                         >
                           <FiEdit />
-                        </button>
+                        </Link>
                         <button
                           className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400"
                           aria-label="Delete Client"
+                          onClick={() => {
+                            setPopupBox(true);
+                            setDelNote(todo._id);
+                          }}
                         >
                           <FiTrash2 />
                         </button>
                       </span>
+
+                      {popupBox && todo._id === delNote && (
+                        <div className="w-screen min-h-screen bg-black bg-opacity-85 fixed top-0 left-0 z-20 flex items-center justify-center">
+                          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full z-30">
+                            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                              Are you sure?
+                            </h3>
+                            <p className="text-sm text-gray-600 mb-6">
+                              This action will permanently delete the project
+                              and cannot be undone.
+                            </p>
+                            <div className="flex justify-end space-x-4">
+                              <button
+                                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                                onClick={() => setPopupBox(false)} // Close modal without action
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                                onClick={deleteNote}
+                              >
+                                Delete Permanently
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))
                 )}
@@ -369,26 +422,58 @@ const AddNote = () => {
                     <h3 className="font-bold text-xl overflow-hidden text-ellipsis text-nowrap">
                       {todo.title}
                     </h3>
-                    <p>{todo.description}</p>
+                    <p className="w-full break-words">{todo.description}</p>
                     <p className="inline-flex items-center gap-2">
                       {" "}
-                      {new Date(todo.createdAt).toLocaleDateString()}{" "}
+                      {new Date(todo.updatedAt).toLocaleDateString()}{" "}
                       <FaClock />
                     </p>
                     <span className="py-1 px-1 sm:p-3 sm:pb-0 sm:pl-0 text-center overflow-hidden text-ellipsis text-nowrap font-semibold inline-flex w-full items-center justify-start gap-3">
-                      <button
+                      <Link
                         className="text-blue-600 text-base sm:text-lg md:text-xl hover:text-blue-400"
-                        aria-label="Edit Client"
+                        href={`/updateNote/${todo._id}`}
                       >
                         <FiEdit />
-                      </button>
+                      </Link>
                       <button
                         className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400"
-                        aria-label="Delete Client"
+                        aria-label="Delete Note"
+                        onClick={() => {
+                          setPopupBox(true);
+                          setDelNote(todo._id);
+                        }}
                       >
                         <FiTrash2 />
                       </button>
                     </span>
+
+                    {popupBox && todo._id === delNote && (
+                      <div className="w-screen min-h-screen bg-black bg-opacity-85 fixed top-0 left-0 z-20 flex items-center justify-center">
+                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full z-30">
+                          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                            Are you sure?
+                          </h3>
+                          <p className="text-sm text-gray-600 mb-6">
+                            This action will permanently delete the project and
+                            cannot be undone.
+                          </p>
+                          <div className="flex justify-end space-x-4">
+                            <button
+                              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                              onClick={() => setPopupBox(false)} // Close modal without action
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                              onClick={deleteNote}
+                            >
+                              Delete Permanently
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

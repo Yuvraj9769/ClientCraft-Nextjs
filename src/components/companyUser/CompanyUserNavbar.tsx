@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
 import { useEffect } from "react";
-import Profile from "@/components/Profile";
+import CompanyUserProfile from "@/components/companyUser/CompanyUserProfile";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 
@@ -101,7 +101,7 @@ const CompanyUserNavbar = () => {
             <p className="bg-transparent border border-gray-300 w-full h-full inline-flex items-center justify-center cursor-pointer rounded-full text-slate-50 font-semibold">
               {user.email.slice(0, 1).toUpperCase()}
             </p>
-            {profile && <Profile />}
+            {profile && <CompanyUserProfile />}
           </div>
         </div>
       </ul>

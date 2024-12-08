@@ -9,6 +9,7 @@ export interface companyClientInterface extends Document {
   country: string;
   phone: string;
   Projects: Types.ObjectId[];
+  isActive: boolean;
   password: string;
   isCredentialsSend: boolean;
   passordResetToken: string;
@@ -50,6 +51,10 @@ const companyClientSchema: Schema<companyClientInterface> =
           ref: "Project",
         },
       ],
+      isActive: {
+        type: Boolean,
+        default: false,
+      },
       isCredentialsSend: {
         type: Boolean,
         default: false,

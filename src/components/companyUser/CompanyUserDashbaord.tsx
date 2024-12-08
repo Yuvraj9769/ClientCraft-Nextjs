@@ -1,14 +1,38 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
 import Link from "next/link";
 import CompanyUserLayout from "./CompanyUserLayout";
 import { IoMdAdd } from "react-icons/io";
+import CountUp from "react-countup";
+import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const CompanyUserDashbaord = () => {
-  // Sample data for demonstration
-  const metrics = {
-    activeProjects: 12,
-    completedProjects: 30,
-    avgClientRating: 4.8,
-  };
+  const [overData, setOverViewData] = useState([
+    { clientsCount: 0 },
+    0,
+    0,
+    [
+      { _id: "Pending", count: 0 },
+      { _id: "Active", count: 0 },
+      { _id: "Completed", count: 0 },
+    ],
+  ]);
+
+  const getOverData = useCallback(async () => {
+    try {
+      const response = await axios.get("/api/companyUser/overview");
+      setOverViewData(response.data.data);
+    } catch (error: any) {
+      toast.error(error.response.data.message || "Sorry something went wrong");
+    }
+  }, []);
+
+  useEffect(() => {
+    getOverData();
+  }, []);
 
   return (
     <CompanyUserLayout>
@@ -35,43 +59,99 @@ const CompanyUserDashbaord = () => {
               Overview
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {/* Active Projects */}
               <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-lg text-center">
                 <h3 className="text-xl font-semibold text-blue-500 dark:text-teal-400 mb-2">
                   Active Projects
                 </h3>
-                <p className="text-3xl font-bold">{metrics.activeProjects}</p>
+                <p className="text-3xl font-bold">
+                  <CountUp
+                    start={0}
+                    end={Array.isArray(overData[3]) ? overData[3][1]?.count : 0}
+                    duration={3}
+                    separator=","
+                  />
+                </p>
               </div>
+
+              {/* Completed Projects */}
               <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-lg text-center">
                 <h3 className="text-xl font-semibold text-blue-500 dark:text-teal-400 mb-2">
                   Completed Projects
                 </h3>
                 <p className="text-3xl font-bold">
-                  {metrics.completedProjects}
+                  <CountUp
+                    start={0}
+                    end={Array.isArray(overData[3]) ? overData[3][2]?.count : 0}
+                    duration={3}
+                    separator=","
+                  />
                 </p>
               </div>
-              <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-lg text-center">
-                <h3 className="text-xl font-semibold text-blue-500 dark:text-teal-400 mb-2">
-                  Total Clients
-                </h3>
-                <p className="text-3xl font-bold">{metrics.avgClientRating}</p>
-              </div>
+
+              {/* Inactive Projects */}
               <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-lg text-center">
                 <h3 className="text-xl font-semibold text-blue-500 dark:text-teal-400 mb-2">
                   Inactive Projects
                 </h3>
-                <p className="text-3xl font-bold">{15}</p>
+                <p className="text-3xl font-bold">
+                  <CountUp
+                    start={0}
+                    end={Array.isArray(overData[3]) ? overData[3][0]?.count : 0}
+                    duration={3}
+                    separator=","
+                  />
+                </p>
               </div>
+
+              {/* Total Clients */}
+              <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-lg text-center">
+                <h3 className="text-xl font-semibold text-blue-500 dark:text-teal-400 mb-2">
+                  Total Clients
+                </h3>
+                <p className="text-3xl font-bold">
+                  <CountUp
+                    start={0}
+                    end={
+                      typeof overData[0] === "object" &&
+                      "clientsCount" in overData[0]
+                        ? overData[0]?.clientsCount
+                        : 0
+                    }
+                    duration={3}
+                    separator=","
+                  />
+                </p>
+              </div>
+
+              {/* Active Clients */}
               <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-lg text-center">
                 <h3 className="text-xl font-semibold text-blue-500 dark:text-teal-400 mb-2">
                   Active Clients
                 </h3>
-                <p className="text-3xl font-bold">{5}</p>
+                <p className="text-3xl font-bold">
+                  <CountUp
+                    start={0}
+                    end={overData[1] as number}
+                    duration={3}
+                    separator=","
+                  />
+                </p>
               </div>
+
+              {/* Organization Users */}
               <div className="bg-white dark:bg-gray-800 shadow-md p-6 rounded-lg text-center">
                 <h3 className="text-xl font-semibold text-blue-500 dark:text-teal-400 mb-2">
                   Organization Users
                 </h3>
-                <p className="text-3xl font-bold">{5}</p>
+                <p className="text-3xl font-bold">
+                  <CountUp
+                    start={0}
+                    end={overData[2] as number}
+                    duration={3}
+                    separator=","
+                  />
+                </p>
               </div>
             </div>
           </section>

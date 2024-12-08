@@ -25,7 +25,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-const Profile = () => {
+const CompanyUserProfile = () => {
   const user = useAppSelector((state) => state.user);
   const profile = useAppSelector((state) => state.profile);
 
@@ -92,7 +92,7 @@ const Profile = () => {
 
   return (
     <div
-      className="bg-slate-50 dark:bg-gray-800 font-semibold text-black dark:text-slate-50 p-6 h-auto absolute left-[-190px] rounded-xl border border-[#dadada] top-[59px] right-0 flex flex-col items-center gap-4 max-w-[255px] w-[250px] z-30"
+      className="bg-slate-50 dark:bg-gray-800 font-semibold text-black dark:text-slate-50 p-6 h-auto absolute left-[-190px] rounded-xl border border-[#dadada] top-[58px] right-0 flex flex-col items-center gap-4 max-w-[255px] w-[250px] z-30"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="font-semibold text-3xl h-[80px] w-[80px] rounded-full inline-flex items-center justify-center relative mb-2">
@@ -150,7 +150,7 @@ const Profile = () => {
       </Link>
 
       <Link
-        href="/feedback"
+        href="/submitFeedBack"
         onClick={() => dispatch(setProfile(!profile))}
         className="text-base w-full inline-flex py-1 items-center cursor-pointer border-b border-b-transparent hover:border-b-slate-700 duration-500 gap-3 overflow-hidden text-ellipsis"
       >
@@ -168,4 +168,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default CompanyUserProfile;

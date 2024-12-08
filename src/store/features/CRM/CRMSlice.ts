@@ -40,7 +40,7 @@ export interface todosInterface {
   title: string;
   description: string;
   isDone: boolean;
-  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CRMDataState {

@@ -78,13 +78,16 @@ const CompanyUserProjects = () => {
       );
       dispatch(setProjects(response.data.data));
       toast.success(response.data.message);
-      setSearchData({
-        searchQuery: "",
-      });
-      dispatch(setSearchedData([]));
     } catch (error: any) {
       toast.error(error.response.data.message || "Sorry something went wrong");
     } finally {
+      if (searchedData.length !== 0) {
+        setSearchData({
+          searchQuery: "",
+        });
+        dispatch(setSearchedData([]));
+      }
+
       setLoading(false);
       setDelProjectId("");
       setPopupBox(false);

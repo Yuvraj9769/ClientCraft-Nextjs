@@ -1,8 +1,5 @@
-IMP  = add client issue resovle it.
 
-0) Delete popup added just api remaning and add edit use frontend dynamic UI and get user on differnt page.
-
-Client model not required use companyClient model for user and give access to updfate only password by user.
+IMP Check all apis inside in try catch and database conenctivity is there or not?
 
 1) Add GSAP in small device navbar, big navbar done and where required.
 2) Add image in user profile.

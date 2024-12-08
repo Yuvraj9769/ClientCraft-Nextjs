@@ -15,7 +15,10 @@ export async function middleware(request: NextRequest) {
     "/company-clients",
     "/add-new-client",
     "/add-note",
+    "/submitFeedBack",
   ];
+
+  const companyClientPaths = ["/submitFeedBack"];
 
   const isPublicPath =
     publicPaths.includes(path) || path.startsWith("/forgetPassword/");
@@ -23,7 +26,11 @@ export async function middleware(request: NextRequest) {
   const isCompanyUserPath =
     companyUserPaths.includes(path) ||
     path.startsWith("/update-project/") ||
-    path.startsWith("/sendUserCredentials/");
+    path.startsWith("/sendUserCredentials/") ||
+    path.startsWith("/delete-companyClient/") ||
+    path.startsWith("/update-clientUser/") ||
+    path.startsWith("/updateNote/") ||
+    path.startsWith("/updateProfile/");
 
   const isProtectedPath = path === "/";
 
