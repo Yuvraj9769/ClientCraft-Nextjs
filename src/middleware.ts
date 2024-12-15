@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
     "/submitFeedBack",
   ];
 
-  const companyClientPaths = ["/submitFeedBack"];
+  // const companyClientPaths = ["/submitFeedBack"];
 
   const isPublicPath =
     publicPaths.includes(path) || path.startsWith("/forgetPassword/");
