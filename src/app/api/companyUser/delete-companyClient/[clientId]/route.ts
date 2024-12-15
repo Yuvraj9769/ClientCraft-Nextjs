@@ -9,7 +9,7 @@ interface RouteParams {
 
 export async function DELETE(
   _: NextRequest,
-  { params }: { params: RouteParams }
+  { params }: { params: Promise<RouteParams> }
 ) {
   try {
     const { clientId } = await params;
