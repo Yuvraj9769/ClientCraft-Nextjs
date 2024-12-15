@@ -9,6 +9,7 @@ import { setDarkMode, setUser } from "@/store/features/CRM/CRMSlice";
 import axios from "axios";
 import toast from "react-hot-toast";
 import PageLoader from "@/components/PageLoader";
+import CompanyUserSidebar from "./CompanyUserSidebar";
 
 const CompanyUserLayout = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
@@ -25,6 +26,7 @@ const CompanyUserLayout = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const user = useAppSelector((state) => state.user);
+  const sidebarVisible = useAppSelector((state) => state.sidebarVisible);
 
   useEffect(() => {
     if (!user.username) {
@@ -73,6 +75,7 @@ const CompanyUserLayout = ({ children }: { children: React.ReactNode }) => {
             <div className="bg-white shadow-md rounded p-0">{children}</div>
           </main>
           <Footer />
+          {sidebarVisible && <CompanyUserSidebar />}
         </div>
       )}
     </>

@@ -3,6 +3,8 @@
 
 import { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { CldImage } from "next-cloudinary";
+// import { FaFileUpload } from "react-icons/fa";
 import {
   setClientsData,
   setLoggedIn,
@@ -12,7 +14,6 @@ import {
   setUser,
 } from "@/store/features/CRM/CRMSlice";
 import Link from "next/link";
-// import Image from "next/image";
 import { IoMdCamera } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import {
@@ -24,6 +25,7 @@ import {
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { TbLoader3 } from "react-icons/tb";
 
 const CompanyUserProfile = () => {
   const user = useAppSelector((state) => state.user);
@@ -43,14 +45,39 @@ const CompanyUserProfile = () => {
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setLoader(true);
     try {
+      setLoader(true);
       const profilePic = event.target.files?.[0];
-      console.log(profilePic);
-      console.log(loader);
+
+      const formData = new FormData();
+
+      if (!profilePic) {
+        toast.error("Please select a profile picture");
+        return;
+      }
+
+      formData.append("profile-img", profilePic);
+
+      const response = await axios.patch(
+        "api/companyUser/updateProfilePic",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.data.status === 200) {
+        toast.success(
+          response.data.message || "Profile pic updated successfully"
+        );
+        dispatch(setUser(response.data.data));
+      }
     } catch (error: any) {
-      setLoader(false);
       toast.error(error.response.data.message || "Sorry something went wrong");
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -78,6 +105,7 @@ const CompanyUserProfile = () => {
           companyName: "",
           phoneNumber: "",
           department: "",
+          profilePic: "",
           Clients: [],
           role: "",
           isActive: false,
@@ -96,18 +124,28 @@ const CompanyUserProfile = () => {
       onClick={(e) => e.stopPropagation()}
     >
       <div className="font-semibold text-3xl h-[80px] w-[80px] rounded-full inline-flex items-center justify-center relative mb-2">
-        <div className="w-full rounded-full h-[75px] overflow-hidden inline-flex items-center justify-center">
-          {/* <Image
-            src="/images/userLogo.avif"
-            width={100}
-            height={100}
-            alt="User Profile"
-            className="w-full h-full cursor-pointer object-cover"
-          /> */}
-          <p className="dark:bg-gray-700 bg-transparent border border-gray-300 dark:border-none w-full h-full inline-flex items-center justify-center rounded-full dark:text-slate-50 text-black font-semibold">
-            {user.email.slice(0, 1).toUpperCase()}
-          </p>
-        </div>
+        {loader ? (
+          <span className="text-5xl text-black dark:text-slate-50 py-4 mx-auto animate-spin">
+            <TbLoader3 />
+          </span>
+        ) : (
+          <div className="w-full rounded-full h-[75px] cursor-pointer overflow-hidden inline-flex items-center justify-center">
+            {user?.profilePic ? (
+              <CldImage
+                width="960"
+                height="600"
+                src={user.profilePic}
+                className="w-full h-full cursor-pointer object-cover"
+                sizes="100vw"
+                alt="User Profile"
+              />
+            ) : (
+              <p className="dark:bg-gray-800 bg-transparent border border-gray-300 dark:border-none w-full h-full inline-flex items-center justify-center cursor-pointer rounded-full dark:text-slate-50 text-black font-semibold">
+                {user?.email?.slice(0, 1)?.toUpperCase()}
+              </p>
+            )}
+          </div>
+        )}
         <input
           type="file"
           id="file"
@@ -148,6 +186,15 @@ const CompanyUserProfile = () => {
         <MdManageAccounts />
         Manage your account
       </Link>
+
+      {/* <Link
+        href="/updateProfile"
+        onClick={() => dispatch(setProfile(!profile))}
+        className="text-base w-full inline-flex py-1 items-center cursor-pointer border-b border-b-transparent hover:border-b-slate-700 duration-500 gap-3 overflow-hidden text-ellipsis"
+      >
+        <FaFileUpload />
+        Upload documents
+      </Link> */}
 
       <Link
         href="/submitFeedBack"

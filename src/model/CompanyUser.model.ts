@@ -13,6 +13,7 @@ export interface CompanyUserInterface extends Document {
   isActive?: boolean;
   password: string;
   role: string;
+  profilePic: string;
   todos: Types.ObjectId[];
   passwordResetToken: string | undefined;
   passwordResetTokenExpiry: Date | undefined;
@@ -31,6 +32,10 @@ export const CompanyUserSchema: Schema<CompanyUserInterface> =
       firstName: {
         type: String,
         required: [true, "First Name is required"],
+      },
+
+      profilePic: {
+        type: String,
       },
 
       lastName: {

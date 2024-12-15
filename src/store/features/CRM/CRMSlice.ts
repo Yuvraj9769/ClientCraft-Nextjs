@@ -9,6 +9,7 @@ export interface User {
   email: string;
   companyName: string;
   phoneNumber: string;
+  profilePic: string;
   department: string;
   Clients?: [];
   role: string;
@@ -54,6 +55,7 @@ export interface CRMDataState {
   clientsData: clientsSearchedDataInterface[];
   searchedClientsData: clientsSearchedDataInterface[];
   searchedTodos: todosInterface[];
+  sidebarVisible: boolean;
 }
 
 const initialState: CRMDataState = {
@@ -67,6 +69,7 @@ const initialState: CRMDataState = {
     companyName: "",
     phoneNumber: "",
     department: "",
+    profilePic: "",
     Clients: [],
     role: "",
     isActive: false,
@@ -79,6 +82,7 @@ const initialState: CRMDataState = {
   clientsData: [],
   searchedClientsData: [],
   searchedTodos: [],
+  sidebarVisible: false,
 };
 
 export const CRMSlice = createSlice({
@@ -121,6 +125,9 @@ export const CRMSlice = createSlice({
     setSearchedTodos: (state, action: PayloadAction<todosInterface[]>) => {
       state.searchedTodos = action.payload;
     },
+    setSidebarVisible: (state, action: PayloadAction<boolean>) => {
+      state.sidebarVisible = action.payload;
+    },
   },
 });
 
@@ -135,6 +142,7 @@ export const {
   setClientsData,
   setSearchedClientsData,
   setSearchedTodos,
+  setSidebarVisible,
 } = CRMSlice.actions;
 
 export default CRMSlice.reducer;
