@@ -3,9 +3,13 @@ import connectDB from "@/lib/dbConnet";
 import companyClientModel from "@/model/CompanyClient";
 import { NextRequest, NextResponse } from "next/server";
 
+interface RouteParams {
+  clientId: string;
+}
+
 export async function DELETE(
   _: NextRequest,
-  { params }: { params: { clientId: string } }
+  { params }: { params: RouteParams }
 ) {
   try {
     const { clientId } = await params;
