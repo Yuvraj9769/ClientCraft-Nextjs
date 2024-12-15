@@ -1,7 +1,9 @@
 
 IMP Check all apis inside in try catch and database conenctivity is there or not?
 
+0) Remove  // const companyClientPaths = ["/submitFeedBack"]; uncomment and do comment in  middleware.
 1) Add img,pdf,etc not video upload facility add.
+
 
 1st Model => companyClient => username: "",password: "",name: "abcd",passwordResetToke,passwordResetTokeExpiry,email,Projects: [Project],
 
