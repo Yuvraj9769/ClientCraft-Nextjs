@@ -56,8 +56,8 @@ export async function DELETE(
     return NextResponse.json(
       {
         status: 200,
-        message: "Client deleted successfully!!",
         data: otherClients,
+        message: "Client deleted successfully!!",
         success: true,
       },
       {
