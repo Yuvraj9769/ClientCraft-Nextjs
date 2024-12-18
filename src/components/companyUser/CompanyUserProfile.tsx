@@ -122,7 +122,9 @@ const CompanyUserProfile = () => {
   return (
     <>
       {loader ? (
-        <PageLoader />
+        <div className="w-screen min-h-screen inline-flex items-center justify-center">
+          <PageLoader />
+        </div>
       ) : (
         <div
           className="bg-slate-50 dark:bg-gray-800 font-semibold text-black dark:text-slate-50 p-6 h-auto absolute left-[-190px] rounded-xl border border-[#dadada] top-[58px] right-0 flex flex-col items-center gap-4 max-w-[255px] w-[250px] z-30"
