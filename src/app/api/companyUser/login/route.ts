@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
         phoneNumber: companyUser.phoneNumber,
         isActive: companyUser.isActive,
       },
-      message: "Login successful",
+      message: "Login successfully",
       success: true,
     },
     {

@@ -122,7 +122,7 @@ const CompanyUserProfile = () => {
   return (
     <>
       {loader ? (
-        <div className="w-screen min-h-screen inline-flex items-center justify-center">
+        <div className="w-screen min-h-screen inline-flex items-center justify-center absolute right-[-19px] top-0">
           <PageLoader />
         </div>
       ) : (
