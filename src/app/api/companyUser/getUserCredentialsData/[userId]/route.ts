@@ -5,10 +5,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   _: NextRequest,
-  { params }: { params: { userId: string } }
+  context: { params: Promise<{ userId: string }> }
 ) {
   try {
-    const { userId } = await params;
+    const { userId } = await context.params;
 
     if (!userId || userId.trim() === "") {
       return NextResponse.json(

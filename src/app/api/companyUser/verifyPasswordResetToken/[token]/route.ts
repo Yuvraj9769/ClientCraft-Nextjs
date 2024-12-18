@@ -5,11 +5,11 @@ import CompanyUserModel from "@/model/CompanyUser.model";
 
 export async function GET(
   _: NextRequest,
-  { params }: { params: Promise<{ token: string }> }
+  context: { params: Promise<{ token: string }> }
 ) {
-  const { token } = await params;
+  const { token } = await context.params;
 
-  if (!token) {
+  if (!token || token.trim() === "") {
     return NextResponse.json({
       status: 400,
       message: "Token is required",

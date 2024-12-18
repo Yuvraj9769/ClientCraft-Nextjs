@@ -3,22 +3,18 @@ import connectDB from "@/lib/dbConnet";
 import companyClientModel from "@/model/CompanyClient";
 import { NextRequest, NextResponse } from "next/server";
 
-interface RouteParams {
-  clientId: string;
-}
-
 export async function DELETE(
   _: NextRequest,
-  { params }: { params: Promise<RouteParams> }
+  context: { params: Promise<{ clientId: string }> }
 ) {
   try {
-    const { clientId } = await params;
+    const { clientId } = await context.params;
 
     if (!clientId || clientId.trim() === "") {
       return NextResponse.json(
         {
           status: 400,
-          message: "Client's ID required!!",
+          message: "Client's ID is required",
           success: false,
         },
         { status: 400 }
@@ -44,7 +40,7 @@ export async function DELETE(
 
     const otherClients = await companyClientModel.find();
 
-    if (!otherClients) {
+    if (otherClients.length === 0) {
       return NextResponse.json(
         {
           status: 404,

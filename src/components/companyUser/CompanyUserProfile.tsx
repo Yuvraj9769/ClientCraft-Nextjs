@@ -118,6 +118,8 @@ const CompanyUserProfile = () => {
     }
   };
 
+  console.log(user);
+
   return (
     <div
       className="bg-slate-50 dark:bg-gray-800 font-semibold text-black dark:text-slate-50 p-6 h-auto absolute left-[-190px] rounded-xl border border-[#dadada] top-[58px] right-0 flex flex-col items-center gap-4 max-w-[255px] w-[250px] z-30"
@@ -140,7 +142,7 @@ const CompanyUserProfile = () => {
                 alt="User Profile"
               />
             ) : (
-              <p className="dark:bg-gray-800 bg-transparent border border-gray-300 dark:border-none w-full h-full inline-flex items-center justify-center cursor-pointer rounded-full dark:text-slate-50 text-black font-semibold">
+              <p className="dark:bg-gray-700 bg-transparent border border-gray-300 dark:border-none w-full h-full inline-flex items-center justify-center cursor-pointer rounded-full dark:text-slate-50 text-black font-semibold">
                 {user?.email?.slice(0, 1)?.toUpperCase()}
               </p>
             )}

@@ -5,10 +5,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
   _: NextRequest,
-  { params }: { params: { noteId: string } }
+  context: { params: Promise<{ noteId: string }> }
 ) {
   try {
-    const { noteId } = await params;
+    const { noteId } = await context.params;
 
     if (!noteId || noteId.trim() === "") {
       return NextResponse.json(

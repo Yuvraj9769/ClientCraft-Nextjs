@@ -120,10 +120,6 @@ const CompanyUserNavbar = () => {
                 </p>
               )}
             </div>
-
-            {/* <p className="bg-transparent border border-gray-300 w-full h-full inline-flex items-center justify-center cursor-pointer rounded-full text-slate-50 font-semibold">
-              {user.email.slice(0, 1).toUpperCase()}
-            </p> */}
             {profile && <CompanyUserProfile />}
           </div>
         </div>
