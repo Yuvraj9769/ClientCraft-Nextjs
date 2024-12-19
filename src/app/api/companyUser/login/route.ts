@@ -92,6 +92,7 @@ export async function POST(request: NextRequest) {
         role: companyUser.role,
         email: companyUser.email,
         Clients: companyUser.Clients,
+        profilePic: companyUser.profilePic,
         firstName: companyUser.firstName,
         lastName: companyUser.lastName,
         companyName: companyUser.companyName,
