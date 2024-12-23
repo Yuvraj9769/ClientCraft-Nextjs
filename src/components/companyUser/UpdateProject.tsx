@@ -2,11 +2,7 @@
 "use client";
 
 import CompanyUserLayout from "@/components/companyUser/CompanyUserLayout";
-import {
-  projectInterface,
-  setSearchedData,
-} from "@/store/features/CRM/CRMSlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { projectInterface } from "@/store/features/CRM/CRMSlice";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -16,8 +12,6 @@ import { ImSpinner9 } from "react-icons/im";
 
 const UpdateProjectDetails = () => {
   const params = useParams();
-
-  const dispatch = useAppDispatch();
 
   const [projectDetails, setProjectDetails] = useState<projectInterface>({
     _id: "",
@@ -32,8 +26,6 @@ const UpdateProjectDetails = () => {
   const [projectLoader, setProjectLoader] = useState(true);
 
   const [dataProcessing, setDataProcessing] = useState(false);
-
-  const searchedData = useAppSelector((state) => state.searchedData);
 
   const router = useRouter();
 
@@ -84,10 +76,6 @@ const UpdateProjectDetails = () => {
     } finally {
       setDataProcessing(false);
       router.push("/company-projects");
-
-      if (searchedData.length !== 0) {
-        dispatch(setSearchedData([]));
-      }
     }
   };
 
@@ -106,9 +94,6 @@ const UpdateProjectDetails = () => {
       router.push("/company-projects");
     } finally {
       setProjectLoader(false);
-      if (searchedData.length !== 0) {
-        dispatch(setSearchedData([]));
-      }
     }
   };
 

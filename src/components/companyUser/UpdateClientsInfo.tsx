@@ -8,8 +8,6 @@ import toast from "react-hot-toast";
 import CompanyUserLayout from "./CompanyUserLayout";
 import { ImSpinner9 } from "react-icons/im";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setSearchedClientsData } from "@/store/features/CRM/CRMSlice";
 
 const UpdateClientsInfo = () => {
   const { clientId } = useParams();
@@ -18,12 +16,6 @@ const UpdateClientsInfo = () => {
   const [dataFetcher, setDataFetcher] = useState(true);
 
   const [dataProcessing, setDataProcessing] = useState(false);
-
-  const dispatch = useAppDispatch();
-
-  const searchedClientsData = useAppSelector(
-    (state) => state.searchedClientsData
-  );
 
   const [client, setClient] = useState({
     _id: "",
@@ -83,10 +75,6 @@ const UpdateClientsInfo = () => {
     } finally {
       setDataProcessing(false);
       router.push("/company-clients");
-
-      if (searchedClientsData.length !== 0) {
-        dispatch(setSearchedClientsData([]));
-      }
     }
   };
 
@@ -103,9 +91,6 @@ const UpdateClientsInfo = () => {
       router.push("/company-clients");
     } finally {
       setDataFetcher(false);
-      if (searchedClientsData.length !== 0) {
-        dispatch(setSearchedClientsData([]));
-      }
     }
   }, [clientId]);
 
