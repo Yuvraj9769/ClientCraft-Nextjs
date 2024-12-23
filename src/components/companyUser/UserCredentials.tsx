@@ -8,8 +8,6 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { ImSpinner9 } from "react-icons/im";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useAppDispatch } from "@/store/hooks";
-import { setSearchedClientsData } from "@/store/features/CRM/CRMSlice";
 
 const UserCredentials = () => {
   const params = useParams();
@@ -18,8 +16,6 @@ const UserCredentials = () => {
   const [userCredentialsDataLoader, setUserCredentialsDataLoader] =
     useState(true);
   const [dataProcessing, setDataProcessing] = useState(false);
-
-  const dispatch = useAppDispatch();
 
   const [userCredentials, setUserCredentials] = useState({
     clientName: "",
@@ -103,7 +99,6 @@ const UserCredentials = () => {
       return;
     } finally {
       setUserCredentialsDataLoader(false);
-      dispatch(setSearchedClientsData([]));
     }
   };
 
