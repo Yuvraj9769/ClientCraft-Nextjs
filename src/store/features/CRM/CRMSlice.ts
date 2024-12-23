@@ -58,7 +58,6 @@ export interface CRMDataState {
   todos: todosInterface[];
   projects: projectInterface[];
   clientsData: clientsSearchedDataInterface[];
-  searchedClientsData: clientsSearchedDataInterface[];
   sidebarVisible: boolean;
   documents: documentDataInterface[];
 }
@@ -84,7 +83,6 @@ const initialState: CRMDataState = {
   todos: [],
   projects: [],
   clientsData: [],
-  searchedClientsData: [],
   sidebarVisible: false,
   documents: [],
 };
@@ -117,12 +115,6 @@ export const CRMSlice = createSlice({
     ) => {
       state.clientsData = action.payload;
     },
-    setSearchedClientsData: (
-      state,
-      action: PayloadAction<clientsSearchedDataInterface[]>
-    ) => {
-      state.searchedClientsData = action.payload;
-    },
     setSidebarVisible: (state, action: PayloadAction<boolean>) => {
       state.sidebarVisible = action.payload;
     },
@@ -140,7 +132,6 @@ export const {
   setProfile,
   setProjects,
   setClientsData,
-  setSearchedClientsData,
   setSidebarVisible,
   setDocuments,
 } = CRMSlice.actions;
