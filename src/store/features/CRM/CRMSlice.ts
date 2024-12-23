@@ -44,6 +44,12 @@ export interface todosInterface {
   updatedAt: string;
 }
 
+export interface documentDataInterface {
+  _id: string;
+  title: string;
+  thumbnailImgUrl: string;
+}
+
 export interface CRMDataState {
   isLoggedIn: boolean;
   user: User;
@@ -51,11 +57,10 @@ export interface CRMDataState {
   profile: boolean;
   todos: todosInterface[];
   projects: projectInterface[];
-  searchedData: projectInterface[];
   clientsData: clientsSearchedDataInterface[];
   searchedClientsData: clientsSearchedDataInterface[];
-  searchedTodos: todosInterface[];
   sidebarVisible: boolean;
+  documents: documentDataInterface[];
 }
 
 const initialState: CRMDataState = {
@@ -78,11 +83,10 @@ const initialState: CRMDataState = {
   profile: false,
   todos: [],
   projects: [],
-  searchedData: [],
   clientsData: [],
   searchedClientsData: [],
-  searchedTodos: [],
   sidebarVisible: false,
+  documents: [],
 };
 
 export const CRMSlice = createSlice({
@@ -107,9 +111,6 @@ export const CRMSlice = createSlice({
     setProjects: (state, action: PayloadAction<projectInterface[]>) => {
       state.projects = action.payload;
     },
-    setSearchedData: (state, action: PayloadAction<projectInterface[]>) => {
-      state.searchedData = action.payload;
-    },
     setClientsData: (
       state,
       action: PayloadAction<clientsSearchedDataInterface[]>
@@ -122,11 +123,11 @@ export const CRMSlice = createSlice({
     ) => {
       state.searchedClientsData = action.payload;
     },
-    setSearchedTodos: (state, action: PayloadAction<todosInterface[]>) => {
-      state.searchedTodos = action.payload;
-    },
     setSidebarVisible: (state, action: PayloadAction<boolean>) => {
       state.sidebarVisible = action.payload;
+    },
+    setDocuments: (state, action: PayloadAction<documentDataInterface[]>) => {
+      state.documents = action.payload;
     },
   },
 });
@@ -138,11 +139,10 @@ export const {
   setDarkMode,
   setProfile,
   setProjects,
-  setSearchedData,
   setClientsData,
   setSearchedClientsData,
-  setSearchedTodos,
   setSidebarVisible,
+  setDocuments,
 } = CRMSlice.actions;
 
 export default CRMSlice.reducer;

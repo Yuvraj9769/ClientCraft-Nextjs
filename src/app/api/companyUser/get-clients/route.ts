@@ -1,15 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import connectDB from "@/lib/dbConnet";
-import companyClientModel from "@/model/CompanyClient";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import CompanyUserModel from "@/model/CompanyUser.model";
 
 export async function GET() {
   try {
     await connectDB();
 
-    const allClients = await companyClientModel.find();
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("login-user-005")?.value;
 
-    if (allClients.length === 0) {
+    if (!token) {
+      return NextResponse.json(
+        {
+          status: 401,
+          message: "Unauthorized",
+          success: false,
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const decodedData = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY!
+    ) as JwtPayload;
+
+    const clientsData = await CompanyUserModel.findById(
+      decodedData.id
+    ).populate("Clients");
+
+    if (!clientsData || clientsData?.Clients?.length === 0) {
       return NextResponse.json(
         {
           status: 404,
@@ -27,7 +53,7 @@ export async function GET() {
         status: 200,
         message: "Clients found",
         success: true,
-        data: allClients,
+        data: clientsData.Clients,
       },
       {
         status: 200,

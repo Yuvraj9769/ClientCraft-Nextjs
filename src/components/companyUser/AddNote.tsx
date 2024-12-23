@@ -8,7 +8,7 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setSearchedTodos, setTodos } from "@/store/features/CRM/CRMSlice";
+import { setTodos, todosInterface } from "@/store/features/CRM/CRMSlice";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import PageLoader from "@/components/PageLoader";
 import { FaClock } from "react-icons/fa6";
@@ -19,7 +19,6 @@ const AddNote = () => {
   const dispatch = useAppDispatch();
 
   const todos = useAppSelector((state) => state.todos);
-  const searchedTodos = useAppSelector((state) => state.searchedTodos);
 
   const [dataProcessing, setDataProcessing] = useState(false);
   const [getTodoLoader, setGetTodoLoader] = useState(false);
@@ -49,8 +48,12 @@ const AddNote = () => {
   const handleOnChangeForSearch = (e: any) => {
     const { value } = e.target;
 
-    if (searchedTodos.length !== 0 && value.trim() === "") {
-      dispatch(setSearchedTodos([]));
+    if (value.trim() === "" && todos.length !== 0) {
+      fetchNotes();
+      setApplyFilter({
+        latest: false,
+        oldest: true,
+      });
     }
 
     setSearchData({
@@ -62,8 +65,18 @@ const AddNote = () => {
     if (e.key === "Enter" && searchData.searchQuery.trim() !== "") {
       try {
         setGetTodoLoader(true);
+
         const res = await axios.post("api/companyUser/searchTodo", searchData);
-        dispatch(setSearchedTodos(res.data.data));
+
+        if (applyFilter.latest) {
+          const sortedData = res.data.data.sort(
+            (a: todosInterface, b: todosInterface) =>
+              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          );
+          dispatch(setTodos(sortedData));
+        } else {
+          dispatch(setTodos(res.data.data));
+        }
       } catch (error: any) {
         toast.error(
           error.response.data.message || "Sorry something went wrong"
@@ -117,13 +130,12 @@ const AddNote = () => {
     } catch (error: any) {
       toast.error(error.response.data.message || "Sorry something went wrong");
     } finally {
-      if (searchedTodos.length !== 0) {
-        dispatch(setSearchedTodos([]));
+      setLoading(false);
+      if (searchData.searchQuery.trim() !== "") {
         setSearchData({
           searchQuery: "",
         });
       }
-      setLoading(false);
     }
   };
 
@@ -266,7 +278,7 @@ const AddNote = () => {
             <div className="relative left-0 top-0 w-full py-4">
               <PageLoader />
             </div>
-          ) : searchedTodos.length !== 0 ? (
+          ) : todos.length !== 0 ? (
             <>
               <div className="w-full flex items-center justify-center p-4 lg:py-6 gap-4 flex-wrap lg:flex-nowrap max-w-7xl">
                 <div className="gap-3 w-full inline-flex mt-2 items-center justify-center text-black rounded-md pr-2">
@@ -279,13 +291,74 @@ const AddNote = () => {
                     className="p-2 rounded-md border-none outline-none w-full lg:w-[65%] dark:bg-slate-800 duration-500  bg-slate-200 focus-within:ring-1 dark:focus-within:ring-blue-500 focus-within:ring-black group dark:text-slate-50 text-black"
                   />
                 </div>
+
+                <div
+                  className={`inline-flex items-center flex-wrap md:flex-nowrap gap-3 p-2 ${
+                    getTodoLoader && "cursor-not-allowed"
+                  }`}
+                >
+                  <label
+                    className={`inline-flex items-center gap-2 cursor-pointer ${
+                      getTodoLoader && "pointer-events-none opacity-75"
+                    }`}
+                  >
+                    <label className={styles.container}>
+                      <input
+                        type="checkbox"
+                        checked={applyFilter.latest}
+                        onChange={() => {
+                          setApplyFilter({
+                            latest: true,
+                            oldest: false,
+                          });
+                          latestToOldestTodos();
+                        }}
+                      />
+                      <svg viewBox="0 0 64 64" height="1.5em" width="2em">
+                        <path
+                          d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
+                          pathLength="575.0541381835938"
+                          className={styles.path}
+                        />
+                      </svg>
+                    </label>{" "}
+                    Latest
+                  </label>
+                  <label
+                    className={`inline-flex items-center gap-2 cursor-pointer ${
+                      getTodoLoader && "pointer-events-none opacity-75"
+                    }`}
+                  >
+                    <label className={styles.container}>
+                      <input
+                        type="checkbox"
+                        checked={applyFilter.oldest}
+                        onChange={() => {
+                          setApplyFilter({
+                            latest: false,
+                            oldest: true,
+                          });
+                          OldestToLatestTodos();
+                        }}
+                      />
+                      <svg viewBox="0 0 64 64" height="1.5em" width="2em">
+                        <path
+                          d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
+                          pathLength="575.0541381835938"
+                          className={styles.path}
+                        />
+                      </svg>
+                    </label>{" "}
+                    Oldest
+                  </label>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-2 md:p-6 rounded-md bg-gray-100 gap-4 dark:bg-gray-800 w-full max-w-7xl relative min-h-[100px]">
-                {getTodoLoader ? (
-                  <ImSpinner6 className="text-3xl md:text-6xl animate-spin absolute left-1/2 top-[20%]" />
-                ) : (
-                  searchedTodos.map((todo, ind) => (
+              {getTodoLoader ? (
+                <ImSpinner6 className="text-3xl md:text-6xl animate-spin" />
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-2 md:p-6 rounded-md bg-gray-100 gap-4 dark:bg-gray-800 w-full max-w-7xl">
+                  {todos.map((todo, ind) => (
                     <div
                       className="bg-slate-50 text-black p-4 rounded-lg shadow-md h-fit inline-flex flex-col gap-2"
                       key={ind}
@@ -293,7 +366,7 @@ const AddNote = () => {
                       <h3 className="font-bold text-xl overflow-hidden text-ellipsis text-nowrap">
                         {todo.title}
                       </h3>
-                      <p>{todo.description}</p>
+                      <p className="w-full break-words">{todo.description}</p>
                       <p className="inline-flex items-center gap-2">
                         {" "}
                         {new Date(todo.updatedAt).toLocaleDateString()}{" "}
@@ -308,7 +381,7 @@ const AddNote = () => {
                         </Link>
                         <button
                           className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400"
-                          aria-label="Delete Client"
+                          aria-label="Delete Note"
                           onClick={() => {
                             setPopupBox(true);
                             setDelNote(todo._id);
@@ -346,137 +419,9 @@ const AddNote = () => {
                         </div>
                       )}
                     </div>
-                  ))
-                )}
-              </div>
-            </>
-          ) : todos.length !== 0 ? (
-            <>
-              <div className="w-full flex items-center justify-center p-4 lg:py-6 gap-4 flex-wrap lg:flex-nowrap max-w-7xl">
-                <div className="gap-3 w-full inline-flex mt-2 items-center justify-center text-black rounded-md pr-2">
-                  <input
-                    type="text"
-                    placeholder="Search note by title"
-                    value={searchData.searchQuery}
-                    onChange={handleOnChangeForSearch}
-                    onKeyDown={checkKey}
-                    className="p-2 rounded-md border-none outline-none w-full lg:w-[65%] dark:bg-slate-800 duration-500  bg-slate-200 focus-within:ring-1 dark:focus-within:ring-blue-500 focus-within:ring-black group dark:text-slate-50 text-black"
-                  />
+                  ))}
                 </div>
-                <div className="inline-flex items-center flex-wrap md:flex-nowrap gap-3 p-2">
-                  <label className="inline-flex items-center gap-2 cursor-pointer">
-                    <label className={styles.container}>
-                      <input
-                        type="checkbox"
-                        checked={applyFilter.latest}
-                        onChange={() => {
-                          setApplyFilter({
-                            latest: true,
-                            oldest: false,
-                          });
-                          latestToOldestTodos();
-                        }}
-                      />
-                      <svg viewBox="0 0 64 64" height="1.5em" width="2em">
-                        <path
-                          d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
-                          pathLength="575.0541381835938"
-                          className={styles.path}
-                        />
-                      </svg>
-                    </label>{" "}
-                    Latest
-                  </label>
-                  <label className="inline-flex items-center gap-2 cursor-pointer">
-                    <label className={styles.container}>
-                      <input
-                        type="checkbox"
-                        checked={applyFilter.oldest}
-                        onChange={() => {
-                          setApplyFilter({
-                            latest: false,
-                            oldest: true,
-                          });
-                          OldestToLatestTodos();
-                        }}
-                      />
-                      <svg viewBox="0 0 64 64" height="1.5em" width="2em">
-                        <path
-                          d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
-                          pathLength="575.0541381835938"
-                          className={styles.path}
-                        />
-                      </svg>
-                    </label>{" "}
-                    Oldest
-                  </label>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-2 md:p-6 rounded-md bg-gray-100 gap-4 dark:bg-gray-800 w-full max-w-7xl">
-                {todos.map((todo, ind) => (
-                  <div
-                    className="bg-slate-50 text-black p-4 rounded-lg shadow-md h-fit inline-flex flex-col gap-2"
-                    key={ind}
-                  >
-                    <h3 className="font-bold text-xl overflow-hidden text-ellipsis text-nowrap">
-                      {todo.title}
-                    </h3>
-                    <p className="w-full break-words">{todo.description}</p>
-                    <p className="inline-flex items-center gap-2">
-                      {" "}
-                      {new Date(todo.updatedAt).toLocaleDateString()}{" "}
-                      <FaClock />
-                    </p>
-                    <span className="py-1 px-1 sm:p-3 sm:pb-0 sm:pl-0 text-center overflow-hidden text-ellipsis text-nowrap font-semibold inline-flex w-full items-center justify-start gap-3">
-                      <Link
-                        className="text-blue-600 text-base sm:text-lg md:text-xl hover:text-blue-400"
-                        href={`/updateNote/${todo._id}`}
-                      >
-                        <FiEdit />
-                      </Link>
-                      <button
-                        className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400"
-                        aria-label="Delete Note"
-                        onClick={() => {
-                          setPopupBox(true);
-                          setDelNote(todo._id);
-                        }}
-                      >
-                        <FiTrash2 />
-                      </button>
-                    </span>
-
-                    {popupBox && todo._id === delNote && (
-                      <div className="w-screen min-h-screen bg-black bg-opacity-85 fixed top-0 left-0 z-20 flex items-center justify-center">
-                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full z-30">
-                          <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                            Are you sure?
-                          </h3>
-                          <p className="text-sm text-gray-600 mb-6">
-                            This action will permanently delete the project and
-                            cannot be undone.
-                          </p>
-                          <div className="flex justify-end space-x-4">
-                            <button
-                              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-                              onClick={() => setPopupBox(false)} // Close modal without action
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                              onClick={deleteNote}
-                            >
-                              Delete Permanently
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
+              )}
             </>
           ) : (
             <div className="flex flex-col items-center justify-center h-full py-10">

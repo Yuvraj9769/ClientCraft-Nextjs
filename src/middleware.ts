@@ -16,6 +16,7 @@ export async function middleware(request: NextRequest) {
     "/add-new-client",
     "/add-note",
     "/submitFeedBack",
+    "/upload-document",
   ];
 
   // const companyClientPaths = ["/submitFeedBack"];

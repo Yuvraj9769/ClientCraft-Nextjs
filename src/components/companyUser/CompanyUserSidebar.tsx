@@ -85,8 +85,6 @@ const CompanyUserSidebar = () => {
 
   const logout = async () => {
     try {
-      setLoader(true);
-
       const res = await axios.get("/api/companyUser/logout");
       if (res.data.status === 200 && res.data.success) {
         toast.success(res.data.message);

@@ -4,7 +4,6 @@
 import { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { CldImage } from "next-cloudinary";
-// import { FaFileUpload } from "react-icons/fa";
 import {
   setClientsData,
   setLoggedIn,
@@ -27,6 +26,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { TbLoader3 } from "react-icons/tb";
 import PageLoader from "@/components/PageLoader";
+import { GoFileSubmodule } from "react-icons/go";
 
 const CompanyUserProfile = () => {
   const user = useAppSelector((state) => state.user);
@@ -194,14 +194,14 @@ const CompanyUserProfile = () => {
             Manage your account
           </Link>
 
-          {/* <Link
-        href="/updateProfile"
-        onClick={() => dispatch(setProfile(!profile))}
-        className="text-base w-full inline-flex py-1 items-center cursor-pointer border-b border-b-transparent hover:border-b-slate-700 duration-500 gap-3 overflow-hidden text-ellipsis"
-      >
-        <FaFileUpload />
-        Upload documents
-      </Link> */}
+          <Link
+            href="/upload-document"
+            onClick={() => dispatch(setProfile(!profile))}
+            className="text-base w-full inline-flex py-1 items-center cursor-pointer border-b border-b-transparent hover:border-b-slate-700 duration-500 gap-3 overflow-hidden text-ellipsis"
+          >
+            <GoFileSubmodule />
+            Documents
+          </Link>
 
           <Link
             href="/submitFeedBack"

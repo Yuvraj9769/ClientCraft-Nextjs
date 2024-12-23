@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import connectDB from "@/lib/dbConnet";
-import todoModel from "@/model/Todo.model";
+import TodoModel from "@/model/Todo.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(request: NextRequest) {
@@ -25,7 +25,7 @@ export async function PATCH(request: NextRequest) {
 
     await connectDB();
 
-    const updatedTodo = await todoModel.findByIdAndUpdate(
+    const updatedTodo = await TodoModel.findByIdAndUpdate(
       _id,
       {
         $set: {

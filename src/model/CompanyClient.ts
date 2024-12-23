@@ -16,7 +16,7 @@ export interface companyClientInterface extends Document {
   passordResetTokenExpiry: Date;
 }
 
-const companyClientSchema: Schema<companyClientInterface> =
+const CompanyClientSchema: Schema<companyClientInterface> =
   new Schema<companyClientInterface>(
     {
       name: {
@@ -73,8 +73,8 @@ const companyClientSchema: Schema<companyClientInterface> =
     }
   );
 
-const companyClientModel =
+const CompanyClientModel =
   (mongoose.models.companyClient as mongoose.Model<companyClientInterface>) ||
-  mongoose.model<companyClientInterface>("companyClient", companyClientSchema);
+  mongoose.model<companyClientInterface>("companyClient", CompanyClientSchema);
 
-export default companyClientModel;
+export default CompanyClientModel;

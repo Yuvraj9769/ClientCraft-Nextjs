@@ -2,7 +2,6 @@
 "use client";
 
 import { IoMdAdd } from "react-icons/io";
-import { ImSpinner6 } from "react-icons/im";
 import Link from "next/link";
 import CompanyUserLayout from "./CompanyUserLayout";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
@@ -10,7 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setProjects, setSearchedData } from "@/store/features/CRM/CRMSlice";
+import { setProjects } from "@/store/features/CRM/CRMSlice";
 import PageLoader from "@/components/PageLoader";
 
 const CompanyUserProjects = () => {
@@ -22,7 +21,6 @@ const CompanyUserProjects = () => {
   const dispatch = useAppDispatch();
 
   const projects = useAppSelector((state) => state.projects);
-  const searchedData = useAppSelector((state) => state.searchedData);
 
   const [searchData, setSearchData] = useState({
     searchQuery: "",
@@ -31,9 +29,10 @@ const CompanyUserProjects = () => {
   const handleOnChange = (e: any) => {
     const { value } = e.target;
 
-    if (searchedData.length !== 0 && value === "") {
-      dispatch(setSearchedData([]));
+    if (value.trim() === "" && projects.length !== 0) {
+      getAllProjects();
     }
+
     setSearchData((preData) => ({ ...preData, searchQuery: value }));
   };
 
@@ -45,7 +44,7 @@ const CompanyUserProjects = () => {
           "/api/companyUser/search-project",
           searchData
         );
-        dispatch(setSearchedData(res.data.data));
+        dispatch(setProjects(res.data.data));
       } catch (error: any) {
         setSearchData({
           searchQuery: "",
@@ -81,13 +80,11 @@ const CompanyUserProjects = () => {
     } catch (error: any) {
       toast.error(error.response.data.message || "Sorry something went wrong");
     } finally {
-      if (searchedData.length !== 0) {
+      if (searchData.searchQuery.trim() !== "") {
         setSearchData({
           searchQuery: "",
         });
-        dispatch(setSearchedData([]));
       }
-
       setLoading(false);
       setDelProjectId("");
       setPopupBox(false);
@@ -139,7 +136,7 @@ const CompanyUserProjects = () => {
             <div className="relative left-0 top-0 w-full py-4">
               <PageLoader />
             </div>
-          ) : searchedData.length !== 0 ? (
+          ) : projects.length !== 0 ? (
             <div className="max-w-7xl mx-auto flex flex-col items-center gap-2">
               <div className="w-full flex items-center justify-center p-4 lg:py-6 gap-4 flex-wrap lg:flex-nowrap">
                 <div className="gap-3 w-full inline-flex mt-2 items-center justify-center text-black rounded-md pr-2">
@@ -148,17 +145,19 @@ const CompanyUserProjects = () => {
                     value={searchData.searchQuery}
                     onChange={handleOnChange}
                     onKeyDown={checkKey}
-                    placeholder="Search food by type/name"
+                    placeholder="Search project by client/project name"
                     className="p-2 rounded-md border-none outline-none w-[85%] lg:w-[45%] dark:bg-slate-800 duration-500  bg-slate-200 focus-within:ring-1 dark:focus-within:ring-blue-500 focus-within:ring-black group dark:text-slate-50 text-black"
                   />
                 </div>
               </div>
 
-              <div className="max-w-7xl p-4 flex flex-wrap gap-3 items-center mx-auto w-full">
-                {projectLoader ? (
-                  <ImSpinner6 className="text-3xl md:text-6xl animate-spin" />
-                ) : (
-                  searchedData.map((proj, ind) => (
+              {projectLoader ? (
+                <div className="relative left-0 top-0 w-full py-4">
+                  <PageLoader />
+                </div>
+              ) : (
+                <div className="max-w-7xl p-4 flex flex-wrap gap-3 items-center mx-auto w-full">
+                  {projects.map((proj, ind) => (
                     <div
                       className="max-w-sm w-full sm:w-[350px] mx-auto my-4 bg-white shadow-lg rounded-lg overflow-hidden"
                       key={ind}
@@ -221,6 +220,8 @@ const CompanyUserProjects = () => {
                         </button>
                       </div>
 
+                      {/* Popup box for delete. */}
+
                       {popupBox && proj._id === delProjectId && (
                         <div className="w-screen min-h-screen bg-black bg-opacity-85 fixed top-0 left-0 z-20 flex items-center justify-center">
                           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full z-30">
@@ -248,131 +249,19 @@ const CompanyUserProjects = () => {
                           </div>
                         </div>
                       )}
+
+                      {/* Popup box ends here */}
                     </div>
-                  ))
-                )}
-              </div>
-            </div>
-          ) : projects.length !== 0 ? (
-            <div className="max-w-7xl mx-auto flex flex-col items-center gap-2">
-              <div className="w-full flex items-center justify-center p-4 lg:py-6 gap-4 flex-wrap lg:flex-nowrap">
-                <div className="gap-3 w-full inline-flex mt-2 items-center justify-center text-black rounded-md pr-2">
-                  <input
-                    type="text"
-                    value={searchData.searchQuery}
-                    onChange={handleOnChange}
-                    onKeyDown={checkKey}
-                    placeholder="Search project by client/project name"
-                    className="p-2 rounded-md border-none outline-none w-[85%] lg:w-[45%] dark:bg-slate-800 duration-500  bg-slate-200 focus-within:ring-1 dark:focus-within:ring-blue-500 focus-within:ring-black group dark:text-slate-50 text-black"
-                  />
+                  ))}
                 </div>
-              </div>
-
-              <div className="max-w-7xl p-4 flex flex-wrap gap-3 items-center mx-auto w-full">
-                {projects.map((proj, ind) => (
-                  <div
-                    className="max-w-sm w-full sm:w-[350px] mx-auto my-4 bg-white shadow-lg rounded-lg overflow-hidden"
-                    key={ind}
-                  >
-                    <div className="p-4">
-                      <h3 className="text-xl font-semibold text-gray-900 overflow-hidden inline-flex gap-1 w-full">
-                        <span className="text-nowrap">Name:</span>
-                        <span className="overflow-hidden text-ellipsis text-nowrap">
-                          {proj.clientName}
-                        </span>
-                      </h3>
-                      <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
-                        <span className="font-semibold text-nowrap">
-                          Project:
-                        </span>{" "}
-                        <span className=" overflow-hidden text-ellipsis text-nowrap">
-                          {proj.projectName}
-                        </span>
-                      </p>
-                      <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
-                        <span className="font-semibold text-nowrap">
-                          Budget:
-                        </span>{" "}
-                        <span className=" overflow-hidden text-ellipsis text-nowrap">
-                          {proj.budget}
-                        </span>
-                      </p>
-
-                      <p className="mt-2">
-                        <span
-                          className={`px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 shadow-md ${
-                            proj.status === "Active"
-                              ? "text-green-600"
-                              : proj.status === "Completed"
-                              ? "text-blue-600"
-                              : "text-yellow-600"
-                          }`}
-                        >
-                          {proj.status}
-                        </span>
-                      </p>
-                    </div>
-
-                    <div className="flex gap-2 p-4 border-t border-gray-300 justify-end">
-                      <Link
-                        className="text-blue-600 text-base sm:text-lg md:text-xl hover:text-blue-400 mx-2"
-                        href={`/update-project/${proj._id}`}
-                      >
-                        <FiEdit />
-                      </Link>
-                      <button
-                        className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2"
-                        aria-label="Delete Client"
-                        onClick={() => {
-                          setPopupBox(true);
-                          setDelProjectId(proj._id);
-                        }}
-                      >
-                        <FiTrash2 />
-                      </button>
-                    </div>
-
-                    {/* Popup box for delete. */}
-
-                    {popupBox && proj._id === delProjectId && (
-                      <div className="w-screen min-h-screen bg-black bg-opacity-85 fixed top-0 left-0 z-20 flex items-center justify-center">
-                        <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full z-30">
-                          <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                            Are you sure?
-                          </h3>
-                          <p className="text-sm text-gray-600 mb-6">
-                            This action will permanently delete the project and
-                            cannot be undone.
-                          </p>
-                          <div className="flex justify-end space-x-4">
-                            <button
-                              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-                              onClick={() => setPopupBox(false)} // Close modal without action
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                              onClick={deleteProject}
-                            >
-                              Delete Permanently
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Popup box ends here */}
-                  </div>
-                ))}
-              </div>
+              )}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-full py-10">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black dark:text-slate-50 mb-4">
                 Sorry, no projects found.
               </h2>
-              <p className="text-gray-300 text-center max-w-md text-xl md:text-2xl mb-6">
+              <p className="text-gray-300 text-center max-w-md text-xl md:text-xl mb-6">
                 It looks like there are no projects available at the moment.
                 Start by adding a new project or check back later for updates.
               </p>

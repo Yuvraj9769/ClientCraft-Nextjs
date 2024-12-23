@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import connectDB from "@/lib/dbConnet";
-import companyClientModel from "@/model/CompanyClient";
+import CompanyClientModel from "@/model/CompanyClient";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(request: NextRequest) {
@@ -28,7 +28,7 @@ export async function PATCH(request: NextRequest) {
 
     await connectDB();
 
-    const existingClientWithEmail = await companyClientModel.findOne({
+    const existingClientWithEmail = await CompanyClientModel.findOne({
       email,
       _id: {
         $ne: _id,
@@ -48,7 +48,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const client = await companyClientModel.findByIdAndUpdate(
+    const client = await CompanyClientModel.findByIdAndUpdate(
       _id,
       {
         $set: {

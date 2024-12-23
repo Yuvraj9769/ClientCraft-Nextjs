@@ -1,8 +1,10 @@
 
 IMP Check all apis inside in try catch and database conenctivity is there or not?
 
+Solving searching issue and also solving client,project should get to specific user.
+
 0) Remove  // const companyClientPaths = ["/submitFeedBack"]; uncomment and do comment in  middleware.
-1) Add img,pdf,etc not video upload facility add.
+1) Add pdf,doc,etc with 10mb sizer only not video upload facility add.
 
 
 

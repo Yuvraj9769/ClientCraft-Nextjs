@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import connectDB from "@/lib/dbConnet";
-import projectModel from "@/model/Project";
+import ProjectModel from "@/model/Project";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(request: NextRequest) {
@@ -27,7 +27,7 @@ export async function PATCH(request: NextRequest) {
 
     await connectDB();
 
-    const project = await projectModel.findByIdAndUpdate(
+    const project = await ProjectModel.findByIdAndUpdate(
       _id,
       {
         clientName,

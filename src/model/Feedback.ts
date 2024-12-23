@@ -6,7 +6,7 @@ export interface feedBackInterface extends Document {
   content: string;
 }
 
-const feedBackSchema: Schema<feedBackInterface> = new Schema<feedBackInterface>(
+const FeedBackSchema: Schema<feedBackInterface> = new Schema<feedBackInterface>(
   {
     senderUserId: {
       type: String,
@@ -26,8 +26,8 @@ const feedBackSchema: Schema<feedBackInterface> = new Schema<feedBackInterface>(
   }
 );
 
-const feedBackModel =
+const FeedBackModel =
   (mongoose.models.feedBackSchema as mongoose.Model<feedBackInterface>) ||
-  mongoose.model<feedBackInterface>("feedBackSchema", feedBackSchema);
+  mongoose.model<feedBackInterface>("feedBackSchema", FeedBackSchema);
 
-export default feedBackModel;
+export default FeedBackModel;

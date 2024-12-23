@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import connectDB from "@/lib/dbConnet";
-import projectModel from "@/model/Project";
+import CompanyUserModel from "@/model/CompanyUser.model";
+import { Types } from "mongoose";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import ProjectModel from "@/model/Project";
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,7 +31,7 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    const existingProject = await projectModel.find({
+    const existingProject = await ProjectModel.find({
       projectName,
       clientName: projectClientName,
       status: projectStatus,
@@ -47,7 +51,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const newProject = await projectModel.create({
+    const newProject = await ProjectModel.create({
       projectName,
       clientName: projectClientName,
       status: projectStatus,
@@ -66,6 +70,45 @@ export async function POST(request: NextRequest) {
         }
       );
     }
+
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("login-user-005")?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        {
+          status: 401,
+          message: "Unauthorized",
+          success: false,
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const decodedData = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY!
+    ) as JwtPayload;
+
+    const companyUser = await CompanyUserModel.findById(decodedData.id);
+
+    if (!companyUser) {
+      return NextResponse.json(
+        {
+          status: 401,
+          message: "Unauthorized",
+          success: false,
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    companyUser.projects?.push(newProject._id as Types.ObjectId);
+    await companyUser.save();
 
     return NextResponse.json(
       {

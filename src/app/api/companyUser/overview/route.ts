@@ -35,6 +35,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    console.log(comapnyCurrentUserData);
+
     const projectsData = await projectModel.aggregate([
       {
         $group: {

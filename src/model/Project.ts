@@ -7,7 +7,7 @@ export interface ProjectInterface extends Document {
   budget: string;
 }
 
-const projectSchema: Schema<ProjectInterface> = new Schema<ProjectInterface>(
+const ProjectSchema: Schema<ProjectInterface> = new Schema<ProjectInterface>(
   {
     clientName: {
       type: String,
@@ -32,8 +32,8 @@ const projectSchema: Schema<ProjectInterface> = new Schema<ProjectInterface>(
   }
 );
 
-const projectModel =
+const ProjectModel =
   (mongoose.models.Project as mongoose.Model<ProjectInterface>) ||
-  mongoose.model<ProjectInterface>("Project", projectSchema);
+  mongoose.model<ProjectInterface>("Project", ProjectSchema);
 
-export default projectModel;
+export default ProjectModel;

@@ -6,7 +6,7 @@ export interface todoInterface extends Document {
   isDone: boolean;
 }
 
-const todoSchema: Schema<todoInterface> = new Schema<todoInterface>(
+const TodoSchema: Schema<todoInterface> = new Schema<todoInterface>(
   {
     title: {
       type: String,
@@ -26,8 +26,8 @@ const todoSchema: Schema<todoInterface> = new Schema<todoInterface>(
   }
 );
 
-const todoModel =
+const TodoModel =
   (mongoose.models.Todo as mongoose.Model<todoInterface>) ||
-  mongoose.model<todoInterface>("Todo", todoSchema);
+  mongoose.model<todoInterface>("Todo", TodoSchema);
 
-export default todoModel;
+export default TodoModel;

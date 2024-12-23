@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import connectDB from "@/lib/dbConnet";
-import projectModel from "@/model/Project";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import CompanyUserModel from "@/model/CompanyUser.model";
+import { Types } from "mongoose";
+import ProjectModel from "@/model/Project";
 
 export async function DELETE(
   _: NextRequest,
@@ -23,7 +27,7 @@ export async function DELETE(
 
     await connectDB();
 
-    const deletedProject = await projectModel.findByIdAndDelete(delId);
+    const deletedProject = await ProjectModel.findByIdAndDelete(delId);
 
     if (!deletedProject) {
       return NextResponse.json(
@@ -38,7 +42,48 @@ export async function DELETE(
       );
     }
 
-    const otherProjects = await projectModel.find();
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("login-user-005")?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        {
+          status: 401,
+          message: "Unauthorized",
+          success: false,
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const decodedData = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY!
+    ) as JwtPayload;
+
+    const companyUser = await CompanyUserModel.findById(decodedData.id);
+
+    if (!companyUser) {
+      return NextResponse.json(
+        {
+          status: 401,
+          message: "Unauthorized",
+          success: false,
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    companyUser.projects = companyUser.projects.filter(
+      (projIds) => !projIds.equals(new Types.ObjectId(delId))
+    );
+    await companyUser.save();
+
+    const otherProjects = await ProjectModel.find();
 
     if (!otherProjects) {
       return NextResponse.json(

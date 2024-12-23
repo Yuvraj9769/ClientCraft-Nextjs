@@ -10,6 +10,8 @@ export interface CompanyUserInterface extends Document {
   phoneNumber: string;
   department: string;
   Clients?: Types.ObjectId[];
+  projects: Types.ObjectId[];
+  documents: Types.ObjectId[];
   isActive?: boolean;
   password: string;
   role: string;
@@ -75,15 +77,31 @@ export const CompanyUserSchema: Schema<CompanyUserInterface> =
       Clients: [
         {
           type: Schema.Types.ObjectId,
-          ref: "Client",
+          ref: "companyClient",
         },
       ],
+
       todos: [
         {
           type: Schema.Types.ObjectId,
           ref: "Todo",
         },
       ],
+
+      projects: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Project",
+        },
+      ],
+
+      documents: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "documentModel",
+        },
+      ],
+
       isActive: {
         type: Boolean,
         default: false,

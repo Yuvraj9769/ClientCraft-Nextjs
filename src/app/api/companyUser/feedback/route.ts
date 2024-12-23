@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import feedBackModel from "@/model/Feedback";
+
+import FeedBackModel from "@/model/Feedback";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const feedBack = await feedBackModel.create({
+    const feedBack = await FeedBackModel.create({
       senderUserId: userId,
       senderUserEmail: email,
       content: data,

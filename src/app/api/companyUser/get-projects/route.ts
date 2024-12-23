@@ -1,15 +1,40 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import connectDB from "@/lib/dbConnet";
-import projectModel from "@/model/Project";
+import CompanyUserModel from "@/model/CompanyUser.model";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
     await connectDB();
 
-    const allProjects = await projectModel.find();
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("login-user-005")?.value;
 
-    if (allProjects.length === 0) {
+    if (!token) {
+      return NextResponse.json(
+        {
+          status: 401,
+          message: "Unauthorized",
+          success: false,
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const decodedData = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY!
+    ) as JwtPayload;
+
+    const projectsData = await CompanyUserModel.findById(
+      decodedData.id
+    ).populate("projects");
+
+    if (projectsData?.projects.length === 0 || !projectsData) {
       return NextResponse.json(
         {
           success: false,
@@ -25,7 +50,7 @@ export async function GET() {
     return NextResponse.json(
       {
         success: true,
-        data: allProjects,
+        data: projectsData.projects,
         message: "OK",
         status: 200,
       },

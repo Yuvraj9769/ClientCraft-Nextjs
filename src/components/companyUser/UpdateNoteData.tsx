@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { setSearchedTodos } from "@/store/features/CRM/CRMSlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -18,10 +16,6 @@ const UpdateNoteData = () => {
 
   const [dataLoader, setDataLoader] = useState(true);
   const [dataProcessing, setDataProcessing] = useState(false);
-
-  const dispatch = useAppDispatch();
-
-  const searchedTodos = useAppSelector((state) => state.searchedTodos);
 
   const [currentNoteData, setCurrentNoteData] = useState({
     _id: "",
@@ -76,9 +70,6 @@ const UpdateNoteData = () => {
     } finally {
       setDataProcessing(false);
       router.push("/add-note");
-      if (searchedTodos.length !== 0) {
-        dispatch(setSearchedTodos([]));
-      }
     }
   };
 
@@ -95,9 +86,6 @@ const UpdateNoteData = () => {
       router.push("/add-note");
     } finally {
       setDataLoader(false);
-      if (searchedTodos.length !== 0) {
-        dispatch(setSearchedTodos([]));
-      }
     }
   }, [noteId]);
 
