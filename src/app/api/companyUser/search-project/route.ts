@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import connectDB from "@/lib/dbConnet";
-import projectModel from "@/model/Project";
+import CompanyUserModel from "@/model/CompanyUser.model";
+import "@/model/Project";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -22,8 +25,32 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    const searchedProject = await projectModel
-      .find({
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("login-user-005")?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        {
+          status: 401,
+          message: "Unauthorized",
+          success: false,
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const decodedData = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY!
+    ) as JwtPayload;
+
+    const searchedProject = await CompanyUserModel.findById(
+      decodedData.id
+    ).populate({
+      path: "projects",
+      match: {
         $or: [
           {
             clientName: {
@@ -38,10 +65,10 @@ export async function POST(request: NextRequest) {
             },
           },
         ],
-      })
-      .select("-__v");
+      },
+    });
 
-    if (searchedProject.length === 0) {
+    if (!searchedProject || searchedProject.projects.length === 0) {
       return NextResponse.json(
         {
           status: 404,
@@ -58,7 +85,7 @@ export async function POST(request: NextRequest) {
       {
         status: 200,
         message: "Project found",
-        data: searchedProject,
+        data: searchedProject.projects,
         success: true,
       },
       {

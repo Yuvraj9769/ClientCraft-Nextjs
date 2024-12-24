@@ -152,14 +152,14 @@ const CompanyUserProjects = () => {
               </div>
 
               {projectLoader ? (
-                <div className="relative left-0 top-0 w-full py-4">
+                <div className="relative left-0 top-0 w-full py-4 my-3">
                   <PageLoader />
                 </div>
               ) : (
-                <div className="max-w-7xl p-4 flex flex-wrap gap-3 items-center mx-auto w-full">
+                <div className="max-w-7xl p-4 flex flex-wrap gap-4 items-center justify-center mx-auto w-full">
                   {projects.map((proj, ind) => (
                     <div
-                      className="max-w-sm w-full sm:w-[350px] mx-auto my-4 bg-white shadow-lg rounded-lg overflow-hidden"
+                      className="max-w-sm w-full sm:w-[350px] mx-auto my-1 bg-white shadow-lg rounded-lg overflow-hidden md:m-0"
                       key={ind}
                     >
                       <div className="p-4">

@@ -9,14 +9,14 @@ export interface CompanyUserInterface extends Document {
   companyName: string;
   phoneNumber: string;
   department: string;
-  Clients?: Types.ObjectId[];
+  Clients: Types.ObjectId[];
   projects: Types.ObjectId[];
   documents: Types.ObjectId[];
+  todos: Types.ObjectId[];
   isActive?: boolean;
   password: string;
   role: string;
   profilePic: string;
-  todos: Types.ObjectId[];
   passwordResetToken: string | undefined;
   passwordResetTokenExpiry: Date | undefined;
   generateJWTTOken(): Promise<string>;

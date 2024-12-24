@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import CompanyUserModel from "@/model/CompanyUser.model";
+import "@/model/CompanyClient";
 
 export async function GET() {
   try {

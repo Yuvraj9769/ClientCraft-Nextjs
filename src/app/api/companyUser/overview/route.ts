@@ -2,9 +2,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import connectDB from "@/lib/dbConnet";
-import projectModel from "@/model/Project";
-import companyClientModel from "@/model/CompanyClient";
 import CompanyUserModel from "@/model/CompanyUser.model";
+import "@/model/CompanyClient";
+import "@/model/Project";
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,7 +19,10 @@ export async function GET(request: NextRequest) {
 
     await connectDB();
 
-    const comapnyCurrentUserData = await CompanyUserModel.findById(id);
+    const comapnyCurrentUserData = await CompanyUserModel.findById(id)
+      .populate("Clients")
+      .populate("todos")
+      .populate("projects");
 
     if (!comapnyCurrentUserData) {
       return NextResponse.json(
@@ -35,31 +38,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    console.log(comapnyCurrentUserData);
-
-    const projectsData = await projectModel.aggregate([
-      {
-        $group: {
-          _id: "$status",
-          count: { $sum: 1 }, //  // Count the documents in each group
-        },
-      },
-    ]);
-
-    const clientsCount = await companyClientModel.countDocuments();
-
-    const activeClientsCount = await companyClientModel.aggregate([
-      {
-        $match: {
-          isActive: true,
-        },
-      },
-      {
-        $count: "totalActiveClients", // count all active clients and give output name as totalActiveClients
-      },
-    ]);
-
-    const currentCompanyAllUsers = await CompanyUserModel.aggregate([
+    const totalCompanyUsers = await CompanyUserModel.aggregate([
       {
         $match: {
           companyName: comapnyCurrentUserData.companyName,
@@ -70,33 +49,31 @@ export async function GET(request: NextRequest) {
       },
     ]);
 
-    const overViewData = [
-      { clientsCount: clientsCount || 0 },
-      activeClientsCount.length !== 0
-        ? activeClientsCount?.[0].totalActiveClients
-        : 0,
-      currentCompanyAllUsers.length !== 0
-        ? currentCompanyAllUsers?.[0].totalCompanyUsers
-        : 0,
+    const overViewData = [];
+
+    const clientsCount = comapnyCurrentUserData.Clients.length || 0;
+
+    const activeClientsCount =
+      comapnyCurrentUserData.Clients.filter((client: any) => client.isActive)
+        .length || 0;
+
+    overViewData.push(
+      { clientsCount },
+      { activeClientsCount },
+      { totalCompanyUsers: totalCompanyUsers[0].totalCompanyUsers }
+    );
+
+    const modifiedProjectsData = [
+      { _id: "Pending", count: 0 },
+      { _id: "Active", count: 0 },
+      { _id: "Completed", count: 0 },
     ];
 
-    const modifiedProjectsData = [];
-
-    modifiedProjectsData.push(
-      projectsData.length !== 0
-        ? projectsData?.[0]
-        : { _id: "Pending", count: 0 }
-    );
-    modifiedProjectsData.push(
-      projectsData.length !== 0
-        ? projectsData?.[1]
-        : { _id: "Active", count: 0 }
-    );
-    modifiedProjectsData.push(
-      projectsData.length !== 0
-        ? projectsData?.[2]
-        : { _id: "Completed", count: 0 }
-    );
+    comapnyCurrentUserData.projects.forEach((project: any) => {
+      if (project.status === "Pending") modifiedProjectsData[0].count++;
+      if (project.status === "Active") modifiedProjectsData[1].count++;
+      if (project.status === "Completed") modifiedProjectsData[2].count++;
+    });
 
     overViewData.push(modifiedProjectsData);
 

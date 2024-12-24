@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import connectDB from "@/lib/dbConnet";
-import companyClientModel from "@/model/CompanyClient";
+import "@/model/CompanyClient";
+import CompanyUserModel from "@/model/CompanyUser.model";
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,8 +25,32 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    const searchedClients = await companyClientModel
-      .find({
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("login-user-005")?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        {
+          status: 401,
+          message: "Unauthorized",
+          success: false,
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const decodedData = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY!
+    ) as JwtPayload;
+
+    const searchedClients = await CompanyUserModel.findById(
+      decodedData.id
+    ).populate({
+      path: "Clients",
+      match: {
         $or: [
           {
             name: {
@@ -38,10 +65,10 @@ export async function POST(request: NextRequest) {
             },
           },
         ],
-      })
-      .select("-__v");
+      },
+    });
 
-    if (searchedClients.length === 0) {
+    if (!searchedClients || searchedClients.Clients.length === 0) {
       return NextResponse.json(
         {
           status: 404,
@@ -58,7 +85,7 @@ export async function POST(request: NextRequest) {
       {
         status: 200,
         message: "Clinets found",
-        data: searchedClients,
+        data: searchedClients.Clients,
         success: true,
       },
       {

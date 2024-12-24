@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import connectDB from "@/lib/dbConnet";
 import CompanyUserModel from "@/model/CompanyUser.model";
+import "@/model/Project";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";

@@ -152,13 +152,13 @@ const CompanyUserClients = () => {
                 </div>
               </div>
 
-              <div className="max-w-7xl p-4 flex flex-wrap gap-3 items-center mx-auto">
+              <div className="max-w-7xl p-4 flex flex-wrap gap-4 items-center justify-center mx-auto">
                 {clientLoader ? (
                   <ImSpinner6 className="text-3xl md:text-6xl animate-spin" />
                 ) : (
                   clientsData.map((client, ind) => (
                     <div
-                      className="max-w-sm w-full sm:w-[350px] mx-auto my-4 bg-white shadow-lg rounded-lg overflow-hidden"
+                      className="max-w-sm w-full sm:w-[350px] mx-auto my-1 md:m-0 bg-white shadow-lg rounded-lg overflow-hidden"
                       key={ind}
                     >
                       <div className="p-4">

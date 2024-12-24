@@ -13,7 +13,7 @@ const CompanyUserDashbaord = () => {
   const [overData, setOverViewData] = useState([
     { clientsCount: 0 },
     0,
-    0,
+    { totalCompanyUsers: 0 },
     [
       { _id: "Pending", count: 0 },
       { _id: "Active", count: 0 },
@@ -115,7 +115,7 @@ const CompanyUserDashbaord = () => {
                     end={
                       typeof overData[0] === "object" &&
                       "clientsCount" in overData[0]
-                        ? overData[0]?.clientsCount
+                        ? (overData[0]?.clientsCount as number)
                         : 0
                     }
                     duration={3}
@@ -147,7 +147,12 @@ const CompanyUserDashbaord = () => {
                 <p className="text-3xl font-bold">
                   <CountUp
                     start={0}
-                    end={overData[2] as number}
+                    end={
+                      typeof overData[2] === "object" &&
+                      "totalCompanyUsers" in overData[2]
+                        ? (overData[2]?.totalCompanyUsers as number)
+                        : 0
+                    }
                     duration={3}
                     separator=","
                   />

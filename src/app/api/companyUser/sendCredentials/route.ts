@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import connectDB from "@/lib/dbConnet";
-import companyClientModel from "@/model/CompanyClient";
+import "@/model/CompanyClient";
 import sendMail from "@/utils/sendMail";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { cookies } from "next/headers";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import CompanyUserModel from "@/model/CompanyUser.model";
+import CompanyClientModel from "@/model/CompanyClient";
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,16 +30,63 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    const companyClientUser = await companyClientModel.findOne({
-      $or: [
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("login-user-005")?.value;
+
+    if (!token) {
+      return NextResponse.json(
         {
-          name: clientName,
+          status: 401,
+          message: "Unauthorized",
+          success: false,
         },
         {
-          email: clientEmail,
-        },
-      ],
+          status: 401,
+        }
+      );
+    }
+
+    const decodedData = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY!
+    ) as JwtPayload;
+
+    const companyClientFromPopulate = await CompanyUserModel.findById(
+      decodedData.id
+    ).populate({
+      path: "Clients",
+      match: {
+        $or: [
+          {
+            name: clientName,
+          },
+          {
+            email: clientEmail,
+          },
+        ],
+      },
+      select: "name email isCredentialsSend",
     });
+
+    if (
+      !companyClientFromPopulate ||
+      companyClientFromPopulate?.Clients.length === 0
+    ) {
+      return NextResponse.json(
+        {
+          status: 400,
+          message: "Client not found",
+          success: false,
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const companyClientUser = await CompanyClientModel.findById(
+      companyClientFromPopulate.Clients[0]._id
+    );
 
     if (!companyClientUser) {
       return NextResponse.json(

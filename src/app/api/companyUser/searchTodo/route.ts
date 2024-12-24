@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import connectDB from "@/lib/dbConnet";
-import todoModel from "@/model/Todo.model";
+import CompanyUserModel from "@/model/CompanyUser.model";
+import "@/model/Todo.model"; //Used because it require for populate to register model.
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -22,14 +25,40 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    const searchTodos = await todoModel.find({
-      title: {
-        $regex: searchQuery,
-        $options: "i",
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("login-user-005")?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        {
+          status: 401,
+          message: "Unauthorized",
+          success: false,
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const decodedData = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY!
+    ) as JwtPayload;
+
+    const searchTodos = await CompanyUserModel.findById(
+      decodedData.id
+    ).populate({
+      path: "todos",
+      match: {
+        title: {
+          $regex: searchQuery,
+          $options: "i",
+        },
       },
     });
 
-    if (searchTodos.length === 0) {
+    if (!searchTodos || searchTodos.todos.length === 0) {
       return NextResponse.json(
         {
           status: false,
@@ -45,7 +74,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         status: 200,
-        data: searchTodos,
+        data: searchTodos.todos,
         message: "Todos found",
         success: true,
       },
