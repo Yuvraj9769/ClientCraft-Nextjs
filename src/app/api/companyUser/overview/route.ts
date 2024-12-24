@@ -5,6 +5,7 @@ import connectDB from "@/lib/dbConnet";
 import CompanyUserModel from "@/model/CompanyUser.model";
 import "@/model/CompanyClient";
 import "@/model/Project";
+import "@/model/Todo.model";
 
 export async function GET(request: NextRequest) {
   try {
