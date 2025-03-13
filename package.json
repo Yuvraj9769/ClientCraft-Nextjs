@@ -20,11 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.0",
     "nanoid": "^5.0.8",
-<<<<<<< HEAD
-    "next": "15.0.2",
-=======
     "next": "^15.2.2",
->>>>>>> 3857034 (Testing - 1)
     "next-cloudinary": "^6.16.0",
     "nodemailer": "^6.9.16",
     "pdf-lib": "^1.17.1",
