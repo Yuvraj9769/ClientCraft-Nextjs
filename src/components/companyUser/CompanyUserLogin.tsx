@@ -111,7 +111,7 @@ const CompanyUserLogin = () => {
               onChange={handleChange}
               minLength={2}
               maxLength={50}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
+              className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
               required
             />
           </div>
@@ -130,7 +130,7 @@ const CompanyUserLogin = () => {
                 value={formData.password}
                 onChange={handleChange}
                 minLength={8}
-                className="mt-1 block px-3 py-2 w-[90%] outline-none rounded-md"
+                className="mt-1 block px-3 py-2 w-[90%] bg-slate-50 outline-none rounded-md"
                 required
               />
               <span

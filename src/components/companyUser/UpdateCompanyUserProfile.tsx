@@ -116,7 +116,7 @@ const UpdateCompanyUserProfile = () => {
                   value={userData.username}
                   readOnly
                   name="username"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter username"
                   required
                 />
@@ -135,7 +135,7 @@ const UpdateCompanyUserProfile = () => {
                   value={userData.firstName}
                   onChange={handleOnChange}
                   name="firstName"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter firstName"
                   required
                 />
@@ -154,7 +154,7 @@ const UpdateCompanyUserProfile = () => {
                   value={userData.lastName}
                   onChange={handleOnChange}
                   name="lastName"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter lastName"
                   required
                 />
@@ -173,7 +173,7 @@ const UpdateCompanyUserProfile = () => {
                   name="email"
                   value={userData.email}
                   onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter email"
                   required
                 />
@@ -192,7 +192,7 @@ const UpdateCompanyUserProfile = () => {
                   value={userData.companyName}
                   onChange={handleOnChange}
                   name="companyName"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter companyName"
                   required
                 />
@@ -211,7 +211,7 @@ const UpdateCompanyUserProfile = () => {
                   value={userData.department}
                   onChange={handleOnChange}
                   name="department"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter department name"
                   required
                 />
@@ -230,7 +230,7 @@ const UpdateCompanyUserProfile = () => {
                   name="phoneNumber"
                   value={userData.phoneNumber}
                   onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter client phone number"
                   required
                 />

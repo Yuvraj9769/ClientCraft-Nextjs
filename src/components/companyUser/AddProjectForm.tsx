@@ -112,7 +112,7 @@ const AddProjectForm = () => {
                   value={projectFormData.projectName}
                   onChange={handleOnChange}
                   name="projectName"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter project name"
                   required
                 />
@@ -131,7 +131,7 @@ const AddProjectForm = () => {
                   name="projectClientName"
                   value={projectFormData.projectClientName}
                   onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter project client name"
                   required
                 />
@@ -146,7 +146,7 @@ const AddProjectForm = () => {
                 </label>
                 <select
                   name="projectStatus"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={projectFormData.projectStatus}
                   onChange={handleOnChange}
                   required
@@ -171,7 +171,7 @@ const AddProjectForm = () => {
                   name="projectBudget"
                   value={projectFormData.projectBudget}
                   onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter project budget"
                   required
                 />

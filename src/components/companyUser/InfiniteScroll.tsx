@@ -1,72 +1,97 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-
-interface DataItem {
-  id: string;
-  name: string;
-}
+import toast from "react-hot-toast";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { setDocuments } from "@/store/features/CRM/CRMSlice";
+import { format } from "date-fns";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import Link from "next/link";
 
 const InfiniteScroll: React.FC = () => {
-  const [data, setData] = useState<DataItem[]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [hasMore, setHasMore] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
+  const documents = useSelector((state: RootState) => state.documents);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    fetchData(page);
-  }, [page]);
-
-  const fetchData = async (page: number) => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      console.log("APi requesting");
 
-      const response = await axios.get(
-        `api/companyUser/documents-on-load?page=${page}&limit=10`
-      );
+      const response = await axios.get("api/companyUser/getDocuments");
 
-      const fetchedData: DataItem[] = response.data.data;
-
-      setData((prevData) => [...prevData, ...fetchedData]);
-
-      if (page >= response.data.totalPages) {
-        setHasMore(false);
+      if (response.data.data.documents.length === 0) {
+        toast.error("No documents found");
+        return;
       }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+
+      dispatch(setDocuments(response.data.data.documents));
+    } catch (error: any) {
+      toast.error(error.message || "Please try again.");
+    } finally {
       setLoading(false);
     }
-  };
-
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop + 1 >=
-      document.documentElement.scrollHeight
-    ) {
-      if (hasMore && !loading) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    }
-  };
+  }, []);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [hasMore, loading]);
+    fetchData();
+  }, [fetchData]);
 
   return (
-    <div>
-      {data.map((item) => (
-        <div key={item.id} className="data-item">
-          {item.name}
+    <div className="w-full flex items-center justify-center p-2 md:p-4 bg-slate-50 dark:bg-slate-900">
+      {loading ? (
+        <div className="flex flex-wrap gap-4 items-center justify-center">
+          <Skeleton className="h-[105px] w-[150px] rounded-xl" />
+          <Skeleton className="h-[105px] w-[150px] rounded-xl" />
+          <Skeleton className="h-[105px] w-[150px] rounded-xl" />
+          <Skeleton className="h-[105px] w-[150px] rounded-xl" />
+          <Skeleton className="h-[105px] w-[150px] rounded-xl" />
         </div>
-      ))}
-      {loading && <p>Loading...</p>}
-      {!hasMore && <p>No more data to load.</p>}
+      ) : documents.length === 0 ? (
+        <div className="flex flex-col items-center justify-center p-6 rounded-lg shadow-md dark:border dark:border-slate-600">
+          <p className="font-semibold text-black dark:text-slate-50 text-3xl">
+            No documents found
+          </p>
+          <p className="text-black dark:text-slate-50 text-lg mt-3">
+            Try uploading a document to see it here.
+          </p>
+        </div>
+      ) : (
+        <div className="p-2 rounded-lg flex flex-col gap-3 md:gap-4 justify-center items-center">
+          <h1 className="text-3xl my-1 text-center font-semibold text-black dark:text-slate-50">
+            Your Documents
+          </h1>
+          <div className="flex flex-row flex-wrap gap-2 md:gap-3 p-1 my-2">
+            {documents.map((doc, index) => (
+              <Card
+                key={index}
+                className="hover:shadow-lg  dark:hover:shadow-gray-600 transition-shadow duration-300 rounded-lg border border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 p-1 max-w-[180px] max-h-[190px] w-full overflow-hidden"
+              >
+                <CardHeader className="p-2">
+                  <Link
+                    href={doc.documentLink}
+                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <h1 className="text-lg text-ellipsis text-nowrap overflow-hidden text-center font-semibold text-blue-600 hover:underline cursor-pointer">
+                      {doc.title}
+                    </h1>
+                  </Link>
+                </CardHeader>
+                <CardContent className="p-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center text-ellipsis text-nowrap overflow-hidden">
+                    {format(new Date(doc.createdAt), "dd MMM yyyy, hh:mm a")}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

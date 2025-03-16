@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface DocumentSchemaInterface extends Document {
   companyUserId: string;
   title: string;
+  documentLink: string;
 }
 
 export const DocumentSchema: Schema<DocumentSchemaInterface> =
@@ -13,6 +14,10 @@ export const DocumentSchema: Schema<DocumentSchemaInterface> =
         required: true,
       },
       title: {
+        type: String,
+        required: true,
+      },
+      documentLink: {
         type: String,
         required: true,
       },

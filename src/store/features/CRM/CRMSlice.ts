@@ -47,7 +47,8 @@ export interface todosInterface {
 export interface documentDataInterface {
   _id: string;
   title: string;
-  thumbnailImgUrl: string;
+  documentLink: string;
+  createdAt: string;
 }
 
 export interface CRMDataState {

@@ -1,21 +1,16 @@
 "use client";
 
-import {
-  setDarkMode,
-  setProfile,
-  setSidebarVisible,
-} from "@/store/features/CRM/CRMSlice";
+import { setProfile, setSidebarVisible } from "@/store/features/CRM/CRMSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
 import { useEffect } from "react";
 import CompanyUserProfile from "@/components/companyUser/CompanyUserProfile";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import { CldImage } from "next-cloudinary";
+import ModeToggle from "./ModeToggle";
 
 const CompanyUserNavbar = () => {
-  const darkMode = useAppSelector((state) => state.darkMode);
   const user = useAppSelector((state) => state.user);
   const profile = useAppSelector((state) => state.profile);
   const sidebarVisible = useAppSelector((state) => state.sidebarVisible);
@@ -23,11 +18,6 @@ const CompanyUserNavbar = () => {
   const dispatch = useAppDispatch();
 
   const pathname = usePathname();
-
-  const toggleDarkMode = () => {
-    dispatch(setDarkMode(!darkMode));
-    localStorage.setItem("theme_pref", !darkMode ? "dark" : "light");
-  };
 
   useEffect(() => {
     gsap.set([".client-cra-txt", "ul > a", "ul > p", "ul > div"], {
@@ -43,14 +33,10 @@ const CompanyUserNavbar = () => {
     });
   }, []);
 
-  useEffect(() => {
-    document.documentElement.className = darkMode ? "dark" : "light";
-  }, [darkMode]);
-
   return (
     <div className="bg-gradient-to-r from-blue-600 via-teal-600 to-purple-700 dark:from-blue-900 dark:via-teal-900 dark:to-purple-900 p-2 sticky top-0 z-20 flex items-center justify-between w-full">
-      <h3 className="text-2xl font-semibold text-slate-50 client-cra-txt">
-        ClientCraft
+      <h3 className="text-2xl font-semibold text-slate-50 client-cra-txt cursor-pointer">
+        <Link href="/">ClientCraft</Link>
       </h3>
       <ul className="px-3 md:flex items-center gap-2 hidden">
         <Link
@@ -86,18 +72,8 @@ const CompanyUserNavbar = () => {
         >
           Add Note
         </Link>
-        <p
-          className="inline-flex items-center justify-center cursor-pointer mr-2"
-          onClick={toggleDarkMode}
-        >
-          {darkMode ? (
-            <Icon
-              icon="ic:round-light-mode"
-              className="text-2xl text-red-600"
-            />
-          ) : (
-            <Icon icon="tdesign:mode-dark" className="text-2xl text-red-600" />
-          )}
+        <p className="inline-flex items-center justify-center cursor-pointer mr-2">
+          <ModeToggle />
         </p>
         <div className="inline-flex items-center justify-center relative h-[50px] w-[50px] rounded-full">
           <div
@@ -125,18 +101,8 @@ const CompanyUserNavbar = () => {
         </div>
       </ul>
       <div className="md:hidden inline-flex items-center gap-4">
-        <p
-          className="inline-flex items-center justify-center cursor-pointer mr-2"
-          onClick={toggleDarkMode}
-        >
-          {darkMode ? (
-            <Icon
-              icon="ic:round-light-mode"
-              className="text-2xl text-red-600"
-            />
-          ) : (
-            <Icon icon="tdesign:mode-dark" className="text-2xl text-red-600" />
-          )}
+        <p className="inline-flex items-center justify-center cursor-pointer mr-2">
+          <ModeToggle />
         </p>
         <p onClick={() => dispatch(setSidebarVisible(!sidebarVisible))}>
           <svg

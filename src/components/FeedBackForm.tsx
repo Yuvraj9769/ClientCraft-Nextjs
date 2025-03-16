@@ -77,7 +77,7 @@ const FeedBackForm = () => {
               value={feedBackContent}
               onChange={handleOnChange}
               name="name"
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border text-black bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter feedback content here..."
               required
             />

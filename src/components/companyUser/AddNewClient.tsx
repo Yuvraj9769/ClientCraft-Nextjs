@@ -104,7 +104,7 @@ const AddNewClient = () => {
                   id="projectClientName"
                   name="projectClientName"
                   ref={clientName}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter client name"
                   required
                 />
@@ -122,7 +122,7 @@ const AddNewClient = () => {
                   id="clientEmail"
                   name="clientEmail"
                   ref={clientEmail}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter client email"
                   required
                 />
@@ -140,7 +140,7 @@ const AddNewClient = () => {
                   id="clientJoinDate"
                   name="clientJoinDate"
                   ref={clientJoinDate}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Client Join Date"
                   required
                 />
@@ -158,7 +158,7 @@ const AddNewClient = () => {
                   id="clientPhone"
                   name="clientPhone"
                   ref={clientPhone}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Client phone number"
                   required
                 />
@@ -176,7 +176,7 @@ const AddNewClient = () => {
                   id="clientCountry"
                   name="clientCountry"
                   ref={clientCountry}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Client country"
                   required
                 />

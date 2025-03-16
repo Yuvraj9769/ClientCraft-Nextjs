@@ -120,7 +120,7 @@ const ForgetPassword = () => {
                 value={formData.password}
                 onChange={handleChange}
                 minLength={8}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
+                className="mt-1 block w-full px-3 py-2 border bg-slate-50 text-black border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
                 required
               />
             </div>
@@ -137,7 +137,7 @@ const ForgetPassword = () => {
                 id="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
+                className="mt-1 block w-full px-3 py-2 border bg-slate-50 text-black border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
                 required
               />
             </div>
@@ -155,7 +155,7 @@ const ForgetPassword = () => {
                 value={formData.confPassword}
                 onChange={handleChange}
                 minLength={8}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
+                className="mt-1 block w-full px-3 py-2 border bg-slate-50 text-black border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
                 required
               />
             </div>

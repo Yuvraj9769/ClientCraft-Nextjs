@@ -128,7 +128,7 @@ const UpdateClientsInfo = () => {
                   value={client.name}
                   onChange={handleOnChange}
                   name="name"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 bg-slate-50 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter client name"
                   required
                 />
@@ -147,7 +147,7 @@ const UpdateClientsInfo = () => {
                   name="email"
                   value={client.email}
                   onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 bg-slate-50 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter client email"
                   required
                 />
@@ -170,7 +170,7 @@ const UpdateClientsInfo = () => {
                       : ""
                   }
                   onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 bg-slate-50 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter client joining date"
                   required
                 />
@@ -189,7 +189,7 @@ const UpdateClientsInfo = () => {
                   name="country"
                   value={client.country}
                   onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 bg-slate-50 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter client country"
                   required
                 />
@@ -208,7 +208,7 @@ const UpdateClientsInfo = () => {
                   name="phone"
                   value={client.phone}
                   onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 bg-slate-50 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter client phone number"
                   required
                 />

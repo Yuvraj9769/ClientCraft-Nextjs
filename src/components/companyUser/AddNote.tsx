@@ -224,7 +224,7 @@ const AddNote = () => {
                   name="title"
                   onChange={handleOnChange}
                   value={todoFormData.title}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter note title"
                   required
                 />
@@ -242,7 +242,7 @@ const AddNote = () => {
                   name="description"
                   onChange={handleOnChange}
                   value={todoFormData.description}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter note description"
                   required
                 ></textarea>

@@ -123,7 +123,7 @@ const UpdateNoteData = () => {
                   value={currentNoteData.title}
                   onChange={handleOnChange}
                   name="title"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter title here..."
                   required
                 />
@@ -142,7 +142,7 @@ const UpdateNoteData = () => {
                   name="description"
                   value={currentNoteData.description}
                   onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter note description here..."
                   required
                 />
@@ -167,7 +167,7 @@ const UpdateNoteData = () => {
                       : ""
                   }
                   onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   readOnly
                   required
                 />

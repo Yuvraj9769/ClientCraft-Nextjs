@@ -119,7 +119,7 @@ const CompanyUserSignUp = () => {
             maxLength={20}
             value={formData.username}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
+            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
             required
           />
         </div>
@@ -138,7 +138,7 @@ const CompanyUserSignUp = () => {
             maxLength={20}
             value={formData.firstName}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
+            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
             required
           />
         </div>
@@ -157,7 +157,7 @@ const CompanyUserSignUp = () => {
             maxLength={20}
             value={formData.lastName}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
+            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
             required
           />
         </div>
@@ -174,7 +174,7 @@ const CompanyUserSignUp = () => {
             id="email"
             value={formData.email}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
+            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
             required
           />
         </div>
@@ -193,7 +193,7 @@ const CompanyUserSignUp = () => {
             maxLength={20}
             value={formData.companyName}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
+            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
             required
           />
         </div>
@@ -210,7 +210,7 @@ const CompanyUserSignUp = () => {
             id="phoneNumber"
             value={formData.phoneNumber}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
+            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
             required
           />
         </div>
@@ -229,7 +229,7 @@ const CompanyUserSignUp = () => {
             maxLength={20}
             value={formData.department}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
+            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
             required
           />
         </div>
@@ -248,7 +248,7 @@ const CompanyUserSignUp = () => {
               value={formData.password}
               onChange={handleChange}
               minLength={8}
-              className="mt-1 block px-3 py-2 w-[90%] outline-none rounded-md"
+              className="mt-1 block px-3 py-2 w-[90%] bg-slate-50 outline-none rounded-md"
               required
             />
             <span

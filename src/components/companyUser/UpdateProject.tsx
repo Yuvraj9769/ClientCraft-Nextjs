@@ -144,7 +144,7 @@ const UpdateProjectDetails = () => {
                     value={projectDetails.projectName}
                     onChange={handleOnChange}
                     name="projectName"
-                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter project name"
                     required
                   />
@@ -163,7 +163,7 @@ const UpdateProjectDetails = () => {
                     name="clientName"
                     value={projectDetails.clientName}
                     onChange={handleOnChange}
-                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter project client name"
                     required
                   />
@@ -178,7 +178,7 @@ const UpdateProjectDetails = () => {
                   </label>
                   <select
                     name="status"
-                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={projectDetails.status}
                     onChange={handleOnChange}
                     required
@@ -203,7 +203,7 @@ const UpdateProjectDetails = () => {
                     name="budget"
                     value={projectDetails.budget}
                     onChange={handleOnChange}
-                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter project budget"
                     required
                   />

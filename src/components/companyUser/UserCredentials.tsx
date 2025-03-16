@@ -148,7 +148,7 @@ const UserCredentials = () => {
                       value={userCredentials.clientName}
                       readOnly
                       name="clientName"
-                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     />
                   </div>
@@ -166,7 +166,7 @@ const UserCredentials = () => {
                       name="clientEmail"
                       value={userCredentials.clientEmail}
                       readOnly
-                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     />
                   </div>
@@ -184,7 +184,7 @@ const UserCredentials = () => {
                       name="password"
                       value={userCredentials.password}
                       onChange={handleOnChange}
-                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="Enter temporary password"
                       required
                     />

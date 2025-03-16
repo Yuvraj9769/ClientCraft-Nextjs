@@ -4,18 +4,26 @@
 import Link from "next/link";
 import CompanyUserLayout from "./CompanyUserLayout";
 import { ImFolderUpload } from "react-icons/im";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setDocuments } from "@/store/features/CRM/CRMSlice";
 import InfiniteScroll from "./InfiniteScroll";
+import { ImSpinner3 } from "react-icons/im";
 
 const UploadDocument = () => {
-  const document = useRef<HTMLInputElement | null>(null);
+  const documentFile = useRef<HTMLInputElement | null>(null);
+  const [loader, setLoader] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleUploadDocument = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     try {
+      setLoader(true);
+
       const file = event.target.files ? event.target.files[0] : null;
 
       if (file) {
@@ -28,8 +36,6 @@ const UploadDocument = () => {
           return;
         }
 
-        console.log("Sending file");
-
         const formData = new FormData();
         formData.append("document", file);
 
@@ -37,15 +43,28 @@ const UploadDocument = () => {
           "api/companyUser/upload-document",
           formData,
           {
+            withCredentials: true,
             headers: {
               "Content-Type": "multipart/form-data",
             },
           }
         );
-        console.log(response);
+
+        if (response.data.success && response.data.status === 200) {
+          toast.success(
+            response.data.message || "Document uploaded successfully."
+          );
+
+          dispatch(setDocuments(response.data.data.documents));
+        }
       }
     } catch (error: any) {
-      console.log(error);
+      toast.error(error.message || "Please try again.");
+    } finally {
+      if (documentFile.current) {
+        documentFile.current.value = "";
+      }
+      setLoader(false);
     }
   };
 
@@ -65,16 +84,21 @@ const UploadDocument = () => {
           </Link>
           <input
             type="file"
-            ref={document}
+            ref={documentFile}
             multiple={false}
             onChange={handleUploadDocument}
             hidden
           />
           <button
             className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 inline-flex items-center gap-2"
-            onClick={() => document?.current?.click()}
+            onClick={() => documentFile.current?.click()}
           >
-            <ImFolderUpload /> Upload New Document
+            {loader ? (
+              <ImSpinner3 className="animate-spin" />
+            ) : (
+              <ImFolderUpload />
+            )}
+            Upload New Document
           </button>
         </section>
 
