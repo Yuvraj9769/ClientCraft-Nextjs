@@ -47,14 +47,6 @@ const CompanyUserNavbar = () => {
         >
           Dashboard
         </Link>
-        <Link
-          href="/company-projects"
-          className={`block lg:inline-block text-white hover:text-gray-300 mr-4 ${
-            pathname === "/company-projects" && "font-semibold"
-          }`}
-        >
-          Projects
-        </Link>
 
         <Link
           href="/company-clients"
@@ -64,6 +56,16 @@ const CompanyUserNavbar = () => {
         >
           Clients
         </Link>
+
+        <Link
+          href="/company-projects"
+          className={`block lg:inline-block text-white hover:text-gray-300 mr-4 ${
+            pathname === "/company-projects" && "font-semibold"
+          }`}
+        >
+          Projects
+        </Link>
+
         <Link
           href="/add-note"
           className={`block lg:inline-block text-white hover:text-gray-300 mr-4 ${

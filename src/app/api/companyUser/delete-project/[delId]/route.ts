@@ -6,6 +6,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import CompanyUserModel from "@/model/CompanyUser.model";
 import { Types } from "mongoose";
 import ProjectModel from "@/model/Project";
+import CompanyClientModel from "@/model/CompanyClient";
 
 export async function DELETE(
   _: NextRequest,
@@ -82,6 +83,28 @@ export async function DELETE(
       (projIds) => !projIds.equals(new Types.ObjectId(delId))
     );
     await companyUser.save();
+
+    const client = await CompanyClientModel.findOne({
+      name: deletedProject.clientName,
+    });
+
+    if (!client) {
+      return NextResponse.json(
+        {
+          status: 404,
+          message: "Client not found!!",
+          success: false,
+        },
+        {
+          status: 404,
+        }
+      );
+    }
+
+    client.Projects = client.Projects.filter(
+      (projId) => !projId.equals(new Types.ObjectId(delId))
+    );
+    await client.save();
 
     const otherProjects = await ProjectModel.find();
 

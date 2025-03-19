@@ -53,8 +53,11 @@ const UpdateProjectDetails = () => {
         return;
       }
 
-      if (projectDetails.budget.trim() === "") {
-        toast.error("Budget is required");
+      if (
+        projectDetails.budget.trim() === "" ||
+        !/^\d+$/.test(projectDetails.budget)
+      ) {
+        toast.error("Please enter a valid project budget (numbers only)");
         return;
       }
 

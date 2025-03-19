@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import toast from "react-hot-toast";
 import PageLoader from "@/components/PageLoader";
 import { ImSpinner6 } from "react-icons/im";
+import { BiBookAdd } from "react-icons/bi";
 
 const CompanyUserClients = () => {
   const [loading, setLoading] = useState(true);
@@ -214,13 +215,23 @@ const CompanyUserClients = () => {
 
                       <div className="flex gap-2 p-4 border-t border-gray-300 justify-end items-center">
                         <Link
+                          title="Update Client"
                           className="text-blue-600 text-base bg-slate-50 rounded-md h-9 p-2 shadow-md sm:text-lg md:text-xl hover:text-blue-400 mx-2"
                           href={`/update-clientUser/${client._id}`}
                         >
                           <FiEdit />
                         </Link>
 
+                        <Link
+                          title="Add New Project"
+                          className="text-teal-600 text-base bg-slate-50 rounded-md h-9 p-2 shadow-md sm:text-lg md:text-xl hover:text-teal-800 mx-2"
+                          href={`/create-new-project/${client._id}`}
+                        >
+                          <BiBookAdd />
+                        </Link>
+
                         <button
+                          title="Delete Client"
                           className="text-red-600 text-base h-9 p-2 bg-slate-50 rounded-md shadow-md sm:text-lg md:text-xl hover:text-red-400 mx-2"
                           aria-label="Delete Client"
                           onClick={() => {

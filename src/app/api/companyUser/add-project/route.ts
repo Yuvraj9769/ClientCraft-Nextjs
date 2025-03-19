@@ -6,14 +6,15 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import ProjectModel from "@/model/Project";
+import CompanyClientModel from "@/model/CompanyClient";
 
 export async function POST(request: NextRequest) {
   try {
-    const { projectName, projectClientName, projectStatus, projectBudget } =
+    const { _id, email, name, projectName, projectStatus, projectBudget } =
       await request.json();
 
     if (
-      [projectName, projectClientName, projectStatus, projectBudget].some(
+      [_id, email, name, projectName, projectStatus, projectBudget].some(
         (field) => field.trim() === ""
       )
     ) {
@@ -31,9 +32,24 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
+    const existingClient = await CompanyClientModel.findById(_id);
+
+    if (!existingClient) {
+      return NextResponse.json(
+        {
+          status: 404,
+          message: "Please add client first",
+          success: false,
+        },
+        {
+          status: 404,
+        }
+      );
+    }
+
     const existingProject = await ProjectModel.find({
       projectName,
-      clientName: projectClientName,
+      clientName: name,
       status: projectStatus,
       budget: projectBudget,
     });
@@ -53,7 +69,7 @@ export async function POST(request: NextRequest) {
 
     const newProject = await ProjectModel.create({
       projectName,
-      clientName: projectClientName,
+      clientName: name,
       status: projectStatus,
       budget: projectBudget,
     });
@@ -106,6 +122,9 @@ export async function POST(request: NextRequest) {
         }
       );
     }
+
+    existingClient.Projects?.push(newProject._id as Types.ObjectId);
+    await existingClient.save();
 
     companyUser.projects?.push(newProject._id as Types.ObjectId);
     await companyUser.save();

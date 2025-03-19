@@ -22,39 +22,39 @@ const AddNewClient = () => {
   const submitClientData = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (clientName.current?.value.trim() === "") {
-      toast.error("Client name is requred!");
-      return;
-    }
-    if (clientEmail.current?.value.trim() === "") {
-      toast.error("Project name is requred!");
-      return;
-    }
-
-    if (clientJoinDate.current?.value.trim() === "") {
-      toast.error("Client joinDate is requred!");
-      return;
-    }
-    if (clientCountry.current?.value.trim() === "") {
-      toast.error("Client country is requred!");
-      return;
-    }
-    if (clientPhone.current?.value.trim() === "") {
-      toast.error("Client Phone number is requred!");
-      return;
-    }
-
-    setDataProcessing(true);
-
-    const clientData = {
-      clientName: clientName.current?.value.trim(),
-      clientEmail: clientEmail.current?.value.trim(),
-      clientJoinDate: clientJoinDate.current?.value.trim(),
-      clientCountry: clientCountry.current?.value.trim(),
-      clientPhone: clientPhone.current?.value.trim(),
-    };
-
     try {
+      if (clientName.current?.value.trim() === "") {
+        toast.error("Client name is requred!");
+        return;
+      }
+      if (clientEmail.current?.value.trim() === "") {
+        toast.error("Project name is requred!");
+        return;
+      }
+
+      if (clientJoinDate.current?.value.trim() === "") {
+        toast.error("Client joinDate is requred!");
+        return;
+      }
+      if (clientCountry.current?.value.trim() === "") {
+        toast.error("Client country is requred!");
+        return;
+      }
+      if (clientPhone.current?.value.trim() === "") {
+        toast.error("Client Phone number is requred!");
+        return;
+      }
+
+      setDataProcessing(true);
+
+      const clientData = {
+        clientName: clientName.current?.value.trim(),
+        clientEmail: clientEmail.current?.value.trim(),
+        clientJoinDate: clientJoinDate.current?.value.trim(),
+        clientCountry: clientCountry.current?.value.trim(),
+        clientPhone: clientPhone.current?.value.trim(),
+      };
+
       const res = await axios.post("/api/companyUser/add-client", clientData);
       if (res.data.success && res.data.status === 201) {
         toast.success(res.data.message || "Client added successfully");
