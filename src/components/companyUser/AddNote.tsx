@@ -372,15 +372,17 @@ const AddNote = () => {
                         {new Date(todo.updatedAt).toLocaleDateString()}{" "}
                         <FaClock />
                       </p>
-                      <span className="py-1 px-1 sm:p-3 sm:pb-0 sm:pl-0 text-center overflow-hidden text-ellipsis text-nowrap font-semibold inline-flex w-full items-center justify-start gap-3">
+                      <span className="py-1 px-1 sm:p-3 sm:pb-0 sm:pl-0 text-center overflow-hidden text-ellipsis text-nowrap font-semibold inline-flex w-full items-center justify-start gap-3 pb-[5px]">
                         <Link
-                          className="text-blue-600 text-base sm:text-lg md:text-xl hover:text-blue-400"
+                          title="Update Note"
+                          className="text-blue-600 text-base bg-slate-50 rounded-md h-9 p-2 shadow-md sm:text-lg md:text-xl hover:text-blue-400 mx-2"
                           href={`/updateNote/${todo._id}`}
                         >
                           <FiEdit />
                         </Link>
                         <button
-                          className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400"
+                          title="Delete Note"
+                          className="text-red-600 text-base h-9 p-2 bg-slate-50 rounded-md shadow-md sm:text-lg md:text-xl hover:text-red-400 mx-2"
                           aria-label="Delete Note"
                           onClick={() => {
                             setPopupBox(true);

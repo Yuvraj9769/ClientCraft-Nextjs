@@ -176,7 +176,10 @@ const CompanyUserDashbaord = () => {
               Go to Home
             </Link>
             <Link
-              href="/create-new-project"
+              onClick={() =>
+                toast.error("Client must exist. Add a project from the client.")
+              }
+              href={"/company-clients"}
               className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 inline-flex items-center gap-2"
             >
               <IoMdAdd /> Create New Project

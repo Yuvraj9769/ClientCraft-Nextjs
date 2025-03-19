@@ -206,6 +206,7 @@ const CompanyUserProjects = () => {
 
                       <div className="flex gap-2 p-4 border-t border-gray-300 justify-end">
                         <Link
+                          title="Update Project"
                           className="text-blue-600 text-base bg-slate-50 rounded-md h-9 p-2 shadow-md sm:text-lg md:text-xl hover:text-blue-400 mx-2"
                           href={`/update-project/${proj._id}`}
                         >
@@ -213,8 +214,9 @@ const CompanyUserProjects = () => {
                         </Link>
 
                         <button
-                          className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2 shadow-md"
-                          aria-label="Delete Client"
+                          title="Delete Project"
+                          className="text-red-600 text-base h-9 p-2 bg-slate-50 rounded-md shadow-md sm:text-lg md:text-xl hover:text-red-400 mx-2"
+                          aria-label="Delete Project"
                           onClick={() => {
                             setPopupBox(true);
                             setDelProjectId(proj._id);
