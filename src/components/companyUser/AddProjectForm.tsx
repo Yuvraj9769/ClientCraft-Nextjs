@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import { useAppSelector } from "@/store/hooks";
 import PageLoader from "../PageLoader";
 
 const AddProjectForm = () => {
@@ -16,8 +15,6 @@ const AddProjectForm = () => {
   const router = useRouter();
 
   const { clientId } = useParams();
-
-  const clientsData = useAppSelector((state) => state.clientsData);
 
   const [loader, setLoader] = useState(true);
 
@@ -114,12 +111,12 @@ const AddProjectForm = () => {
   }, [clientId]);
 
   useEffect(() => {
-    if (clientsData.length === 0) {
+    if (currentClientData.email.trim() === "") {
       getClientData();
-    } else if (clientsData.length > 0) {
+    } else if (currentClientData.email.trim() !== "") {
       setLoader(false);
     }
-  }, [getClientData, clientsData.length]);
+  }, [getClientData, currentClientData, clientId]);
 
   return (
     <CompanyUserLayout>
