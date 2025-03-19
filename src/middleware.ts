@@ -19,8 +19,6 @@ export async function middleware(request: NextRequest) {
     "/upload-document",
   ];
 
-  // const companyClientPaths = ["/submitFeedBack"];
-
   const isPublicPath =
     publicPaths.includes(path) || path.startsWith("/forgetPassword/");
 
@@ -65,6 +63,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };

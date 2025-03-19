@@ -13,9 +13,6 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import toast from "react-hot-toast";
 import PageLoader from "@/components/PageLoader";
 import { ImSpinner6 } from "react-icons/im";
-import { RiUserSharedLine } from "react-icons/ri";
-import { SlOptionsVertical } from "react-icons/sl";
-import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
 const CompanyUserClients = () => {
   const [loading, setLoading] = useState(true);
@@ -26,11 +23,6 @@ const CompanyUserClients = () => {
   const dispatch = useAppDispatch();
 
   const clientsData = useAppSelector((state) => state.clientsData);
-
-  const [isOpen, setIsOpen] = useState({
-    id: "",
-    isOpen: false,
-  });
 
   const [searchData, setSearchData] = useState({
     searchQuery: "",
@@ -227,41 +219,6 @@ const CompanyUserClients = () => {
                         >
                           <FiEdit />
                         </Link>
-                        <div className="relative inline-block">
-                          {/* Dropdown Trigger Button */}
-                          <button
-                            onClick={() =>
-                              setIsOpen({
-                                id: client._id,
-                                isOpen: !isOpen.isOpen,
-                              })
-                            }
-                            className="p-2 bg-slate-50 text-black hover:text-slate-700 rounded-md cursor-pointer shadow-md"
-                          >
-                            <SlOptionsVertical className="text-lg" />
-                          </button>
-
-                          {/* Dropdown Menu */}
-                          {isOpen.isOpen && isOpen.id === client._id && (
-                            <div className="absolute right-0 bottom-[52px] mt-2 w-48 bg-slate-50 rounded-md shadow-lg border border-gray-200">
-                              <ul className="py-2">
-                                <li className="px-4 py-2 hover:bg-slate-200 text-black text-base font-medium flex items-center gap-2 cursor-pointer rounded-md">
-                                  <Link
-                                    href={`/sendUserCredentials/${client._id}`}
-                                    className="block"
-                                  >
-                                    Send Creds
-                                  </Link>
-                                  <RiUserSharedLine className="text-xl text-black" />
-                                </li>
-                                <li className="px-4 py-2 hover:bg-slate-200 text-black text-base font-medium cursor-pointer flex items-center gap-2 rounded-md">
-                                  Chat
-                                  <IoChatbubbleEllipsesOutline className="text-xl text-black" />
-                                </li>
-                              </ul>
-                            </div>
-                          )}
-                        </div>
 
                         <button
                           className="text-red-600 text-base h-9 p-2 bg-slate-50 rounded-md shadow-md sm:text-lg md:text-xl hover:text-red-400 mx-2"

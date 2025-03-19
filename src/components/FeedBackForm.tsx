@@ -69,7 +69,7 @@ const FeedBackForm = () => {
               htmlFor="content"
               className="block text-lg font-semibold mb-2"
             >
-              Client Name
+              Enter your valuable feedback here
             </label>
             <input
               type="text"

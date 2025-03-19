@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
+import jwt from "jsonwebtoken";
 
 //Client for company data and client user also.
 
@@ -12,8 +13,7 @@ export interface companyClientInterface extends Document {
   isActive: boolean;
   password: string;
   isCredentialsSend: boolean;
-  passordResetToken: string;
-  passordResetTokenExpiry: Date;
+  generateJWTTOken(): Promise<string>;
 }
 
 const CompanyClientSchema: Schema<companyClientInterface> =
@@ -59,13 +59,6 @@ const CompanyClientSchema: Schema<companyClientInterface> =
         type: Boolean,
         default: false,
       },
-      passordResetToken: {
-        type: String,
-      },
-      passordResetTokenExpiry: {
-        type: Date,
-        default: () => Date.now(),
-      },
     },
 
     {
@@ -73,6 +66,17 @@ const CompanyClientSchema: Schema<companyClientInterface> =
     }
   );
 
+CompanyClientSchema.methods.generateJWTTOken =
+  async function (): Promise<string> {
+    return jwt.sign(
+      {
+        id: this._id,
+        role: "companyClient",
+      },
+      process.env.JWT_SECRET_KEY!,
+      { expiresIn: "5d" }
+    );
+  };
 const CompanyClientModel =
   (mongoose.models.companyClient as mongoose.Model<companyClientInterface>) ||
   mongoose.model<companyClientInterface>("companyClient", CompanyClientSchema);

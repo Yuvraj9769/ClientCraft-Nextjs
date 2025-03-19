@@ -203,13 +203,14 @@ const CompanyUserProjects = () => {
 
                       <div className="flex gap-2 p-4 border-t border-gray-300 justify-end">
                         <Link
-                          className="text-blue-600 text-base sm:text-lg md:text-xl hover:text-blue-400 mx-2"
+                          className="text-blue-600 text-base bg-slate-50 rounded-md h-9 p-2 shadow-md sm:text-lg md:text-xl hover:text-blue-400 mx-2"
                           href={`/update-project/${proj._id}`}
                         >
                           <FiEdit />
                         </Link>
+
                         <button
-                          className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2"
+                          className="text-red-600 text-base sm:text-lg md:text-xl hover:text-red-400 mx-2 shadow-md"
                           aria-label="Delete Client"
                           onClick={() => {
                             setPopupBox(true);

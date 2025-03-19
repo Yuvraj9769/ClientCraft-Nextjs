@@ -45,10 +45,12 @@ const CompanyUserLayout = ({ children }: { children: React.ReactNode }) => {
       {loadingData ? (
         <PageLoader />
       ) : (
-        <div className="min-h-screen flex flex-col bg-gray-100">
+        <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-slate-950">
           <CompanyUserNavbar />
           <main className="flex-1 w-full">
-            <div className="bg-white shadow-md rounded p-0">{children}</div>
+            <div className="bg-white dark:bg-slate-950 shadow-md rounded p-0">
+              {children}
+            </div>
           </main>
           <Footer />
           {sidebarVisible && <CompanyUserSidebar />}
