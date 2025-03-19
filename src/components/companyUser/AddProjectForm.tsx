@@ -116,6 +116,8 @@ const AddProjectForm = () => {
   useEffect(() => {
     if (clientsData.length === 0) {
       getClientData();
+    } else if (clientsData.length > 0) {
+      setLoader(false);
     }
   }, [getClientData, clientsData.length]);
 
