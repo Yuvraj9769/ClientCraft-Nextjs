@@ -51,7 +51,7 @@ const InfiniteScroll: React.FC = () => {
           <Skeleton className="h-[105px] w-[150px] rounded-xl" />
         </div>
       ) : documents.length === 0 ? (
-        <div className="flex flex-col items-center justify-center p-6 rounded-lg shadow-md dark:border dark:border-slate-600">
+        <div className="flex flex-col w-full items-center justify-center p-6 rounded-lg shadow-md dark:border dark:border-slate-600">
           <p className="font-semibold text-black dark:text-slate-50 text-3xl">
             No documents found
           </p>
@@ -60,11 +60,11 @@ const InfiniteScroll: React.FC = () => {
           </p>
         </div>
       ) : (
-        <div className="p-2 rounded-lg flex flex-col gap-3 md:gap-4 justify-center items-center">
+        <div className="p-2 w-full rounded-lg flex flex-col gap-3 md:gap-4 justify-center items-center">
           <h1 className="text-3xl my-1 text-center font-semibold text-black dark:text-slate-50">
             Your Documents
           </h1>
-          <div className="flex flex-row flex-wrap gap-2 md:gap-3 p-1 my-2">
+          <div className="flex flex-row w-full flex-wrap justify-center gap-2 md:gap-3 p-1 my-2">
             {documents.map((doc, index) => (
               <Card
                 key={index}
