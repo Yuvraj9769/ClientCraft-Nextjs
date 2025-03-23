@@ -51,7 +51,7 @@ const InfiniteScroll: React.FC = () => {
           <Skeleton className="h-[105px] w-[150px] rounded-xl" />
         </div>
       ) : documents.length === 0 ? (
-        <div className="flex flex-col w-full items-center justify-center p-6 rounded-lg shadow-md dark:border dark:border-slate-600">
+        <div className="flex flex-col w-full items-center justify-center p-6 rounded-lg shadow-md">
           <p className="font-semibold text-black dark:text-slate-50 text-3xl">
             No documents found
           </p>
