@@ -91,6 +91,7 @@ const UploadDocument = () => {
           />
           <button
             className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 inline-flex items-center gap-2"
+            disabled={loader}
             onClick={() => documentFile.current?.click()}
           >
             {loader ? (
