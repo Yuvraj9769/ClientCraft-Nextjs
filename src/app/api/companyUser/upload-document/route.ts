@@ -56,6 +56,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    //Here if added new bucket we require to set new policies (ALL) then it will be accessible.
+
     // Upload file to Supabase Storage
     const { error } = await supabase.storage
       .from("crm-documents") // Use your bucket name
