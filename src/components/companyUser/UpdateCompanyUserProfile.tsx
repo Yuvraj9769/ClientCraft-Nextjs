@@ -9,6 +9,10 @@ import { ImSpinner9 } from "react-icons/im";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { setUser } from "@/store/features/CRM/CRMSlice";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const UpdateCompanyUserProfile = () => {
   const user = useAppSelector((state) => state.user);
@@ -95,162 +99,120 @@ const UpdateCompanyUserProfile = () => {
           <ImSpinner9 className="animate-spin text-black dark:text-slate-50" />
         </p>
       ) : (
-        <section className="py-20 px-4 bg-gray-100 dark:bg-gray-800 border-b">
-          <div className="max-w-3xl mx-auto">
-            <form
-              onSubmit={updateCompanyUserData}
-              className="bg-white shadow-lg rounded-lg p-8 text-black"
-            >
-              <h2 className="text-2xl font-semibold mb-6">User Details</h2>
+        <section className="py-20 px-4 bg-gray-100 dark:bg-gray-800 border-b min-h-screen flex items-center justify-center">
+          <Card className="max-w-3xl w-full">
+            <CardHeader>
+              <CardTitle className="text-2xl font-semibold text-center">
+                User Details
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={updateCompanyUserData} className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="username">Username</Label>
+                    <Input
+                      id="username"
+                      name="username"
+                      value={userData.username}
+                      readOnly
+                      required
+                    />
+                  </div>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="username"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Username
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  value={userData.username}
-                  readOnly
-                  name="username"
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter username"
-                  required
-                />
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">First Name</Label>
+                    <Input
+                      id="firstName"
+                      name="firstName"
+                      value={userData.firstName}
+                      onChange={handleOnChange}
+                      placeholder="Enter first name"
+                      required
+                    />
+                  </div>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="firstName"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  value={userData.firstName}
-                  onChange={handleOnChange}
-                  name="firstName"
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter firstName"
-                  required
-                />
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input
+                      id="lastName"
+                      name="lastName"
+                      value={userData.lastName}
+                      onChange={handleOnChange}
+                      placeholder="Enter last name"
+                      required
+                    />
+                  </div>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="lastName"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  value={userData.lastName}
-                  onChange={handleOnChange}
-                  name="lastName"
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter lastName"
-                  required
-                />
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={userData.email}
+                      onChange={handleOnChange}
+                      placeholder="Enter email"
+                      required
+                    />
+                  </div>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="clientEmail"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={userData.email}
-                  onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter email"
-                  required
-                />
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="companyName">Company Name</Label>
+                    <Input
+                      id="companyName"
+                      name="companyName"
+                      value={userData.companyName}
+                      onChange={handleOnChange}
+                      placeholder="Enter company name"
+                      required
+                    />
+                  </div>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="companyName"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  id="companyName"
-                  value={userData.companyName}
-                  onChange={handleOnChange}
-                  name="companyName"
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter companyName"
-                  required
-                />
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="department">Department</Label>
+                    <Input
+                      id="department"
+                      name="department"
+                      value={userData.department}
+                      onChange={handleOnChange}
+                      placeholder="Enter department"
+                      required
+                    />
+                  </div>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="department"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Department Name
-                </label>
-                <input
-                  type="text"
-                  id="department"
-                  value={userData.department}
-                  onChange={handleOnChange}
-                  name="department"
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter department name"
-                  required
-                />
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="clientPhone"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Client Phone No.
-                </label>
-                <input
-                  type="text"
-                  id="phone"
-                  name="phoneNumber"
-                  value={userData.phoneNumber}
-                  onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter client phone number"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition duration-200 inline-flex items-center justify-center gap-3"
-              >
-                {dataProcessing ? (
-                  <span className="inline-flex items-center justify-center gap-3">
-                    <AiOutlineLoading3Quarters className="animate-spin text-lg font-semibold text-slate-50" />{" "}
-                    Updating Client Data
-                  </span>
-                ) : (
-                  <>Update Client Data</>
-                )}
-              </button>
-            </form>
-          </div>
+                  <div className="space-y-2 col-span-full">
+                    <Label htmlFor="phoneNumber">Client Phone No.</Label>
+                    <Input
+                      type="text"
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      value={userData.phoneNumber}
+                      onChange={handleOnChange}
+                      placeholder="Enter phone number"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="w-full inline-flex items-center justify-end mt-4">
+                  <Button
+                    type="submit"
+                    className="mt-4 w-full md:w-1/2"
+                    disabled={dataProcessing}
+                  >
+                    {dataProcessing ? (
+                      <span className="flex items-center gap-2">
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                        Updating Client Data
+                      </span>
+                    ) : (
+                      "Update Client Data"
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
         </section>
       )}
     </CompanyUserLayout>

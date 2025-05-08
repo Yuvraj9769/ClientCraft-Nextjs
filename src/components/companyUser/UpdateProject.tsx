@@ -9,6 +9,24 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { ImSpinner9 } from "react-icons/im";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 const UpdateProjectDetails = () => {
   const params = useParams();
@@ -126,108 +144,95 @@ const UpdateProjectDetails = () => {
             <ImSpinner9 className="animate-spin text-black dark:text-slate-50" />
           </p>
         ) : (
-          <section className="py-20 px-4 bg-gray-100 dark:bg-gray-800 border-b">
-            <div className="max-w-3xl mx-auto">
-              <form
-                onSubmit={updateProject}
-                className="bg-white shadow-lg rounded-lg p-8 text-black"
-              >
-                <h2 className="text-2xl font-semibold mb-6">Project Details</h2>
+          <div className="container max-w-4xl mx-auto py-10 px-4">
+            <Card className="border shadow-sm">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-bold">
+                  Project Details
+                </CardTitle>
+                <CardDescription>Update project information</CardDescription>
+              </CardHeader>
+              <form onSubmit={updateProject}>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="projectName">Project Name</Label>
+                      <Input
+                        type="text"
+                        id="projectName"
+                        value={projectDetails.projectName}
+                        onChange={handleOnChange}
+                        name="projectName"
+                        placeholder="Enter project name"
+                        required
+                      />
+                    </div>
 
-                <div className="mb-6">
-                  <label
-                    htmlFor="projectName"
-                    className="block text-lg font-semibold mb-2"
-                  >
-                    Project Name
-                  </label>
-                  <input
-                    type="text"
-                    id="projectName"
-                    value={projectDetails.projectName}
-                    onChange={handleOnChange}
-                    name="projectName"
-                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter project name"
-                    required
-                  />
-                </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="clientName">Project Client Name</Label>
+                      <Input
+                        type="text"
+                        id="clientName"
+                        name="clientName"
+                        value={projectDetails.clientName}
+                        onChange={handleOnChange}
+                        placeholder="Enter project client name"
+                        required
+                      />
+                    </div>
 
-                <div className="mb-6">
-                  <label
-                    htmlFor="projectClient"
-                    className="block text-lg font-semibold mb-2"
-                  >
-                    Project Client Name
-                  </label>
-                  <input
-                    type="text"
-                    id="clientName"
-                    name="clientName"
-                    value={projectDetails.clientName}
-                    onChange={handleOnChange}
-                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter project client name"
-                    required
-                  />
-                </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="projectStatus">Project Status</Label>
+                      <Select
+                        value={projectDetails.status}
+                        onValueChange={(value) =>
+                          handleOnChange({ target: { name: "status", value } })
+                        }
+                      >
+                        <SelectTrigger id="projectStatus">
+                          <SelectValue placeholder="Select Project Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Active">Active</SelectItem>
+                          <SelectItem value="Completed">Completed</SelectItem>
+                          <SelectItem value="Pending">Pending</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                <div className="mb-6">
-                  <label
-                    htmlFor="projectStatus"
-                    className="block text-lg font-semibold mb-2"
+                    <div className="space-y-2">
+                      <Label htmlFor="budget">Project Budget</Label>
+                      <Input
+                        type="text"
+                        id="budget"
+                        name="budget"
+                        value={projectDetails.budget}
+                        onChange={handleOnChange}
+                        placeholder="Enter project budget"
+                        required
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button
+                    type="submit"
+                    className="w-full sm:w-auto"
+                    disabled={dataProcessing}
                   >
-                    Project Status
-                  </label>
-                  <select
-                    name="status"
-                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={projectDetails.status}
-                    onChange={handleOnChange}
-                    required
-                  >
-                    <option value="">Select Project Status</option>
-                    <option value="Active">Active</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Pending">Pending</option>
-                  </select>
-                </div>
-
-                <div className="mb-6">
-                  <label
-                    htmlFor="projectBudget"
-                    className="block text-lg font-semibold mb-2"
-                  >
-                    Project Budget
-                  </label>
-                  <input
-                    type="text"
-                    id="budget"
-                    name="budget"
-                    value={projectDetails.budget}
-                    onChange={handleOnChange}
-                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter project budget"
-                    required
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition duration-200 inline-flex items-center justify-center gap-3"
-                >
-                  {dataProcessing ? (
-                    <span className="inline-flex items-center justify-center gap-3">
-                      <AiOutlineLoading3Quarters className="animate-spin text-lg font-semibold text-slate-50" />{" "}
-                      Updating Project
-                    </span>
-                  ) : (
-                    <>Update Project</>
-                  )}
-                </button>
+                    {dataProcessing ? (
+                      <>
+                        <AiOutlineLoading3Quarters className="animate-spin mr-2 h-4 w-4" />
+                        Updating Project
+                      </>
+                    ) : (
+                      <>Update Project</>
+                    )}
+                  </Button>
+                </CardFooter>
               </form>
-            </div>
-          </section>
+            </Card>
+          </div>
         )}
       </>
     </CompanyUserLayout>

@@ -3,8 +3,6 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -14,6 +12,17 @@ import {
   setLoggedIn,
   setUser,
 } from "@/store/features/CRM/CRMSlice";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 type loginFormDataType = {
   identifier: string;
@@ -87,93 +96,92 @@ const CompanyUserLogin = () => {
   }, []);
 
   return (
-    <div className="w-full min-h-screen inline-flex items-center justify-center">
-      <div className="max-w-md w-[95%] sm:w-[380px] mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
-        <h2 className="text-2xl font-semibold mb-6 text-center text-black">
-          Login Form
-        </h2>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-y-3 text-black"
-        >
-          <div>
-            <label
-              htmlFor="identifier"
-              className="block text-sm font-semibold text-black"
-            >
-              Email or Username
-            </label>
-            <input
-              type="text"
-              name="identifier"
-              id="identifier"
-              value={formData.identifier}
-              onChange={handleChange}
-              minLength={2}
-              maxLength={50}
-              className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
-              required
-            />
-          </div>
-          <div className="relative">
-            <label
-              htmlFor="password"
-              className="block text-sm font-semibold text-black"
-            >
-              Password
-            </label>
-            <div className="border border-gray-300 rounded-md focus-within:outline-none focus-within:ring focus-within:ring-indigo-100">
-              <input
-                type={showPass ? "text" : "password"}
-                name="password"
-                id="password"
-                value={formData.password}
+    <div className="w-full min-h-screen flex items-center justify-center">
+      <Card className="max-w-md w-[95%] sm:w-[380px] mx-auto">
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold text-center">
+            Login Form
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="identifier">Email or Username</Label>
+              <Input
+                type="text"
+                id="identifier"
+                name="identifier"
+                value={formData.identifier}
                 onChange={handleChange}
-                minLength={8}
-                className="mt-1 block px-3 py-2 w-[90%] bg-slate-50 outline-none rounded-md"
+                minLength={2}
+                maxLength={50}
                 required
               />
-              <span
-                className="absolute right-2 top-1/2 text-lg cursor-pointer"
-                onClick={() => setShowPass(!showPass)}
-              >
-                {showPass ? <FaEyeSlash /> : <FaEye />}
-              </span>
             </div>
-          </div>
-          <button
-            type="submit"
-            className="w-full py-2 mt-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
-          >
-            {dataProcessing ? (
-              <span className="inline-flex items-center justify-center gap-3">
-                <AiOutlineLoading3Quarters className="animate-spin text-lg font-semibold text-slate-50" />{" "}
-                Processing
-              </span>
-            ) : (
-              "Login"
-            )}
-          </button>
-          <span className="text-sm text-gray-600 hover:text-gray-800 transition text-center block w-full p-1 ">
-            Don&apos;t have an account?
+
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <Input
+                  type={showPass ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  minLength={8}
+                  required
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-0 top-0 h-full px-3"
+                  onClick={() => setShowPass(!showPass)}
+                >
+                  {showPass ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                  <span className="sr-only">
+                    {showPass ? "Hide password" : "Show password"}
+                  </span>
+                </Button>
+              </div>
+            </div>
+
+            <Button type="submit" className="w-full" disabled={dataProcessing}>
+              {dataProcessing ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Processing
+                </span>
+              ) : (
+                "Login"
+              )}
+            </Button>
+          </form>
+        </CardContent>
+        <CardFooter className="flex flex-col space-y-2">
+          <p className="text-sm text-muted-foreground">
+            {`Don't`} have an account?{" "}
             <Link
               href="/signup"
-              className="text-blue-500 font-semibold hover:underline"
+              className="text-primary font-medium hover:underline"
             >
-              {" "}
               Sign up
             </Link>
-          </span>
-          <span className="text-sm text-gray-600 hover:text-gray-800 transition text-center block w-full p-1 ">
+          </p>
+          <p className="text-sm text-muted-foreground">
             <Link
               href="/forgetPasswordSendMail"
-              className="text-blue-500 font-semibold hover:underline"
+              className="text-primary font-medium hover:underline"
             >
               Forgot your password?
             </Link>
-          </span>
-        </form>
-      </div>
+          </p>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

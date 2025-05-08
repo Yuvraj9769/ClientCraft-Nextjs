@@ -49,12 +49,19 @@ export async function GET() {
       );
     }
 
+    const clientsWithCompany = clientsData.Clients.map((client: any) => {
+      return {
+        ...client._doc,
+        companyName: clientsData.companyName,
+      };
+    });
+
     return NextResponse.json(
       {
         status: 200,
         message: "Clients found",
         success: true,
-        data: clientsData.Clients,
+        data: clientsWithCompany,
       },
       {
         status: 200,

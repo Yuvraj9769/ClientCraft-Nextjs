@@ -7,6 +7,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 const FeedBackForm = () => {
   const [feedBackContent, setFeedBackContent] = useState("");
@@ -56,48 +60,41 @@ const FeedBackForm = () => {
   };
 
   return (
-    <section className="py-20 px-4 bg-gray-100 dark:bg-gray-800 border-b">
-      <div className="max-w-3xl mx-auto">
-        <form
-          onSubmit={submitFeedBack}
-          className="bg-white shadow-lg rounded-lg p-8 text-black"
-        >
-          <h2 className="text-2xl font-semibold mb-6">Feedback Content</h2>
+    <section className="py-20 px-4 bg-background min-h-screen flex items-center justify-center">
+      <Card className="max-w-xl w-full max-h-[750px]">
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold text-center">
+            Feedback Content
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={submitFeedBack} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="content">Enter your valuable feedback here</Label>
+              <Textarea
+                id="content"
+                name="name"
+                value={feedBackContent}
+                onChange={handleOnChange}
+                className="max-h-[550px]"
+                placeholder="Enter feedback content here..."
+                required
+              />
+            </div>
 
-          <div className="mb-6">
-            <label
-              htmlFor="content"
-              className="block text-lg font-semibold mb-2"
-            >
-              Enter your valuable feedback here
-            </label>
-            <input
-              type="text"
-              id="content"
-              value={feedBackContent}
-              onChange={handleOnChange}
-              name="name"
-              className="w-full p-3 border text-black bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter feedback content here..."
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition duration-200 inline-flex items-center justify-center gap-3"
-          >
-            {dataProcessing ? (
-              <span className="inline-flex items-center justify-center gap-3">
-                <AiOutlineLoading3Quarters className="animate-spin text-lg font-semibold text-slate-50" />{" "}
-                Submitting Feedback
-              </span>
-            ) : (
-              <>Submit Feedback</>
-            )}
-          </button>
-        </form>
-      </div>
+            <Button type="submit" className="w-full" disabled={dataProcessing}>
+              {dataProcessing ? (
+                <span className="flex items-center gap-2">
+                  <AiOutlineLoading3Quarters className="animate-spin" />
+                  Submitting Feedback
+                </span>
+              ) : (
+                "Submit Feedback"
+              )}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </section>
   );
 };

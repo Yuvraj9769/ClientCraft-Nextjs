@@ -8,6 +8,17 @@ import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import CompanyUserLayout from "./CompanyUserLayout";
 import { ImSpinner9 } from "react-icons/im";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 const UpdateNoteData = () => {
   const { noteId } = useParams();
@@ -102,93 +113,80 @@ const UpdateNoteData = () => {
           <ImSpinner9 className="animate-spin text-black dark:text-slate-50" />
         </p>
       ) : (
-        <section className="py-20 px-4 bg-gray-100 dark:bg-gray-800 border-b">
-          <div className="max-w-3xl mx-auto">
-            <form
-              onSubmit={updateNote}
-              className="bg-white shadow-lg rounded-lg p-8 text-black"
-            >
-              <h2 className="text-2xl font-semibold mb-6">Note Data</h2>
+        <div className="container max-w-2xl mx-auto py-10 px-4">
+          <Card className="border shadow-sm">
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-2xl font-bold">Note Data</CardTitle>
+              <CardDescription>Update your note details below.</CardDescription>
+            </CardHeader>
+            <form onSubmit={updateNote}>
+              <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Title</Label>
+                  <Input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value={currentNoteData.title}
+                    onChange={handleOnChange}
+                    placeholder="Enter title here..."
+                    required
+                  />
+                </div>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="title"
-                  className="block text-lg font-semibold mb-2"
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Input
+                    type="text"
+                    id="description"
+                    name="description"
+                    value={currentNoteData.description}
+                    onChange={handleOnChange}
+                    placeholder="Enter note description here..."
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="updatedAt">
+                    Note UpdatedAt (Automatically will update)
+                  </Label>
+                  <Input
+                    type="date"
+                    id="date"
+                    name="updatedAt"
+                    value={
+                      currentNoteData.updatedAt
+                        ? new Date(currentNoteData.updatedAt)
+                            .toISOString()
+                            .split("T")[0]
+                        : ""
+                    }
+                    onChange={handleOnChange}
+                    readOnly
+                    required
+                  />
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button
+                  type="submit"
+                  className="w-full sm:w-auto"
+                  disabled={dataProcessing}
                 >
-                  Title
-                </label>
-                <input
-                  type="text"
-                  id="title"
-                  value={currentNoteData.title}
-                  onChange={handleOnChange}
-                  name="title"
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter title here..."
-                  required
-                />
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="description"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Description
-                </label>
-                <input
-                  type="text"
-                  id="description"
-                  name="description"
-                  value={currentNoteData.description}
-                  onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter note description here..."
-                  required
-                />
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="updatedAt"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Note UpdatedAt (Automatically will update)
-                </label>
-                <input
-                  type="date"
-                  id="date"
-                  name="updatedAt"
-                  value={
-                    currentNoteData.updatedAt
-                      ? new Date(currentNoteData.updatedAt)
-                          .toISOString()
-                          .split("T")[0]
-                      : ""
-                  }
-                  onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  readOnly
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition duration-200 inline-flex items-center justify-center gap-3"
-              >
-                {dataProcessing ? (
-                  <span className="inline-flex items-center justify-center gap-3">
-                    <AiOutlineLoading3Quarters className="animate-spin text-lg font-semibold text-slate-50" />{" "}
-                    Updating Note
-                  </span>
-                ) : (
-                  <>Update Note </>
-                )}
-              </button>
+                  {dataProcessing ? (
+                    <span className="inline-flex items-center gap-2">
+                      <AiOutlineLoading3Quarters className="animate-spin h-4 w-4" />
+                      Updating Note
+                    </span>
+                  ) : (
+                    "Update Note"
+                  )}
+                </Button>
+              </CardFooter>
             </form>
-          </div>
-        </section>
+          </Card>
+        </div>
       )}
     </CompanyUserLayout>
   );

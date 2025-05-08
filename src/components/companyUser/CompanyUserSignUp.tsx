@@ -6,11 +6,20 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
 import { setDarkMode } from "@/store/features/CRM/CRMSlice";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 export type FormDataType = {
   username: string;
@@ -99,191 +108,163 @@ const CompanyUserSignUp = () => {
   }, []);
 
   return (
-    <div className="max-w-md w-[95%] mx-auto my-10 p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-semibold mb-6 text-center text-black">
-        Company Registration Form
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4 text-black">
-        <div>
-          <label
-            htmlFor="username"
-            className="block text-sm font-semibold text-black"
-          >
-            Username
-          </label>
-          <input
-            type="text"
-            name="username"
-            id="username"
-            minLength={2}
-            maxLength={20}
-            value={formData.username}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
-            required
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="firstName"
-            className="block text-sm font-semibold text-black"
-          >
-            First Name
-          </label>
-          <input
-            type="text"
-            name="firstName"
-            id="firstName"
-            minLength={2}
-            maxLength={20}
-            value={formData.firstName}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
-            required
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="lastName"
-            className="block text-sm font-semibold text-black"
-          >
-            Last Name
-          </label>
-          <input
-            type="text"
-            name="lastName"
-            id="lastName"
-            minLength={2}
-            maxLength={20}
-            value={formData.lastName}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
-            required
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-semibold text-black"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
-            required
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="companyName"
-            className="block text-sm font-semibold text-black"
-          >
-            Company Name
-          </label>
-          <input
-            type="text"
-            name="companyName"
-            id="companyName"
-            minLength={2}
-            maxLength={20}
-            value={formData.companyName}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
-            required
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="phoneNumber"
-            className="block text-sm font-semibold text-black"
-          >
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            name="phoneNumber"
-            id="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
-            required
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="department"
-            className="block text-sm font-semibold text-black"
-          >
-            Department
-          </label>
-          <input
-            type="text"
-            name="department"
-            id="department"
-            minLength={2}
-            maxLength={20}
-            value={formData.department}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border bg-slate-50 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100"
-            required
-          />
-        </div>
-        <div className="relative">
-          <label
-            htmlFor="password"
-            className="block text-sm font-semibold text-black"
-          >
-            Password
-          </label>
-          <div className="border border-gray-300 rounded-md focus-within:outline-none focus-within:ring focus-within:ring-indigo-100">
-            <input
-              type={showPass ? "text" : "password"}
-              name="password"
-              id="password"
-              value={formData.password}
+    <Card className="max-w-md w-[95%] mx-auto my-10">
+      <CardHeader>
+        <CardTitle className="text-2xl font-semibold text-center">
+          Company Registration Form
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="username">Username</Label>
+            <Input
+              type="text"
+              id="username"
+              name="username"
+              minLength={2}
+              maxLength={20}
+              value={formData.username}
               onChange={handleChange}
-              minLength={8}
-              className="mt-1 block px-3 py-2 w-[90%] bg-slate-50 outline-none rounded-md"
               required
             />
-            <span
-              className="absolute right-2 top-1/2 text-lg cursor-pointer"
-              onClick={() => setShowPass(!showPass)}
-            >
-              {showPass ? <FaEyeSlash /> : <FaEye />}
-            </span>
           </div>
-        </div>
-        <button
-          type="submit"
-          className="w-full py-2 mt-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
-        >
-          {dataProcessing ? (
-            <span className="inline-flex items-center justify-center gap-3">
-              <AiOutlineLoading3Quarters className="animate-spin text-lg font-semibold text-slate-50" />{" "}
-              Processing
-            </span>
-          ) : (
-            "Register"
-          )}
-        </button>
-        <span className="text-sm text-gray-600 hover:text-gray-800 transition text-center block w-full p-1 my-2">
-          Already have an account?
+
+          <div className="space-y-2">
+            <Label htmlFor="firstName">First Name</Label>
+            <Input
+              type="text"
+              id="firstName"
+              name="firstName"
+              minLength={2}
+              maxLength={20}
+              value={formData.firstName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="lastName">Last Name</Label>
+            <Input
+              type="text"
+              id="lastName"
+              name="lastName"
+              minLength={2}
+              maxLength={20}
+              value={formData.lastName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="companyName">Company Name</Label>
+            <Input
+              type="text"
+              id="companyName"
+              name="companyName"
+              minLength={2}
+              maxLength={20}
+              value={formData.companyName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="phoneNumber">Phone Number</Label>
+            <Input
+              type="tel"
+              id="phoneNumber"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="department">Department</Label>
+            <Input
+              type="text"
+              id="department"
+              name="department"
+              minLength={2}
+              maxLength={20}
+              value={formData.department}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <div className="relative">
+              <Input
+                type={showPass ? "text" : "password"}
+                id="password"
+                name="password"
+                minLength={8}
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute right-0 top-0 h-full px-3"
+                onClick={() => setShowPass(!showPass)}
+              >
+                {showPass ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+                <span className="sr-only">
+                  {showPass ? "Hide password" : "Show password"}
+                </span>
+              </Button>
+            </div>
+          </div>
+
+          <Button type="submit" className="w-full" disabled={dataProcessing}>
+            {dataProcessing ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Processing
+              </span>
+            ) : (
+              "Register"
+            )}
+          </Button>
+        </form>
+      </CardContent>
+      <CardFooter className="flex justify-center">
+        <p className="text-sm text-muted-foreground">
+          Already have an account?{" "}
           <Link
             href="/login"
-            className="text-blue-500 font-semibold hover:underline"
+            className="text-primary font-medium hover:underline"
           >
-            {" "}
             Sign in
           </Link>
-        </span>
-      </form>
-    </div>
+        </p>
+      </CardFooter>
+    </Card>
   );
 };
 

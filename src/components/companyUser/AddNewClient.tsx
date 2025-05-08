@@ -2,11 +2,22 @@
 "use client";
 
 import axios from "axios";
-import CompanyUserLayout from "./CompanyUserLayout";
+import CompanyUserLayout from "@/components/companyUser/CompanyUserLayout";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useRouter } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const AddNewClient = () => {
   const clientName = useRef<HTMLInputElement>(null);
@@ -74,130 +85,91 @@ const AddNewClient = () => {
 
   return (
     <CompanyUserLayout>
-      <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-        <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-10 text-center">
-          <h1 className="text-4xl font-extrabold mb-4">Add New Client</h1>
-          <p className="text-lg mb-6">
-            Enter the client details to get started.
-          </p>
-        </section>
-
-        <section className="py-20 px-4 bg-gray-100 dark:bg-gray-800 border-b">
-          <div className="max-w-3xl mx-auto">
-            <form
-              onSubmit={submitClientData}
-              className="bg-white shadow-lg rounded-lg p-8 text-black"
-            >
-              <h2 className="text-2xl font-semibold mb-6">
-                New Client Details
-              </h2>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="projectClient"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Client Name
-                </label>
-                <input
-                  type="text"
-                  id="projectClientName"
-                  name="projectClientName"
-                  ref={clientName}
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter client name"
-                  required
-                />
+      <div className="container max-w-4xl mx-auto py-10 px-4">
+        <Card className="border shadow-sm">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-2xl font-bold">Add New Client</CardTitle>
+            <CardDescription>
+              Enter the client details to get started.
+            </CardDescription>
+          </CardHeader>
+          <form onSubmit={submitClientData}>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="projectClientName">Client Name</Label>
+                  <Input
+                    id="projectClientName"
+                    name="projectClientName"
+                    ref={clientName}
+                    placeholder="Enter client name"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="clientEmail">Client Email</Label>
+                  <Input
+                    type="email"
+                    id="clientEmail"
+                    name="clientEmail"
+                    ref={clientEmail}
+                    placeholder="Enter client email"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="clientJoinDate">Client Join Date</Label>
+                  <Input
+                    type="date"
+                    id="clientJoinDate"
+                    name="clientJoinDate"
+                    ref={clientJoinDate}
+                    placeholder="Client join date"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="clientPhone">Client Phone Number</Label>
+                  <Input
+                    type="text"
+                    id="clientPhone"
+                    name="clientPhone"
+                    ref={clientPhone}
+                    placeholder="Client phone number"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="clientCountry">Client Country</Label>
+                  <Input
+                    type="text"
+                    id="clientCountry"
+                    name="clientCountry"
+                    ref={clientCountry}
+                    placeholder="Client country"
+                    required
+                  />
+                </div>
               </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="projectClient"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Client Email
-                </label>
-                <input
-                  type="email"
-                  id="clientEmail"
-                  name="clientEmail"
-                  ref={clientEmail}
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter client email"
-                  required
-                />
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="projectClient"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Client Join Date
-                </label>
-                <input
-                  type="date"
-                  id="clientJoinDate"
-                  name="clientJoinDate"
-                  ref={clientJoinDate}
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Client Join Date"
-                  required
-                />
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="projectClient"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Client Phone Number
-                </label>
-                <input
-                  type="text"
-                  id="clientPhone"
-                  name="clientPhone"
-                  ref={clientPhone}
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Client phone number"
-                  required
-                />
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="projectClient"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Client Country Name
-                </label>
-                <input
-                  type="text"
-                  id="clientCountry"
-                  name="clientCountry"
-                  ref={clientCountry}
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Client country"
-                  required
-                />
-              </div>
-
-              <button
+            </CardContent>
+            <CardFooter>
+              <Button
                 type="submit"
-                className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition duration-200"
+                className="w-full sm:w-auto"
+                disabled={dataProcessing}
               >
                 {dataProcessing ? (
-                  <span className="inline-flex items-center justify-center gap-3">
-                    <AiOutlineLoading3Quarters className="animate-spin text-lg font-semibold text-slate-50" />
+                  <span className="inline-flex items-center gap-2">
+                    <AiOutlineLoading3Quarters className="animate-spin h-4 w-4" />
                     Processing
                   </span>
                 ) : (
                   "Add Client"
                 )}
-              </button>
-            </form>
-          </div>
-        </section>
+              </Button>
+            </CardFooter>
+          </form>
+        </Card>
       </div>
     </CompanyUserLayout>
   );

@@ -3,7 +3,6 @@
 
 import { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { CldImage } from "next-cloudinary";
 import {
   setClientsData,
   setLoggedIn,
@@ -13,20 +12,25 @@ import {
   setUser,
 } from "@/store/features/CRM/CRMSlice";
 import Link from "next/link";
-import { IoMdCamera } from "react-icons/io";
-import { RxCross2 } from "react-icons/rx";
-import {
-  MdEmail,
-  MdFeedback,
-  MdLogout,
-  MdManageAccounts,
-} from "react-icons/md";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { TbLoader3 } from "react-icons/tb";
 import PageLoader from "@/components/PageLoader";
-import { GoFileSubmodule } from "react-icons/go";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Calendar,
+  Camera,
+  FileText,
+  Loader2,
+  LogOut,
+  Mail,
+  MessageSquare,
+  Settings,
+  X,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const CompanyUserProfile = () => {
   const user = useAppSelector((state) => state.user);
@@ -126,99 +130,126 @@ const CompanyUserProfile = () => {
           <PageLoader />
         </div>
       ) : (
-        <div
-          className="bg-slate-50 dark:bg-gray-800 font-semibold text-black dark:text-slate-50 p-6 h-auto absolute left-[-190px] rounded-xl border border-[#dadada] top-[58px] right-0 flex flex-col items-center gap-4 max-w-[255px] w-[250px] z-30"
+        <Card
+          className="absolute left-[-190px] top-[58px] w-[250px] max-w-[255px] z-30 shadow-lg"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="font-semibold text-3xl h-[80px] w-[80px] rounded-full inline-flex items-center justify-center relative mb-2">
-            {profilePicLoader ? (
-              <span className="text-5xl text-black dark:text-slate-50 py-4 mx-auto animate-spin">
-                <TbLoader3 />
-              </span>
-            ) : (
-              <div className="w-full rounded-full h-[75px] cursor-pointer overflow-hidden inline-flex items-center justify-center">
-                {user?.profilePic ? (
-                  <CldImage
-                    width="960"
-                    height="600"
-                    src={user.profilePic}
-                    className="w-full h-full cursor-pointer object-cover"
-                    sizes="100vw"
-                    alt="User Profile"
-                  />
+          <CardContent className="p-5 flex flex-col items-center gap-4">
+            {/* Profile Picture Section */}
+            <div className="relative mt-2 mb-1">
+              <div className="relative">
+                {profilePicLoader ? (
+                  <div className="h-20 w-20 rounded-full flex items-center justify-center bg-muted">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  </div>
                 ) : (
-                  <p className="dark:bg-gray-700 bg-transparent border border-gray-300 dark:border-none w-full h-full inline-flex items-center justify-center cursor-pointer rounded-full dark:text-slate-50 text-black font-semibold">
-                    {user?.email?.slice(0, 1)?.toUpperCase()}
-                  </p>
+                  <Avatar className="h-20 w-20 border-2 border-border">
+                    {user?.profilePic ? (
+                      <AvatarImage
+                        src={user.profilePic}
+                        alt="User Profile"
+                        className="object-cover"
+                      />
+                    ) : (
+                      <AvatarFallback className="text-xl">
+                        {user?.email?.slice(0, 1)?.toUpperCase()}
+                      </AvatarFallback>
+                    )}
+                  </Avatar>
                 )}
+
+                <input
+                  type="file"
+                  id="file"
+                  ref={profilePicChange}
+                  onChange={handleFileChange}
+                  accept="image/*"
+                  className="hidden"
+                />
+
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="absolute bottom-0 right-0 h-7 w-7 rounded-full shadow-md"
+                  onClick={changeProfilePic}
+                >
+                  <Camera className="h-4 w-4" />
+                </Button>
               </div>
-            )}
-            <input
-              type="file"
-              id="file"
-              ref={profilePicChange}
-              onChange={handleFileChange}
-              accept="image/*"
-              className="hidden"
-            />
-            <p
-              className="absolute bottom-[-10px] right-0 text-xl p-[6px] shadow-md shadow-gray-400 bg-slate-50 text-red-600 rounded-full z-20 cursor-pointer"
-              onClick={changeProfilePic}
-            >
-              <IoMdCamera />
-            </p>
-            <p
-              onClick={() => dispatch(setProfile(!profile))}
-              className="absolute top-[-15px] right-[-80px] text-xl p-[6px] rounded-full cursor-pointer"
-            >
-              <RxCross2 />
-            </p>
-          </div>
-          <div className="text-center">
-            <p className="text-lg text-gray-500 dark:text-gray-300">
-              {user?.username}
-            </p>
-          </div>
-          <p className="text-base w-full inline-flex py-1 items-center justify-start border-b border-b-transparent hover:border-b-slate-700 duration-500 gap-3 overflow-hidden text-ellipsis">
-            <span>
-              <MdEmail />
-            </span>
-            {user?.email}
-          </p>
-          <Link
-            href="/updateProfile"
-            onClick={() => dispatch(setProfile(!profile))}
-            className="text-base w-full inline-flex py-1 items-center cursor-pointer border-b border-b-transparent hover:border-b-slate-700 duration-500 gap-3 overflow-hidden text-ellipsis"
-          >
-            <MdManageAccounts />
-            Manage your account
-          </Link>
 
-          <Link
-            href="/upload-document"
-            onClick={() => dispatch(setProfile(!profile))}
-            className="text-base w-full inline-flex py-1 items-center cursor-pointer border-b border-b-transparent hover:border-b-slate-700 duration-500 gap-3 overflow-hidden text-ellipsis"
-          >
-            <GoFileSubmodule />
-            Documents
-          </Link>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="absolute -top-4 -right-16 h-7 w-7"
+                onClick={() => dispatch(setProfile(!profile))}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
 
-          <Link
-            href="/submitFeedBack"
-            onClick={() => dispatch(setProfile(!profile))}
-            className="text-base w-full inline-flex py-1 items-center cursor-pointer border-b border-b-transparent hover:border-b-slate-700 duration-500 gap-3 overflow-hidden text-ellipsis"
-          >
-            <MdFeedback />
-            Share Feedback
-          </Link>
-          <p
-            onClick={logout}
-            className="flex items-center gap-4 text-lg text-center p-2 px-4 cursor-pointer rounded-3xl border border-[#cfcfcf] dark:hover:bg-slate-700 duration-500 hover:bg-slate-200"
-          >
-            <MdLogout />
-            Logout
-          </p>
-        </div>
+            {/* User Info */}
+            <div className="text-center w-full">
+              <p className="font-medium text-lg">{user?.username}</p>
+              <p className="text-sm text-muted-foreground flex items-center justify-center gap-1.5 mt-1">
+                <Mail className="h-3.5 w-3.5" />
+                <span className="truncate">{user?.email}</span>
+              </p>
+            </div>
+
+            <Separator className="my-1" />
+
+            {/* Navigation Links */}
+            <div className="w-full space-y-1">
+              <Link
+                href="/updateProfile"
+                onClick={() => dispatch(setProfile(!profile))}
+                className="flex items-center gap-2.5 py-2 px-1 rounded-md text-sm hover:bg-accent transition-colors"
+              >
+                <Settings className="h-4 w-4" />
+                Manage your account
+              </Link>
+
+              <Link
+                href="/addTaskToCalender"
+                onClick={() => dispatch(setProfile(!profile))}
+                className="flex items-center gap-2.5 py-2 px-1 rounded-md text-sm hover:bg-accent transition-colors"
+              >
+                <Calendar className="h-4 w-4" />
+                Add Event
+              </Link>
+
+              <Link
+                href="/upload-document"
+                onClick={() => dispatch(setProfile(!profile))}
+                className="flex items-center gap-2.5 py-2 px-1 rounded-md text-sm hover:bg-accent transition-colors"
+              >
+                <FileText className="h-4 w-4" />
+                Documents
+              </Link>
+
+              <Link
+                href="/submitFeedBack"
+                onClick={() => dispatch(setProfile(!profile))}
+                className="flex items-center gap-2.5 py-2 px-1 rounded-md text-sm hover:bg-accent transition-colors"
+              >
+                <MessageSquare className="h-4 w-4" />
+                Share Feedback
+              </Link>
+            </div>
+
+            <Separator className="my-1" />
+
+            {/* Logout Button */}
+            <Button
+              variant="outline"
+              className="w-full gap-2 mt-1"
+              onClick={logout}
+            >
+              <LogOut className="h-4 w-4" />
+              Logout
+            </Button>
+          </CardContent>
+        </Card>
       )}
     </>
   );

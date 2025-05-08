@@ -6,8 +6,6 @@
   display: none;
 }
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -64,8 +62,6 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border;
@@ -73,4 +69,41 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.fc .fc-col-header-cell-cushion {
+  color: black !important;
+}
+
+.fc-list-day-cushion {
+  color: black !important;
+}
+
+/* Fix list item hover styles */
+.fc .fc-list-event:hover {
+  background-color: #f0f0f0 !important; /* light gray or your preferred color */
+  color: black !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ensure list event titles remain visible */
+.fc .fc-list-event-title {
+  color: black !important;
+  transition: color 0.3s ease;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  transition: background-color 9999s ease-in-out 0s;
+  -webkit-text-fill-color: black !important;
+  caret-color: inherit;
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset;
+}
+
+.dark input:-webkit-autofill {
+  -webkit-text-fill-color: white !important;
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset;
 }

@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import CompanyUserLayout from "./CompanyUserLayout";
+import CompanyUserLayout from "@/components/companyUser/CompanyUserLayout";
 import Link from "next/link";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import toast from "react-hot-toast";
@@ -10,10 +10,32 @@ import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setTodos, todosInterface } from "@/store/features/CRM/CRMSlice";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import PageLoader from "@/components/PageLoader";
 import { FaClock } from "react-icons/fa6";
 import { ImSpinner6 } from "react-icons/im";
-import styles from "@/css/Checkbox.module.css";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { SearchIcon } from "lucide-react";
 
 const AddNote = () => {
   const dispatch = useAppDispatch();
@@ -187,272 +209,241 @@ const AddNote = () => {
 
   return (
     <CompanyUserLayout>
-      <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <div className="bg-background">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-10 text-center flex flex-col items-center gap-2">
-          <h1 className="text-4xl font-extrabold">Manage Your Notes</h1>
-          <p className="text-lg">
-            Keep track of your ideas, reminders, and important information all
-            in one place.
-          </p>
-          <Link
-            href="/"
-            className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 my-2 dark:text-white dark:hover:bg-gray-700"
-          >
-            Go to Home
-          </Link>
-        </section>
 
-        <section className="py-20 px-4 bg-gray-100 dark:bg-gray-800 border-b">
-          <div className="max-w-xl mx-auto">
-            <form
-              onSubmit={addTodo}
-              className="bg-white shadow-lg rounded-lg p-8 text-black"
-            >
-              <h2 className="text-2xl font-semibold mb-6">New Note Data</h2>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="title"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Note Title
-                </label>
-                <input
-                  type="text"
-                  id="title"
-                  name="title"
-                  onChange={handleOnChange}
-                  value={todoFormData.title}
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter note title"
-                  required
-                />
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="description"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Note Description
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  onChange={handleOnChange}
-                  value={todoFormData.description}
-                  className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter note description"
-                  required
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition duration-200"
-              >
-                {dataProcessing ? (
-                  <span className="inline-flex items-center justify-center gap-3">
-                    <AiOutlineLoading3Quarters className="animate-spin text-lg font-semibold text-slate-50" />{" "}
-                    Adding Note
-                  </span>
-                ) : (
-                  <>Add Note</>
-                )}
-              </button>
-            </form>
+        <section className="border-b bg-background text-primary-foreground px-6 text-center shadow-sm relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-background z-0" />
+          <div className="container relative z-10 px-4 py-16 md:py-24 mx-auto flex flex-col items-center gap-4 md:gap-6">
+            <div>
+              <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl text-black dark:text-white">
+                Manage Your Notes
+              </h1>
+              <p className="mt-4 text-lg text-muted-foreground md:text-xl">
+                Keep track of your ideas, reminders, and important information
+                all in one place.
+              </p>
+            </div>
+            <Button variant="default" size="lg">
+              <Link href="/">Go to Home</Link>
+            </Button>
           </div>
         </section>
 
-        <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-10 text-center flex flex-col items-center gap-2">
-          <h1 className="text-4xl font-extrabold">View Your Notes</h1>
-          <p className="text-lg">
-            Access your notes effortlessly, view your saved thoughts and
-            reminders all in one place.
-          </p>
-        </section>
+        {/* Add New  Note Section */}
 
-        <section className="p-4 py-20 w-full inline-flex flex-col items-center gap-3">
-          {loading ? (
-            <div className="relative left-0 top-0 w-full py-4">
-              <PageLoader />
-            </div>
-          ) : todos.length !== 0 ? (
-            <>
-              <div className="w-full flex items-center justify-center p-4 lg:py-6 gap-4 flex-wrap lg:flex-nowrap max-w-7xl">
-                <div className="gap-3 w-full inline-flex mt-2 items-center justify-center text-black rounded-md pr-2">
-                  <input
+        <div className="container max-w-2xl mx-auto py-10 px-4">
+          <Card className="border shadow-sm">
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-2xl font-bold">
+                New Note Data
+              </CardTitle>
+              <CardDescription>Enter your note details below.</CardDescription>
+            </CardHeader>
+            <form onSubmit={addTodo}>
+              <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Note Title</Label>
+                  <Input
                     type="text"
-                    placeholder="Search note by title"
-                    value={searchData.searchQuery}
-                    onChange={handleOnChangeForSearch}
-                    onKeyDown={checkKey}
-                    className="p-2 rounded-md border-none outline-none w-full lg:w-[65%] dark:bg-slate-800 duration-500  bg-slate-200 focus-within:ring-1 dark:focus-within:ring-blue-500 focus-within:ring-black group dark:text-slate-50 text-black"
+                    id="title"
+                    name="title"
+                    onChange={handleOnChange}
+                    value={todoFormData.title}
+                    placeholder="Enter note title"
+                    required
                   />
                 </div>
 
-                <div
-                  className={`inline-flex items-center flex-wrap md:flex-nowrap gap-3 p-2 ${
-                    getTodoLoader && "cursor-not-allowed"
-                  }`}
+                <div className="space-y-2">
+                  <Label htmlFor="description">Note Description</Label>
+                  <Textarea
+                    id="description"
+                    name="description"
+                    onChange={handleOnChange}
+                    value={todoFormData.description}
+                    placeholder="Enter note description"
+                    required
+                  />
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button
+                  type="submit"
+                  className="w-full sm:w-auto"
+                  disabled={dataProcessing}
                 >
+                  {dataProcessing ? (
+                    <span className="inline-flex items-center gap-2">
+                      <AiOutlineLoading3Quarters className="animate-spin h-4 w-4" />
+                      Adding Note
+                    </span>
+                  ) : (
+                    "Add Note"
+                  )}
+                </Button>
+              </CardFooter>
+            </form>
+          </Card>
+        </div>
+
+        <section className="border-b bg-background text-primary-foreground px-6 text-center shadow-sm relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-background z-0" />
+          <div className="container relative z-10 px-4 py-16 md:py-24 mx-auto flex flex-col items-center gap-4 md:gap-6">
+            <h1 className="text-4xl font-bold tracking-tight md:text-5xl text-black dark:text-white">
+              View Your Notes
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground md:text-xl">
+              Access your notes effortlessly, view your saved thoughts and
+              reminders all in one place.
+            </p>
+          </div>
+        </section>
+
+        <section className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+          <div className="mb-8">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex-1">
+                <div className="relative w-full md:w-1/2 lg:w-1/3">
+                  <Input
+                    type="text"
+                    placeholder="Search notes..."
+                    value={searchData.searchQuery}
+                    onChange={handleOnChangeForSearch}
+                    onKeyDown={checkKey}
+                    className="w-full pl-10"
+                  />
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    <SearchIcon className="h-4 w-4" />
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="latest"
+                    checked={applyFilter.latest}
+                    onCheckedChange={() => {
+                      setApplyFilter({ latest: true, oldest: false });
+                      latestToOldestTodos();
+                    }}
+                  />
                   <label
-                    className={`inline-flex items-center gap-2 cursor-pointer ${
-                      getTodoLoader && "pointer-events-none opacity-75"
-                    }`}
+                    htmlFor="latest"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    <label className={styles.container}>
-                      <input
-                        type="checkbox"
-                        checked={applyFilter.latest}
-                        onChange={() => {
-                          setApplyFilter({
-                            latest: true,
-                            oldest: false,
-                          });
-                          latestToOldestTodos();
-                        }}
-                      />
-                      <svg viewBox="0 0 64 64" height="1.5em" width="2em">
-                        <path
-                          d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
-                          pathLength="575.0541381835938"
-                          className={styles.path}
-                        />
-                      </svg>
-                    </label>{" "}
                     Latest
                   </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="oldest"
+                    checked={applyFilter.oldest}
+                    onCheckedChange={() => {
+                      setApplyFilter({ latest: false, oldest: true });
+                      OldestToLatestTodos();
+                    }}
+                  />
                   <label
-                    className={`inline-flex items-center gap-2 cursor-pointer ${
-                      getTodoLoader && "pointer-events-none opacity-75"
-                    }`}
+                    htmlFor="oldest"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    <label className={styles.container}>
-                      <input
-                        type="checkbox"
-                        checked={applyFilter.oldest}
-                        onChange={() => {
-                          setApplyFilter({
-                            latest: false,
-                            oldest: true,
-                          });
-                          OldestToLatestTodos();
-                        }}
-                      />
-                      <svg viewBox="0 0 64 64" height="1.5em" width="2em">
-                        <path
-                          d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
-                          pathLength="575.0541381835938"
-                          className={styles.path}
-                        />
-                      </svg>
-                    </label>{" "}
                     Oldest
                   </label>
                 </div>
               </div>
+            </div>
+          </div>
 
-              {getTodoLoader ? (
-                <ImSpinner6 className="text-3xl md:text-6xl animate-spin" />
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-2 md:p-6 rounded-md bg-gray-100 gap-4 dark:bg-gray-800 w-full max-w-7xl">
-                  {todos.map((todo, ind) => (
-                    <div
-                      className="bg-slate-50 text-black p-4 rounded-lg shadow-md h-fit inline-flex flex-col gap-2"
-                      key={ind}
-                    >
-                      <h3 className="font-bold text-xl overflow-hidden text-ellipsis text-nowrap">
-                        {todo.title}
-                      </h3>
-                      <p className="w-full break-words">{todo.description}</p>
-                      <p className="inline-flex items-center gap-2">
-                        {" "}
-                        {new Date(todo.updatedAt).toLocaleDateString()}{" "}
-                        <FaClock />
-                      </p>
-                      <span className="py-1 px-1 sm:p-3 sm:pl-0 text-center overflow-hidden text-ellipsis text-nowrap font-semibold inline-flex w-full items-center justify-start gap-3 pb-[5px]">
-                        <Link
-                          title="Update Note"
-                          className="text-blue-600 text-base bg-slate-50 rounded-md h-9 p-2 shadow-md sm:text-lg md:text-xl hover:text-blue-400 mx-2"
-                          href={`/updateNote/${todo._id}`}
-                        >
-                          <FiEdit />
-                        </Link>
-                        <button
-                          title="Delete Note"
-                          className="text-red-600 text-base h-9 p-2 bg-slate-50 rounded-md shadow-md sm:text-lg md:text-xl hover:text-red-400 mx-2"
-                          aria-label="Delete Note"
-                          onClick={() => {
-                            setPopupBox(true);
-                            setDelNote(todo._id);
-                          }}
-                        >
-                          <FiTrash2 />
-                        </button>
-                      </span>
-
-                      {popupBox && todo._id === delNote && (
-                        <div className="w-screen min-h-screen bg-black bg-opacity-85 fixed top-0 left-0 z-20 flex items-center justify-center">
-                          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full z-30">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                              Are you sure?
-                            </h3>
-                            <p className="text-sm text-gray-600 mb-6">
-                              This action will permanently delete the project
-                              and cannot be undone.
-                            </p>
-                            <div className="flex justify-end space-x-4">
-                              <button
-                                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-                                onClick={() => setPopupBox(false)} // Close modal without action
-                              >
-                                Cancel
-                              </button>
-                              <button
-                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                                onClick={deleteNote}
-                              >
-                                Delete Permanently
-                              </button>
-                            </div>
-                          </div>
+          {getTodoLoader ? (
+            <div className="flex justify-center items-center h-40">
+              <ImSpinner6 className="animate-spin text-primary text-2xl sm:text-4xl md:text-5xl lg:text-6xl" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {todos.length > 0 ? (
+                todos.map((todo, ind) => (
+                  <Card
+                    key={ind}
+                    className="transition-all hover:shadow-md shadow-lg shadow-black/10 dark:shadow-white/10 overflow-hidden border border-border hover:border-border/80 duration-300 flex flex-col justify-between"
+                  >
+                    <CardContent className="p-0">
+                      <div className="p-6">
+                        <h3 className="font-semibold text-lg mb-2 line-clamp-1">
+                          {todo.title}
+                        </h3>
+                        <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
+                          {todo.description}
+                        </p>
+                        <div className="flex items-center text-xs text-muted-foreground mb-4">
+                          <FaClock className="mr-1 animate-pulse text-blue-500" />
+                          <span>
+                            {new Date(todo.updatedAt).toLocaleDateString()}
+                          </span>
                         </div>
-                      )}
-                    </div>
-                  ))}
+                      </div>
+                    </CardContent>
+                    <CardFooter className="flex w-full gap-4 pt-2 items-center">
+                      <Button
+                        variant="outline"
+                        className="flex-1 rounded-2xl h-12 text-primary hover:bg-destructive/10"
+                        onClick={() => {
+                          setPopupBox(true);
+                          setDelNote(todo._id);
+                        }}
+                      >
+                        <FiTrash2 className="mr-2" />
+                        Delete
+                      </Button>
+                      <div className="w-px bg-border"></div>
+                      <Link href={`/updateNote/${todo._id}`}>
+                        <Button
+                          variant="outline"
+                          className="flex-1 rounded-2xl h-12 text-primary"
+                        >
+                          <FiEdit className="mr-2" />
+                          Edit
+                        </Button>
+                      </Link>
+                    </CardFooter>
+                  </Card>
+                ))
+              ) : (
+                <div className="col-span-full flex justify-center items-center h-40">
+                  <p className="text-muted-foreground">No notes found.</p>
                 </div>
               )}
-            </>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-full py-10">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black dark:text-slate-50 mb-4">
-                Sorry, no todos found.
-              </h2>
-              <p className="text-gray-300 text-center max-w-md text-xl md:text-2xl mb-6">
-                It looks like there are no todos available at the moment. Start
-                by adding a new todo or check back later for updates.
-              </p>
             </div>
           )}
-        </section>
 
-        {/* CTA Section */}
-        <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-20 text-center">
-          <h2 className="text-3xl font-semibold mb-4">
-            Get Started on Your Notes
-          </h2>
-          <p className="text-lg mb-6">
-            Create, edit, and organize your notes effortlessly to stay on top of
-            everything.
-          </p>
-          <Link
-            href="/"
-            className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 my-2 dark:text-white dark:hover:bg-gray-700"
-          >
-            Go to Home
-          </Link>
+          {/* Delete Confirmation Dialog */}
+          <AlertDialog open={popupBox} onOpenChange={setPopupBox}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Are you sure you want to delete this note?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your note.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => setPopupBox(false)}>
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => {
+                    deleteNote();
+                    setPopupBox(false);
+                  }}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </section>
       </div>
     </CompanyUserLayout>

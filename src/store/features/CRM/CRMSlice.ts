@@ -34,6 +34,7 @@ export interface clientsSearchedDataInterface {
   status: boolean;
   country: string;
   phone: string;
+  companyName: string;
 }
 
 export interface todosInterface {

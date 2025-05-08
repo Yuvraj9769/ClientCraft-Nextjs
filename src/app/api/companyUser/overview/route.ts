@@ -54,13 +54,9 @@ export async function GET(request: NextRequest) {
 
     const clientsCount = comapnyCurrentUserData.Clients.length || 0;
 
-    const activeClientsCount =
-      comapnyCurrentUserData.Clients.filter((client: any) => client.isActive)
-        .length || 0;
-
     overViewData.push(
       { clientsCount },
-      { activeClientsCount },
+      { documentsCount: comapnyCurrentUserData.documents.length || 0 },
       { totalCompanyUsers: totalCompanyUsers[0].totalCompanyUsers }
     );
 

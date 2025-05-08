@@ -26,6 +26,15 @@ import {
 } from "react-icons/md";
 import { TbLoader3 } from "react-icons/tb";
 import { IoReturnDownForward } from "react-icons/io5";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 const CompanyUserSidebar = () => {
   const user = useAppSelector((state) => state.user);
@@ -118,6 +127,15 @@ const CompanyUserSidebar = () => {
     }
   };
 
+  const navLinks = [
+    { path: "/company-dashboard", label: "Dashboard" },
+    { path: "/company-projects", label: "Projects" },
+    { path: "/company-clients", label: "Clients" },
+    { path: "/add-note", label: "Add Note" },
+    { path: "/addTaskToCalender", label: "Add Task" },
+    { path: "/upload-document", label: "Upload Document" },
+  ];
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -138,130 +156,144 @@ const CompanyUserSidebar = () => {
   }, [sidebarVisible]);
 
   return (
-    <div
-      className="bg-black bg-opacity-90 fixed top-0 left-0 w-screen min-h-screen h-screen z-30 md:hidden"
-      onClick={() => dispatch(setSidebarVisible(!sidebarVisible))}
-    >
-      <div
-        className="bg-slate-50 dark:bg-gray-800 font-semibold text-black dark:text-slate-50 w-[75%] h-full p-4 flex flex-col items-start gap-3"
-        onClick={(e) => e.stopPropagation()}
+    <div className="md:hidden">
+      {/* Overlay */}
+      {sidebarVisible && (
+        <div
+          className="fixed bg-red-600 z-40"
+          onClick={() => {
+            setSidebarVisible(false);
+          }}
+        />
+      )}
+
+      <Sheet
+        open={sidebarVisible}
+        onOpenChange={(open) => dispatch(setSidebarVisible(open))}
       >
-        <div className="font-semibold text-3xl h-[100px] w-[100px] rounded-full inline-flex items-center justify-center relative mb-3">
-          {loader ? (
-            <span className="text-5xl text-black dark:text-slate-50 py-4 mx-auto animate-spin">
-              <TbLoader3 />
-            </span>
-          ) : (
-            <div className="w-full rounded-full h-full cursor-pointer overflow-hidden inline-flex items-center justify-center">
-              {user?.profilePic ? (
-                <CldImage
-                  width="960"
-                  height="600"
-                  src={user.profilePic}
-                  className="w-full h-full cursor-pointer object-cover"
-                  sizes="100vw"
-                  alt="User Profile"
-                />
-              ) : (
-                <p className="dark:bg-gray-800 bg-transparent border border-gray-300 dark:border-none w-full h-full inline-flex items-center justify-center cursor-pointer rounded-full dark:text-slate-50 text-black font-semibold">
-                  {user?.email?.slice(0, 1)?.toUpperCase()}
-                </p>
-              )}
-            </div>
-          )}
-          <input
-            type="file"
-            id="file"
-            ref={profilePicChange}
-            onChange={handleFileChange}
-            accept="image/*"
-            className="hidden"
-          />
-          <p
-            className="absolute bottom-[-10px] right-0 text-xl p-[6px] shadow-md shadow-gray-400 bg-slate-50 text-red-600 rounded-full z-20 cursor-pointer"
-            onClick={changeProfilePic}
-          >
-            <IoMdCamera />
-          </p>
-        </div>
-
-        <div className="text-center mb-1">
-          <p className="text-lg text-gray-500 dark:text-gray-300">
-            {user?.username}
-          </p>
-        </div>
-
-        <ul className="flex items-start flex-col gap-3 font-normal text-base mb-1">
-          <Link
-            href="/company-dashboard"
-            onClick={() => dispatch(setSidebarVisible(!sidebarVisible))}
-            className={`inline-flex items-center gap-2 text-black dark:text-white hover:text-gray-300 mr-4 ${
-              pathname === "/company-dashboard" && "font-semibold"
-            }`}
-          >
-            <IoReturnDownForward className="text-2xl" /> Dashboard
-          </Link>
-          <Link
-            href="/company-projects"
-            onClick={() => dispatch(setSidebarVisible(!sidebarVisible))}
-            className={`inline-flex items-center gap-2 text-black dark:text-white hover:text-gray-300 mr-4 ${
-              pathname === "/company-projects" && "font-semibold"
-            }`}
-          >
-            <IoReturnDownForward className="text-2xl" /> Projects
-          </Link>
-
-          <Link
-            href="/company-clients"
-            onClick={() => dispatch(setSidebarVisible(!sidebarVisible))}
-            className={`inline-flex items-center gap-2 text-black dark:text-white hover:text-gray-300 mr-4 ${
-              pathname === "/company-clients" && "font-semibold"
-            }`}
-          >
-            <IoReturnDownForward className="text-2xl" /> Clients
-          </Link>
-          <Link
-            href="/add-note"
-            onClick={() => dispatch(setSidebarVisible(!sidebarVisible))}
-            className={`inline-flex items-center gap-2 text-black dark:text-white hover:text-gray-300 mr-4 ${
-              pathname === "/add-note" && "font-semibold"
-            }`}
-          >
-            <IoReturnDownForward className="text-2xl" /> Add Note
-          </Link>
-        </ul>
-
-        <p className="text-base w-full inline-flex py-1 items-center justify-start border-b border-b-transparent hover:border-b-slate-700 duration-500 gap-3 overflow-hidden text-ellipsis">
-          <span>
-            <MdEmail />
-          </span>
-          {user?.email}
-        </p>
-        <Link
-          href="/updateProfile"
-          onClick={() => dispatch(setSidebarVisible(!sidebarVisible))}
-          className="text-base w-full inline-flex py-1 items-center cursor-pointer border-b border-b-transparent hover:border-b-slate-700 duration-500 gap-3 overflow-hidden text-ellipsis"
+        <SheetContent
+          side="left"
+          className="w-3/4 p-0 bg-slate-50 dark:bg-gray-800 text-black dark:text-slate-50 border-r border-slate-200 dark:border-gray-700"
         >
-          <MdManageAccounts />
-          Manage your account
-        </Link>
+          <div className="flex flex-col h-full">
+            {/* Profile Section */}
 
-        <Link
-          href="/submitFeedBack"
-          onClick={() => dispatch(setSidebarVisible(!sidebarVisible))}
-          className="text-base w-full inline-flex py-1 items-center cursor-pointer border-b border-b-transparent hover:border-b-slate-700 duration-500 gap-3 overflow-hidden text-ellipsis"
-        >
-          <MdFeedback />
-          Share Feedback
-        </Link>
-        <p
-          onClick={logout}
-          className="flex items-center gap-4 text-lg text-center p-2 px-4 cursor-pointer rounded-3xl border border-[#cfcfcf] dark:hover:bg-slate-700 duration-500 hover:bg-slate-200"
-        >
-          <MdLogout />
-          Logout
-        </p>
-      </div>
+            <SheetHeader>
+              <div className="flex flex-col items-center p-6 border-b border-slate-200 dark:border-gray-700">
+                <SheetTitle>
+                  <div className="relative w-24 h-24 mb-4">
+                    {loader ? (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <TbLoader3 className="w-8 h-8 animate-spin text-primary" />
+                      </div>
+                    ) : user?.profilePic ? (
+                      <CldImage
+                        src={user.profilePic}
+                        width={96}
+                        height={96}
+                        alt="Profile"
+                        className="rounded-full object-cover w-full h-full border-2 border-primary"
+                      />
+                    ) : (
+                      <div className="w-full h-full rounded-full bg-primary/10 flex items-center justify-center text-2xl font-bold text-primary border-2 border-primary">
+                        {user?.email?.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+
+                    <button
+                      onClick={changeProfilePic}
+                      className="absolute bottom-0 right-0 bg-primary text-rose-600 p-2 rounded-full hover:bg-primary/80 transition-colors"
+                    >
+                      <IoMdCamera className="w-4 h-4" />
+                    </button>
+
+                    {/* Hidden File Input */}
+                    <input
+                      type="file"
+                      ref={profilePicChange}
+                      onChange={handleFileChange}
+                      accept="image/*"
+                      className="hidden"
+                    />
+                  </div>
+                </SheetTitle>
+
+                <SheetDescription>
+                  <span className="text-lg font-semibold">
+                    {user?.username}
+                  </span>
+                </SheetDescription>
+              </div>
+            </SheetHeader>
+
+            {/* Navigation Links */}
+            <nav className="flex-1 overflow-y-auto py-4 px-3">
+              <ul className="space-y-2">
+                {navLinks.map((link) => (
+                  <li key={link.path}>
+                    <Link
+                      href={link.path}
+                      className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
+                        pathname === link.path
+                          ? "bg-primary/10 text-primary font-medium"
+                          : "hover:bg-slate-200 dark:hover:bg-gray-700"
+                      }`}
+                    >
+                      <IoReturnDownForward
+                        className={`mr-3 w-5 h-5 ${
+                          pathname === link.path ? "text-primary" : ""
+                        }`}
+                      />
+                      <span>{link.label}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Additional Links */}
+              <div className="mt-6 space-y-2 border-t border-slate-200 dark:border-gray-700 pt-4 px-1">
+                {/* Email */}
+                <div className="flex items-center px-4 py-3 text-sm">
+                  <MdEmail className="mr-3 w-5 h-5 text-muted-foreground" />
+                  <span className="truncate">{user?.email}</span>
+                </div>
+
+                {/* Manage Account */}
+                <Link
+                  href="/updateProfile"
+                  className="flex items-center px-4 py-3 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <MdManageAccounts className="mr-3 w-5 h-5" />
+                  <span>Manage Account</span>
+                </Link>
+
+                {/* Feedback */}
+                <Link
+                  href="/submitFeedBack"
+                  className="flex items-center px-4 py-3 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <MdFeedback className="mr-3 w-5 h-5" />
+                  <span>Feedback</span>
+                </Link>
+              </div>
+            </nav>
+
+            <SheetFooter>
+              <div className="p-4 border-t border-slate-200 dark:border-gray-700">
+                <SheetClose asChild>
+                  <button
+                    onClick={logout}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-slate-300 dark:border-gray-600 hover:bg-slate-200 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    <MdLogout className="w-5 h-5" />
+                    <span>Logout</span>
+                  </button>
+                </SheetClose>
+              </div>
+            </SheetFooter>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };

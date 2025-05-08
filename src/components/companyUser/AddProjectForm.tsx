@@ -3,12 +3,30 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import CompanyUserLayout from "./CompanyUserLayout";
+import CompanyUserLayout from "@/components/companyUser/CompanyUserLayout";
 import toast from "react-hot-toast";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import PageLoader from "../PageLoader";
+import PageLoader from "@/components/PageLoader";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 const AddProjectForm = () => {
   const [dataProcessing, setDataProcessing] = useState(false);
@@ -110,6 +128,13 @@ const AddProjectForm = () => {
     }
   }, [clientId]);
 
+  const handleStatusChange = (value: string) => {
+    setProjectFormData((prevData) => ({
+      ...prevData,
+      projectStatus: value,
+    }));
+  };
+
   useEffect(() => {
     if (currentClientData.email.trim() === "") {
       getClientData();
@@ -123,137 +148,107 @@ const AddProjectForm = () => {
       {loader ? (
         <PageLoader />
       ) : (
-        <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-          <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-10 text-center">
-            <h1 className="text-4xl font-extrabold mb-4">Add New Project</h1>
-            <p className="text-lg mb-6">
-              Enter the project details to get started.
-            </p>
-          </section>
-
-          <section className="py-20 px-4 bg-gray-100 dark:bg-gray-800 border-b">
-            <div className="max-w-3xl mx-auto">
-              <form
-                onSubmit={addNewProject}
-                className="bg-white shadow-lg rounded-lg p-8 text-black"
-              >
-                <h2 className="text-2xl font-semibold mb-6">
-                  New Project Details
-                </h2>
-
-                <div className="mb-6">
-                  <label
-                    htmlFor="projectClient"
-                    className="block text-lg font-semibold mb-2"
-                  >
-                    Project Client Name
-                  </label>
-                  <input
-                    type="text"
-                    id="projectClientName"
-                    name="projectClientName"
-                    value={currentClientData.name}
-                    readOnly
-                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter project client name"
-                    required
-                  />
+        <div className="container max-w-4xl mx-auto py-10 px-4">
+          <Card className="border shadow-sm">
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-2xl font-bold">
+                Create New Project
+              </CardTitle>
+              <CardDescription>
+                Add a new project for {currentClientData.name}
+              </CardDescription>
+            </CardHeader>
+            <form onSubmit={addNewProject}>
+              <CardContent className="space-y-6">
+                {/* Client Information Section */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Client Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="clientName">Client Name</Label>
+                      <Input
+                        id="clientName"
+                        value={currentClientData.name}
+                        readOnly
+                        className="bg-muted cursor-not-allowed"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="clientEmail">Client Email</Label>
+                      <Input
+                        id="clientEmail"
+                        type="email"
+                        value={currentClientData.email}
+                        readOnly
+                        className="bg-muted cursor-not-allowed"
+                      />
+                    </div>
+                  </div>
                 </div>
 
-                <div className="mb-6">
-                  <label
-                    htmlFor="projectClient"
-                    className="block text-lg font-semibold mb-2"
-                  >
-                    Project Client Email
-                  </label>
-                  <input
-                    type="text"
-                    id="projectClientEmail"
-                    name="projectClientEmail"
-                    value={currentClientData.email}
-                    readOnly
-                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter project client name"
-                    required
-                  />
+                {/* Project Details Section */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Project Details</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="projectName">Project Name</Label>
+                      <Input
+                        id="projectName"
+                        name="projectName"
+                        value={projectFormData.projectName}
+                        onChange={handleOnChange}
+                        placeholder="Enter project name"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="projectStatus">Project Status</Label>
+                      <Select
+                        value={projectFormData.projectStatus}
+                        onValueChange={handleStatusChange}
+                      >
+                        <SelectTrigger id="projectStatus">
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Active">Active</SelectItem>
+                          <SelectItem value="Completed">Completed</SelectItem>
+                          <SelectItem value="Pending">Pending</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="projectBudget">Project Budget</Label>
+                      <Input
+                        id="projectBudget"
+                        name="projectBudget"
+                        value={projectFormData.projectBudget}
+                        onChange={handleOnChange}
+                        placeholder="Enter project budget"
+                        required
+                      />
+                    </div>
+                  </div>
                 </div>
-
-                <div className="mb-6">
-                  <label
-                    htmlFor="projectName"
-                    className="block text-lg font-semibold mb-2"
-                  >
-                    Project Name
-                  </label>
-                  <input
-                    type="text"
-                    id="projectName"
-                    value={projectFormData.projectName}
-                    onChange={handleOnChange}
-                    name="projectName"
-                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter project name"
-                    required
-                  />
-                </div>
-
-                <div className="mb-6">
-                  <label
-                    htmlFor="projectStatus"
-                    className="block text-lg font-semibold mb-2"
-                  >
-                    Project Status
-                  </label>
-                  <select
-                    name="projectStatus"
-                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={projectFormData.projectStatus}
-                    onChange={handleOnChange}
-                    required
-                  >
-                    <option value="">Select Project Status</option>
-                    <option value="Active">Active</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Pending">Pending</option>
-                  </select>
-                </div>
-
-                <div className="mb-6">
-                  <label
-                    htmlFor="projectBudget"
-                    className="block text-lg font-semibold mb-2"
-                  >
-                    Project Budget
-                  </label>
-                  <input
-                    type="text"
-                    id="projectBudget"
-                    name="projectBudget"
-                    value={projectFormData.projectBudget}
-                    onChange={handleOnChange}
-                    className="w-full p-3 border border-gray-300 text-black bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter project budget"
-                    required
-                  />
-                </div>
-
-                <button
+              </CardContent>
+              <CardFooter>
+                <Button
                   type="submit"
-                  className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition duration-200 inline-flex items-center justify-center gap-3"
+                  className="w-full sm:w-auto"
+                  disabled={dataProcessing}
                 >
                   {dataProcessing ? (
-                    <span className="inline-flex items-center justify-center gap-3">
-                      <AiOutlineLoading3Quarters className="animate-spin text-lg font-semibold text-slate-50" />{" "}
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Creating Project
-                    </span>
+                    </>
                   ) : (
-                    <>Create Project</>
+                    "Create Project"
                   )}
-                </button>
-              </form>
-            </div>
-          </section>
+                </Button>
+              </CardFooter>
+            </form>
+          </Card>
         </div>
       )}
     </CompanyUserLayout>

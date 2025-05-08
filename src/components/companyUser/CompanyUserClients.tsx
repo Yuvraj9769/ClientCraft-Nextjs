@@ -3,8 +3,7 @@
 "use client";
 
 import Link from "next/link";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoMdCreate, IoMdTrash } from "react-icons/io";
 import CompanyUserLayout from "./CompanyUserLayout";
 import { useCallback, useEffect, useState } from "react";
 import { setClientsData } from "@/store/features/CRM/CRMSlice";
@@ -13,13 +12,31 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import toast from "react-hot-toast";
 import PageLoader from "@/components/PageLoader";
 import { ImSpinner6 } from "react-icons/im";
-import { BiBookAdd } from "react-icons/bi";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const CompanyUserClients = () => {
   const [loading, setLoading] = useState(true);
   const [clientLoader, setClientLoader] = useState(false);
-  const [delClientID, setDelClientID] = useState("");
-  const [popupBox, setPopupBox] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -61,7 +78,7 @@ const CompanyUserClients = () => {
     }
   };
 
-  const deleteClientUser = useCallback(async () => {
+  const deleteClientUser = useCallback(async (delClientID: any) => {
     try {
       setLoading(true);
       const response = await axios.delete(
@@ -79,10 +96,8 @@ const CompanyUserClients = () => {
       }
 
       setLoading(false);
-      setDelClientID("");
-      setPopupBox(false);
     }
-  }, [delClientID]);
+  }, []);
 
   const getAllClients = useCallback(async () => {
     try {
@@ -112,198 +127,200 @@ const CompanyUserClients = () => {
 
   return (
     <CompanyUserLayout>
-      <div className="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
-        <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-10 text-center flex flex-col items-center gap-2">
-          <h1 className="text-4xl font-extrabold">Manage Clients</h1>
-          <p className="text-lg">
-            Track client details, projects, and status updates.
-          </p>
-          <Link
-            href="/"
-            className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 my-2 dark:text-white dark:hover:bg-gray-700"
-          >
-            Go to Home
-          </Link>
-          <Link
-            href="/add-new-client"
-            className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 inline-flex items-center gap-2"
-          >
-            <IoMdAdd /> Add New Client
-          </Link>
-        </section>
+      {/* {New Layout} */}
 
-        <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-          {loading ? (
-            <div className="relative left-0 top-0 w-full py-4">
-              <PageLoader />
-            </div>
-          ) : clientsData.length !== 0 ? (
-            <div className="max-w-7xl mx-auto flex flex-col items-center gap-2">
-              <div className="w-full flex items-center justify-center p-4 lg:py-6 gap-4 flex-wrap lg:flex-nowrap">
-                <div className="gap-3 w-full inline-flex mt-2 items-center justify-center text-black rounded-md pr-2">
-                  <input
-                    type="text"
-                    value={searchData.searchQuery}
-                    onChange={handleOnChange}
-                    onKeyDown={checkKey}
-                    placeholder="Search by client name/email"
-                    className="p-2 rounded-md border-none outline-none w-[85%] lg:w-[45%] dark:bg-slate-800 duration-500  bg-slate-200 focus-within:ring-1 dark:focus-within:ring-blue-500 focus-within:ring-black group dark:text-slate-50 text-black"
-                  />
-                </div>
+      {loading ? (
+        <PageLoader />
+      ) : (
+        <div className="min-h-screen bg-background">
+          {/* Header Section */}
+
+          <header className="border-b bg-background text-primary-foreground px-6 text-center shadow-sm relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-background z-0" />
+            <div className="container relative z-10 px-4 py-16 md:py-24 mx-auto flex flex-col items-center gap-4 md:gap-6">
+              <div>
+                <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl text-black dark:text-white">
+                  Manage Clients
+                </h1>
+                <p className="mt-4 text-lg text-muted-foreground md:text-xl">
+                  View, search, and manage all your client relationships in one
+                  place.
+                </p>
               </div>
+              <div className="flex flex-wrap items-center gap-4 mt-8">
+                <Button variant="default" size="lg">
+                  <Link href="/">Go to Home</Link>
+                </Button>
+                <Link href="/add-new-client">
+                  <Button
+                    variant={"outline"}
+                    size={"lg"}
+                    className="dark:text-white text-black"
+                  >
+                    <IoMdAdd className="text-lg animate-pulse" /> Add New Client
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </header>
 
-              <div className="max-w-7xl p-4 flex flex-wrap gap-4 items-center justify-center mx-auto">
-                {clientLoader ? (
-                  <ImSpinner6 className="text-3xl md:text-6xl animate-spin" />
-                ) : (
-                  clientsData.map((client, ind) => (
-                    <div
-                      className="max-w-sm w-full sm:w-[350px] mx-auto my-1 md:m-0 bg-white shadow-lg rounded-lg overflow-hidden"
-                      key={ind}
-                    >
-                      <div className="p-4">
-                        <h3 className="text-xl font-semibold text-gray-900 overflow-hidden inline-flex gap-1 w-full">
-                          <span className="text-nowrap">Client Name:</span>
-                          <span className="overflow-hidden text-ellipsis text-nowrap">
-                            {client.name}
-                          </span>
-                        </h3>
-                        <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
-                          <span className="font-semibold text-nowrap">
+          {/* Main Content */}
+          <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            {/* Search and Action Section */}
+            <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+              <div className="w-full md:w-1/2 lg:w-1/3">
+                <Input
+                  type="text"
+                  placeholder="Search clients by name, email, or company..."
+                  value={searchData.searchQuery}
+                  onChange={handleOnChange}
+                  onKeyDown={checkKey}
+                  className="border-border"
+                />
+              </div>
+              <Link href="/add-new-client">
+                <Button className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90">
+                  <IoMdAdd className="text-lg animate-pulse" /> Add New Client
+                </Button>
+              </Link>
+            </div>
+
+            {clientLoader ? (
+              <div className="w-full inline-flex items-center justify-center">
+                <ImSpinner6 className="text-3xl md:text-6xl animate-spin" />
+              </div>
+            ) : clientsData.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {clientsData.map((client, ind) => (
+                  <Card
+                    key={ind}
+                    className="shadow-lg shadow-black/10 dark:shadow-white/10 overflow-hidden border border-border hover:border-border/80 transition"
+                  >
+                    <CardHeader className="bg-muted/40 pb-4">
+                      <div className="flex justify-between items-start">
+                        <CardTitle className="text-xl font-bold truncate">
+                          {client.name}
+                        </CardTitle>
+                        <Badge
+                          variant={client.status ? "default" : "outline"}
+                          className={`${
+                            client.status
+                              ? "bg-green-200 text-green-800"
+                              : "bg-yellow-100 text-yellow-800"
+                          }`}
+                        >
+                          {client.status ? "Active" : "Inactive"}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-4 space-y-2 text-sm text-muted-foreground">
+                      <div className="space-y-1">
+                        <div className="flex gap-2 items-center">
+                          <span className="font-semibold text-foreground whitespace-nowrap">
                             Email:
-                          </span>{" "}
-                          <span className=" overflow-hidden text-ellipsis text-nowrap">
-                            {client.email}
                           </span>
-                        </p>
-                        <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
-                          <span className="font-semibold text-nowrap">
+                          <span className="truncate">{client.email}</span>
+                        </div>
+
+                        <div className="flex gap-2 items-center">
+                          <span className="font-semibold text-foreground whitespace-nowrap">
                             Joined Date:
-                          </span>{" "}
-                          <span className=" overflow-hidden text-ellipsis text-nowrap">
+                          </span>
+                          <span className="truncate">
                             {new Date(client.dateJoined).toLocaleDateString()}
                           </span>
-                        </p>
-                        <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
-                          <span className="font-semibold text-nowrap">
-                            Country:
-                          </span>{" "}
-                          <span className=" overflow-hidden text-ellipsis text-nowrap">
-                            {client.country}
-                          </span>
-                        </p>
-                        <p className="text-gray-700 text-sm mt-1 overflow-hidden inline-flex gap-1 w-full">
-                          <span className="font-semibold text-nowrap">
-                            Phone Number:
-                          </span>{" "}
-                          <span className=" overflow-hidden text-ellipsis text-nowrap">
-                            {client.phone}
-                          </span>
-                        </p>
-                        <p className="mt-2">
-                          <span
-                            className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                              "Active" === "Active"
-                                ? "bg-green-200 text-green-800"
-                                : "bg-yellow-200 text-yellow-800"
-                            }`}
-                          >
-                            {client.status ? "Active" : "Inactive"}
-                          </span>
-                        </p>
-                      </div>
-
-                      <div className="flex gap-2 p-4 border-t border-gray-300 justify-end items-center">
-                        <Link
-                          title="Update Client"
-                          className="text-blue-600 text-base bg-slate-50 rounded-md h-9 p-2 shadow-md sm:text-lg md:text-xl hover:text-blue-400 mx-2"
-                          href={`/update-clientUser/${client._id}`}
-                        >
-                          <FiEdit />
-                        </Link>
-
-                        <Link
-                          title="Add New Project"
-                          className="text-teal-600 text-base bg-slate-50 rounded-md h-9 p-2 shadow-md sm:text-lg md:text-xl hover:text-teal-800 mx-2"
-                          href={`/create-new-project/${client._id}`}
-                        >
-                          <BiBookAdd />
-                        </Link>
-
-                        <button
-                          title="Delete Client"
-                          className="text-red-600 text-base h-9 p-2 bg-slate-50 rounded-md shadow-md sm:text-lg md:text-xl hover:text-red-400 mx-2"
-                          aria-label="Delete Client"
-                          onClick={() => {
-                            setPopupBox(true);
-                            setDelClientID(client._id);
-                          }}
-                        >
-                          <FiTrash2 />
-                        </button>
-                      </div>
-
-                      {popupBox && client._id === delClientID && (
-                        <div className="w-screen min-h-screen bg-black bg-opacity-85 fixed top-0 left-0 z-20 flex items-center justify-center">
-                          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full z-30">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                              Are you sure?
-                            </h3>
-                            <p className="text-sm text-gray-600 mb-6">
-                              This action will permanently delete the project
-                              and cannot be undone.
-                            </p>
-                            <div className="flex justify-end space-x-4">
-                              <button
-                                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-                                onClick={() => setPopupBox(false)} // Close modal without action
-                              >
-                                Cancel
-                              </button>
-                              <button
-                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                                onClick={deleteClientUser}
-                              >
-                                Delete Permanently
-                              </button>
-                            </div>
-                          </div>
                         </div>
-                      )}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-full py-10">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black dark:text-slate-50 mb-4">
-                Sorry, no clients yet.
-              </h2>
-              <p className="text-gray-300 text-center max-w-md text-xl md:text-xl mb-6">
-                It seems you haven&apos;t added any clients yet. Start by adding
-                a new client to manage their details.
-              </p>
-            </div>
-          )}
-        </main>
 
-        <section className="bg-gradient-to-r from-blue-500 via-teal-500 to-purple-600 dark:from-blue-800 dark:via-teal-800 dark:to-purple-800 text-white py-20 text-center">
-          <h2 className="text-3xl font-semibold mb-4">
-            Expand Your Client Network
-          </h2>
-          <p className="text-lg mb-6">
-            Easily add new clients, assign them to projects, and manage their
-            details effortlessly.
-          </p>
-          <Link
-            href="/add-new-client"
-            className="bg-white text-blue-600 py-2 px-6 rounded-full text-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 inline-flex items-center gap-2"
-          >
-            <IoMdAdd /> Add New Client
-          </Link>
-        </section>
-      </div>
+                        <div className="flex gap-2 items-center">
+                          <span className="font-semibold text-foreground whitespace-nowrap">
+                            Country:
+                          </span>
+                          <span className="truncate">{client.country}</span>
+                        </div>
+
+                        <div className="flex gap-2 items-center">
+                          <span className="font-semibold text-foreground whitespace-nowrap">
+                            Phone Number:
+                          </span>
+                          <span className="truncate">{client.phone}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+
+                    <CardFooter className="flex justify-between pt-2 border-t">
+                      <Link href={`/update-clientUser/${client._id}`}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex items-center gap-1"
+                        >
+                          <IoMdCreate /> Update
+                        </Button>
+                      </Link>
+                      <Link href={`/create-new-project/${client._id}`}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex items-center gap-1 bg-primary text-primary-foreground hover:bg-primary/90 border-none dark:hover:text-black hover:text-white"
+                        >
+                          <IoMdAdd /> Add Project
+                        </Button>
+                      </Link>
+
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex items-center gap-1 bg-red-500 text-white hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800 border-none hover:text-white"
+                          >
+                            <IoMdTrash /> Delete
+                          </Button>
+                        </AlertDialogTrigger>
+
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Client</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete{" "}
+                              <b>{client.name}</b> from{" "}
+                              <b>{client.companyName}</b>? This action cannot be
+                              undone and will remove all associated projects.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => deleteClientUser(client._id)}
+                              className="bg-red-500 text-white hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20">
+                <h3 className="text-2xl font-semibold mb-2">
+                  No clients found
+                </h3>
+                <p className="text-muted-foreground mb-6">
+                  Try adjusting your search or add a new client
+                </p>
+                <Link href="/add-new-client">
+                  <Button className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90">
+                    <IoMdAdd className="text-lg" /> Add New Client
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </main>
+        </div>
+      )}
     </CompanyUserLayout>
   );
 };

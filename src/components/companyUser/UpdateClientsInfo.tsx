@@ -8,6 +8,17 @@ import toast from "react-hot-toast";
 import CompanyUserLayout from "./CompanyUserLayout";
 import { ImSpinner9 } from "react-icons/im";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const UpdateClientsInfo = () => {
   const { clientId } = useParams();
@@ -107,129 +118,108 @@ const UpdateClientsInfo = () => {
           <ImSpinner9 className="animate-spin text-black dark:text-slate-50" />
         </p>
       ) : (
-        <section className="py-20 px-4 bg-gray-100 dark:bg-gray-800 border-b">
-          <div className="max-w-3xl mx-auto">
-            <form
-              onSubmit={updateClientUser}
-              className="bg-white shadow-lg rounded-lg p-8 text-black"
-            >
-              <h2 className="text-2xl font-semibold mb-6">Client Details</h2>
+        <div className="container max-w-4xl mx-auto py-10 px-4">
+          <Card className="border shadow-sm">
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-2xl font-bold">
+                Client Details
+              </CardTitle>
+              <CardDescription>Update details for this client</CardDescription>
+            </CardHeader>
+            <form onSubmit={updateClientUser}>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="clientName">Client Name</Label>
+                    <Input
+                      type="text"
+                      id="clientName"
+                      value={client.name}
+                      onChange={handleOnChange}
+                      name="name"
+                      placeholder="Enter client name"
+                      required
+                    />
+                  </div>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="clientName"
-                  className="block text-lg font-semibold mb-2"
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Client Email</Label>
+                    <Input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={client.email}
+                      onChange={handleOnChange}
+                      placeholder="Enter client email"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="date">Client Joining Date</Label>
+                    <Input
+                      type="date"
+                      id="date"
+                      name="dateJoined"
+                      value={
+                        client.dateJoined
+                          ? new Date(client.dateJoined)
+                              ?.toISOString()
+                              .split("T")[0]
+                          : ""
+                      }
+                      onChange={handleOnChange}
+                      placeholder="Enter client joining date"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="country">Client Country</Label>
+                    <Input
+                      type="text"
+                      id="country"
+                      name="country"
+                      value={client.country}
+                      onChange={handleOnChange}
+                      placeholder="Enter client country"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2 md:col-span-2">
+                    <Label htmlFor="phone">Client Phone No.</Label>
+                    <Input
+                      type="text"
+                      id="phone"
+                      name="phone"
+                      value={client.phone}
+                      onChange={handleOnChange}
+                      placeholder="Enter client phone number"
+                      required
+                    />
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button
+                  type="submit"
+                  className="w-full sm:w-auto"
+                  disabled={dataProcessing}
                 >
-                  Client Name
-                </label>
-                <input
-                  type="text"
-                  id="clientName"
-                  value={client.name}
-                  onChange={handleOnChange}
-                  name="name"
-                  className="w-full p-3 border border-gray-300 bg-slate-50 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter client name"
-                  required
-                />
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="clientEmail"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Client Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={client.email}
-                  onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 bg-slate-50 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter client email"
-                  required
-                />
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="clientJoinedDate"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Client Joining Date
-                </label>
-                <input
-                  type="date"
-                  id="date"
-                  name="dateJoined"
-                  value={
-                    client.dateJoined
-                      ? new Date(client.dateJoined)?.toISOString().split("T")[0]
-                      : ""
-                  }
-                  onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 bg-slate-50 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter client joining date"
-                  required
-                />
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="clientCountry"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Client Country
-                </label>
-                <input
-                  type="text"
-                  id="country"
-                  name="country"
-                  value={client.country}
-                  onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 bg-slate-50 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter client country"
-                  required
-                />
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="clientPhone"
-                  className="block text-lg font-semibold mb-2"
-                >
-                  Client Phone No.
-                </label>
-                <input
-                  type="text"
-                  id="phone"
-                  name="phone"
-                  value={client.phone}
-                  onChange={handleOnChange}
-                  className="w-full p-3 border border-gray-300 bg-slate-50 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter client phone number"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition duration-200 inline-flex items-center justify-center gap-3"
-              >
-                {dataProcessing ? (
-                  <span className="inline-flex items-center justify-center gap-3">
-                    <AiOutlineLoading3Quarters className="animate-spin text-lg font-semibold text-slate-50" />{" "}
-                    Updating Client Data
-                  </span>
-                ) : (
-                  <>Update Client Data</>
-                )}
-              </button>
+                  {dataProcessing ? (
+                    <>
+                      <AiOutlineLoading3Quarters className="animate-spin mr-2 h-4 w-4" />
+                      Updating Client Data
+                    </>
+                  ) : (
+                    <>Update Client Data</>
+                  )}
+                </Button>
+              </CardFooter>
             </form>
-          </div>
-        </section>
+          </Card>
+        </div>
       )}
     </CompanyUserLayout>
   );
